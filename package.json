@@ -1,0 +1,48 @@
+{
+    "name": "grunt-tsc",
+    "description": "Typescript compiler",
+    "version": "0.0.1",
+    "homepage": "https://github.com/rodzewich/grunt-tsc",
+    "author": {
+        "name": "Oleg Rodzewich",
+        "url": "https://github.com/rodzewich"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rodzewich/grunt-tsc.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rodzewich/grunt-tsc/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/rodzewich/grunt-tsc/blob/master/LICENSE"
+        }
+    ],
+    "engines": {
+        "node": ">= 0.10.25"
+    },
+    "scripts": {
+        "test": "grunt test"
+    },
+    "dependencies": {
+        "rimraf": "~2.2.1"
+    },
+    "devDependencies": {
+        "grunt-contrib-jshint": "~0.10.0",
+        "grunt-contrib-nodeunit": "~0.3.3",
+        "grunt-contrib-internal": "~0.4.10",
+        "grunt": "~0.4.0"
+    },
+    "peerDependencies": {
+        "grunt": "~0.4.0"
+    },
+    "keywords": [
+        "gruntplugin"
+    ],
+    "files": [
+        "tasks",
+        "LICENSE"
+    ]
+}
