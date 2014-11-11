@@ -14,13 +14,6 @@ module.exports = function(grunt) {
                     branch: 'master',
                     directory: 'temp/typescript'
                 }
-            },
-            xlib: {
-                options: {
-                    repository: 'https://github.com/rodzewich/Class.git',
-                    branch    : 'master',
-                    directory : 'temp/xlib'
-                }
             }
         }
     });
