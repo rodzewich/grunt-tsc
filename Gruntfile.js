@@ -16,9 +16,11 @@ module.exports = function(grunt) {
                 }
             },
             xlib: {
-                repository: 'https://github.com/rodzewich/Class.git',
-                branch: 'master',
-                directory: 'temp/xlib'
+                options: {
+                    repository: 'https://github.com/rodzewich/Class.git',
+                    branch    : 'master',
+                    directory : 'temp/xlib'
+                }
             }
         }
     });
