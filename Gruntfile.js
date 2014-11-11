@@ -7,16 +7,31 @@ var fs = require('fs'),
 module.exports = function(grunt) {
     "use strict";
 
-    grunt.loadNpmTasks('grunt-git');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.initConfig({
-        gitclone: {
-            typescript: {
-                options: {
-                    repository: 'https://github.com/Microsoft/TypeScript.git',
-                    branch: 'master',
-                    directory: 'temp/typescript'
-                }
+        pkg: grunt.file.readJSON('package.json'),
+        copy: {
+            binaries: {
+                files: [{
+                    expand: true,
+                    dest: 'bin',
+                    cwd: 'temp/typescript/bin',
+                    src: '*'
+                }]
+            }
+        },
+        uglify: {
+            options: {
+                banner: grunt.file.read('banner.txt')
+            },
+            tasks: {
+                files: [{
+                    expand: false,
+                    dest: 'tasks/tsc.js',
+                    src: 'src/*.js'
+                }]
             }
         }
     });
@@ -33,6 +48,7 @@ module.exports = function(grunt) {
             });
             process.on('close', function (code) {
                 console.log('child process exited with code ' + code);
+                done();
             });
         }
         function updateSources() {
@@ -45,6 +61,7 @@ module.exports = function(grunt) {
             });
             process.on('close', function (code) {
                 console.log('child process exited with code ' + code);
+                done();
             });
         }
         function checkExists2() {
@@ -72,6 +89,6 @@ module.exports = function(grunt) {
         checkExists1();
     });
 
-    grunt.registerTask('default', ['dependencies']);
+    grunt.registerTask('default', ['dependencies', 'copy:binaries', 'uglify:tasks']);
 
 };
