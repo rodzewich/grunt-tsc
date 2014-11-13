@@ -14,20 +14,23 @@ npm install grunt-tsc --save-dev
 
 or add the following line to devDependencies in your package.json
 
-```
+``` javascript
 "grunt-tsc": "",
 ```
 
 Then modify your Gruntfile.js file by adding the following line:
 
-```
+``` javascript
 grunt.loadNpmTasks('grunt-tsc');
 ```
 
 Then add some configuration for the plugin like so:
 
 ``` javascript
-grunt.loadNpmTasks('grunt-tsc');
+grunt.initConfig({
+    tsc: {
+    }
+});
 ```
 
 ## Options
