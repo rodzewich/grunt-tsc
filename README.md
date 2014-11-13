@@ -12,7 +12,7 @@ should be documentation
 
 ### options.opt1
 
-*type*: `string`
+**type**: `string`
 
 description text 1
 
