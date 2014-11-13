@@ -8,17 +8,27 @@ Compile typescript files in [grunt](http://gruntjs.com/)
 
 You'll need to install grunt-tsc first:
 
-``` bash
-npm install grunt-typescript --save-dev
+```
+npm install grunt-tsc --save-dev
 ```
 
 or add the following line to devDependencies in your package.json
 
-"grunt-typescript": "",
+```
+"grunt-tsc": "",
+```
+
 Then modify your Gruntfile.js file by adding the following line:
 
-grunt.loadNpmTasks('grunt-typescript');
+```
+grunt.loadNpmTasks('grunt-tsc');
+```
+
 Then add some configuration for the plugin like so:
+
+``` javascript
+grunt.loadNpmTasks('grunt-tsc');
+```
 
 ## Options
 
