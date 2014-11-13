@@ -40,6 +40,6 @@
  *      project: <%= pkg.name %>
  *      version: <%= pkg.version %>
  *  development: http://www.digital-element.ru/
- *    copyright: (c) 2003-2014 Digital-Element
+ *    copyright: (c) 2003-<%= grunt.template.today('yyyy') %> Digital-Element
  *      license: MIT
  ******************************************************************************/
