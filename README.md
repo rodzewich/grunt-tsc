@@ -6,9 +6,25 @@ Compile typescript files in [grunt](http://gruntjs.com/)
 
 ## Documentation
 
-sdfsdfsdfs
+should be documentation
 
 ## Options
 
-sdfsdfs
+### options.opt1
+
+*type*: `string`
+
+description text 1
+
+### options.opt1
+
+*type*: `string`
+
+description text 1
+
+### options.opt1
+
+*type*: `string`
+
+description text 1
 
