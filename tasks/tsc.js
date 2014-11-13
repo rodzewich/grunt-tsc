@@ -38,7 +38,7 @@
  *   ╚═══╝╚══╝╚═══╝╚══╝  ╚╝  ╚╝╚╝╚══╝    ╚═══╝╚══╝╚═══╝╚╝  ╚╝╚═══╝╚╝ ╚╝  ╚╝
  *
  *      project: grunt-tsc
- *      version: 0.0.1
+ *      version: 0.0.2
  *  development: http://www.digital-element.ru/
  *    copyright: (c) 2003-2014 Digital-Element
  *      license: MIT

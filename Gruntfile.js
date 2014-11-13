@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     "use strict";
 
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.initConfig({
@@ -33,7 +34,10 @@ module.exports = function(grunt) {
                     src: 'src/*.js'
                 }]
             }
-        }
+        },
+        clean: [
+            'temp'
+        ]
     });
 
     grunt.registerTask('dependencies', function() {
@@ -89,6 +93,7 @@ module.exports = function(grunt) {
         checkExists1();
     });
 
-    grunt.registerTask('default', ['dependencies', 'copy:binaries', 'uglify:tasks']);
+    grunt.registerTask('default', ['uglify:tasks']);
+    grunt.registerTask('update', ['dependencies', 'copy:binaries', 'clean']);
 
 };
