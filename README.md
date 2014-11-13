@@ -2,4 +2,13 @@
 
 [![Npm Downloads](https://nodei.co/npm/grunt-tsc.png?downloads=true&stars=true)](https://nodei.co/npm/grunt-tsc.png?downloads=true&stars=true)
 
-Compile typescript files in [Grunt](http://gruntjs.com/)
+Compile typescript files in [grunt](http://gruntjs.com/)
+
+## Documentation
+
+sdfsdfsdfs
+
+## Options
+
+sdfsdfs
+
