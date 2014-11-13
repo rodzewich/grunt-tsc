@@ -6,7 +6,19 @@ Compile typescript files in [grunt](http://gruntjs.com/)
 
 ## Documentation
 
-should be documentation
+You'll need to install grunt-tsc first:
+
+``` bash
+npm install grunt-typescript --save-dev
+```
+
+or add the following line to devDependencies in your package.json
+
+"grunt-typescript": "",
+Then modify your Gruntfile.js file by adding the following line:
+
+grunt.loadNpmTasks('grunt-typescript');
+Then add some configuration for the plugin like so:
 
 ## Options
 
@@ -18,13 +30,16 @@ description text 1
 
 ### options.opt1
 
-*type*: `string`
+**type**: `string`
 
 description text 1
 
 ### options.opt1
 
-*type*: `string`
+**type**: `string`
 
 description text 1
+
+## Example
+
 
