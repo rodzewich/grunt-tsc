@@ -48,6 +48,13 @@ Deferred.prototype.run = function (callback) {
 module.exports = function (grunt) {
     "use strict";
 
+    var target = {
+        ES3:    'es3',
+        ES5:    'es5',
+        ES6:    'es6',
+        LATEST: 'latest'
+    };
+
     function writeFile(pathname, data, options, callback) {
         // todo: use async functions
         grunt.file.write(pathname, data, options);

@@ -2,7 +2,7 @@
 
 [![Npm Downloads](https://nodei.co/npm/grunt-tsc.png?downloads=true&stars=true)](https://nodei.co/npm/grunt-tsc.png?downloads=true&stars=true)
 
-Compile typescript files in [grunt](http://gruntjs.com/)
+Compile *.ts files via [grunt](http://gruntjs.com/) tasks.
 
 ## Documentation
 
@@ -35,23 +35,30 @@ grunt.initConfig({
 
 ## Options
 
-### options.opt1
+### options.preserveConstEnums
 
-**type**: `string`
+**type**: `boolean`
 
-description text 1
+**default**: `false`
 
-### options.opt1
+Do not erase const enum declarations in generated code.
 
-**type**: `string`
+### options.removeComments
 
-description text 1
+**type**: `boolean`
 
-### options.opt1
+**default**: `false`
 
-**type**: `string`
+Do not emit comments to output.
 
-description text 1
+### options.sourceMap
+
+**type**: `boolean`
+**default**: `false`
+Generates corresponding *.map file.
+
+
+### options.target
 
 ## Example
 
