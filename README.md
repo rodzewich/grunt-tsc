@@ -54,9 +54,10 @@ Do not emit comments to output.
 ### options.sourceMap
 
 **type**: `boolean`
-**default**: `false`
-Generates corresponding *.map file.
 
+**default**: `false`
+
+Generates corresponding *.map file.
 
 ### options.target
 

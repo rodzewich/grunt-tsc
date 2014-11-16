@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         ]
     });
 
-    grunt.registerTask('dependencies', function() {
+    grunt.registerTask('dependencies', 'Download source dependencies.', function() {
         var done = this.async();
         function fetchSources() {
             var process = spawn('/usr/bin/env', ['git', 'clone', 'https://github.com/Microsoft/TypeScript.git', 'temp/typescript']);
@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         checkExists1();
     });
 
-    grunt.registerTask('default', ['uglify:tasks']);
-    grunt.registerTask('update', ['dependencies', 'copy:binaries', 'clean']);
+    grunt.registerTask('default', 'Build package.', ['uglify:tasks']);
+    grunt.registerTask('update', 'Update source dependencies.', ['dependencies', 'copy:binaries', 'clean']);
 
 };
