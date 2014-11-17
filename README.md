@@ -12,7 +12,7 @@ You'll need to install grunt-tsc first:
 npm install grunt-tsc --save-dev
 ```
 
-or add the following line to `devDependencies` in your `package.json`
+or add the following line to _devDependencies_ in your `package.json`
 
 ``` javascript
 "grunt-tsc": "",
