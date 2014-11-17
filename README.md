@@ -35,32 +35,107 @@ grunt.initConfig({
 
 ## Options
 
+### options.target
+
+**type**: `string`
+
+**default**: `default`
+
+
+### options.module
+
+**type**: `string`
+
+**default**: `commonjs`
+
+
+### options.declaration
+
+**type**: `boolean`
+
+**default**: `false`
+
+
+### options.comments
+
+**type**: `boolean`
+
+**default**: `true`
+
+
+### options.sourcemap
+
+**type**: `boolean`
+
+**default**: `false`
+
+
+### options.implicitAny
+
+**type**: `boolean`
+
+**default**: `false`
+
+
 ### options.preserveConstEnums
 
 **type**: `boolean`
 
 **default**: `false`
 
-Do not erase const enum declarations in generated code.
 
-### options.removeComments
+### options.sourceRoot
 
-**type**: `boolean`
+**type**: `string`
 
-**default**: `false`
+**default**: `null`
 
-Do not emit comments to output.
 
-### options.sourceMap
+### options.mapRoot
 
-**type**: `boolean`
+**type**: `string`
 
-**default**: `false`
+**default**: `null`
 
-Generates corresponding *.map file.
 
-### options.target
+### options.encoding
 
-## Example
+**type**: `string`
 
+**default**: `utf8`
+
+## Examples
+
+```javascript
+grunt.initConfig({
+    tsc: {
+        test1: {
+            options: {
+                target: "es3",
+                module: "commonjs",
+                declaration: true,
+                comments: true,
+                sourcemap: true,
+                implicitAny: true,
+                preserveConstEnums: false,
+                sourceRoot: '',
+                mapRoot: '',
+                encoding: "utf8"
+            },
+            files: [
+                {
+                    ext    : '.js',
+                    expand : true,
+                    dest   : 'dest',
+                    cwd    : 'src',
+                    src    : [
+                        '*.ts',
+                        '!*.d.ts'
+                    ]
+                }
+            ]
+        }
+    }
+});
+```
 
