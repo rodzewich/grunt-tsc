@@ -227,10 +227,10 @@ module.exports = function (grunt) {
             grunt.log.writeln(
                 [
                     '%count% files'.replace(/%count%/g, String(count)).cyan + ' created.',
-                        ' js: ' + '%count% files'.replace(/%count%/g, String(countDestinations)).cyan + ',',
-                        ' map: ' + '%count% files'.replace(/%count%/g, String(countMaps)).cyan + ',',
-                        ' declaration: ' + '%count% files'.replace(/%count%/g, String(countDeclarations)).cyan + ' ',
-                        '(354ms)'
+                    ' js: ' + '%count% files'.replace(/%count%/g, String(countDestinations)).cyan + ',',
+                    ' map: ' + '%count% files'.replace(/%count%/g, String(countMaps)).cyan + ',',
+                    ' declaration: ' + '%count% files'.replace(/%count%/g, String(countDeclarations)).cyan + ' ',
+                    '(354ms)'
                 ].join('')
             );
             done(); // todo call by success result
