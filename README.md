@@ -45,74 +45,75 @@ description
 
 ### options.module
 
-* **type**: `string`
-* **default**: `commonjs`
+* **type** string
+* **default** commonjs
 
 description
 
 
 ### options.declaration
 
-* **type**: `boolean`
-* **default**: `false`
+* **type** boolean
+* **default** false
 
 description
 
 
 ### options.comments
 
-* **type**: `boolean`
-* **default**: `true`
+* **type** boolean
+* **default** true
 
 description
 
 
 ### options.sourcemap
 
-* **type**: `boolean`
-* **default**: `false`
+* **type** boolean
+* **default** false
 
 description
 
 
 ### options.implicitAny
 
-* **type**: `boolean`
-* **default**: `false`
+* **type** boolean
+* **default** false
 
 description
 
 
 ### options.preserveConstEnums
 
-* **type**: `boolean`
-* **default**: `false`
+* **type** boolean
+* **default** false
 
 description
 
 
 ### options.sourceRoot
 
-* **type**: `string`
-* **default**: `null`
+* **type** string
+* **default** null
 
 description
 
 
 ### options.mapRoot
 
-* **type**: `string`
-* **default**: `null`
+* **type** string
+* **default** null
 
 description
 
 
 ### options.encoding
 
-* **type**: `string`
-* **default**: `utf8`
+* **type** string
+* **default** utf8
 
 description
+
 
 ## Examples
 
