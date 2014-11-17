@@ -122,16 +122,16 @@ grunt.initConfig({
     tsc: {
         test1: {
             options: {
-                target: "es3",
-                module: "commonjs",
-                declaration: true,
-                comments: true,
-                sourcemap: true,
-                implicitAny: true,
+                target:             "es3",
+                module:             "commonjs",
+                declaration:        true,
+                comments:           true,
+                sourcemap:          true,
+                implicitAny:        true,
                 preserveConstEnums: false,
-                sourceRoot: null,
-                mapRoot: null,
-                encoding: "utf8"
+                sourceRoot:         "/public/sources",
+                mapRoot:            "/public/maps",
+                encoding:           "utf8"
             },
             files: [
                 // Compile many to many
