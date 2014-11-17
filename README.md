@@ -37,8 +37,8 @@ grunt.initConfig({
 
 ### options.target
 
-* **type**: `string`
-* **default**: `default`
+* **type** string
+* **default** default
 
 description
 
