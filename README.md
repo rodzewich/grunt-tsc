@@ -64,7 +64,7 @@ Generates corresponding '.d.ts' file.
 * **type** boolean
 * **default** true
 
-Do not emit comments to output.
+Emit comments to output.
 
 
 ### options.sourcemap
@@ -72,7 +72,7 @@ Do not emit comments to output.
 * **type** boolean
 * **default** false
 
-Generates corresponding '.map' file.
+Generates corresponding *.map file.
 
 
 ### options.implicitAny
