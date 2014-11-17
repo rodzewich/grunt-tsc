@@ -64,7 +64,7 @@ Generates corresponding '.d.ts' file.
 * **type** boolean
 * **default** true
 
-description
+Do not emit comments to output.
 
 
 ### options.sourcemap
@@ -112,7 +112,7 @@ Specifies the location where debugger should locate map files instead of generat
 * **type** string
 * **default** "utf8"
 
-description
+encoding
 
 
 ## Examples
