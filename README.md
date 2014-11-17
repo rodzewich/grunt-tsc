@@ -37,72 +37,82 @@ grunt.initConfig({
 
 ### options.target
 
-**type**: `string`
+* **type**: `string`
+* **default**: `default`
 
-**default**: `default`
+description
 
 
 ### options.module
 
-**type**: `string`
+* **type**: `string`
+* **default**: `commonjs`
 
-**default**: `commonjs`
+description
 
 
 ### options.declaration
 
-**type**: `boolean`
+* **type**: `boolean`
+* **default**: `false`
 
-**default**: `false`
+description
 
 
 ### options.comments
 
-**type**: `boolean`
+* **type**: `boolean`
+* **default**: `true`
 
-**default**: `true`
+description
 
 
 ### options.sourcemap
 
-**type**: `boolean`
+* **type**: `boolean`
+* **default**: `false`
 
-**default**: `false`
+description
 
 
 ### options.implicitAny
 
-**type**: `boolean`
+* **type**: `boolean`
+* **default**: `false`
 
-**default**: `false`
+description
 
 
 ### options.preserveConstEnums
 
-**type**: `boolean`
+* **type**: `boolean`
+* **default**: `false`
 
-**default**: `false`
+description
 
 
 ### options.sourceRoot
 
-**type**: `string`
+* **type**: `string`
+* **default**: `null`
 
-**default**: `null`
+description
 
 
 ### options.mapRoot
 
-**type**: `string`
+* **type**: `string`
+* **default**: `null`
 
-**default**: `null`
+description
 
 
 ### options.encoding
 
-**type**: `string`
+* **type**: `string`
+* **default**: `utf8`
 
-**default**: `utf8`
+description
 
 ## Examples
 
