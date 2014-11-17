@@ -123,6 +123,7 @@ grunt.initConfig({
                 encoding: "utf8"
             },
             files: [
+                // Compile many to many
                 {
                     ext    : '.js',
                     expand : true,
@@ -132,6 +133,9 @@ grunt.initConfig({
                         '*.ts',
                         '!*.d.ts'
                     ]
+                },
+                // Compile many to one
+                {
                 }
             ]
         }
