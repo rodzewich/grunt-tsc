@@ -122,7 +122,7 @@ grunt.initConfig({
     tsc: {
         test1: {
             options: {
-                target:             "es3",
+                target:             "default",
                 module:             "commonjs",
                 declaration:        true,
                 comments:           true,
