@@ -129,17 +129,17 @@ grunt.initConfig({
                 sourcemap: true,
                 implicitAny: true,
                 preserveConstEnums: false,
-                sourceRoot: '',
-                mapRoot: '',
+                sourceRoot: null,
+                mapRoot: null,
                 encoding: "utf8"
             },
             files: [
                 // Compile many to many
                 {
-                    ext    : '.js',
                     expand : true,
                     dest   : 'dest',
                     cwd    : 'src',
+                    ext    : '.js',
                     src    : [
                         '*.ts',
                         '!*.d.ts'
