@@ -38,17 +38,17 @@ grunt.initConfig({
 ### options.target
 
 * **type** string
-* **default** default
+* **default** "default"
 
-description
+Specify ECMAScript target version: 'DEFAULT', 'ES3', 'ES5', 'ES6' or 'LATEST'.
 
 
 ### options.module
 
 * **type** string
-* **default** commonjs
+* **default** "commonjs"
 
-description
+Specify module code generation: 'commonjs' or 'amd'.
 
 
 ### options.declaration
@@ -56,7 +56,7 @@ description
 * **type** boolean
 * **default** false
 
-description
+Generates corresponding '.d.ts' file.
 
 
 ### options.comments
@@ -72,7 +72,7 @@ description
 * **type** boolean
 * **default** false
 
-description
+Generates corresponding '.map' file.
 
 
 ### options.implicitAny
@@ -80,7 +80,7 @@ description
 * **type** boolean
 * **default** false
 
-description
+Warn on expressions and declarations with an implied 'any' type.
 
 
 ### options.preserveConstEnums
@@ -88,7 +88,7 @@ description
 * **type** boolean
 * **default** false
 
-description
+Do not erase const enum declarations in generated code.
 
 
 ### options.sourceRoot
@@ -96,7 +96,7 @@ description
 * **type** string
 * **default** null
 
-description
+Specifies the location where debugger should locate TypeScript files instead of source locations.
 
 
 ### options.mapRoot
@@ -104,13 +104,13 @@ description
 * **type** string
 * **default** null
 
-description
+Specifies the location where debugger should locate map files instead of generated locations.
 
 
 ### options.encoding
 
 * **type** string
-* **default** utf8
+* **default** "utf8"
 
 description
 
