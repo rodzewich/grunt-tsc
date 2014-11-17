@@ -137,12 +137,12 @@ grunt.initConfig({
                 // Compile many to many
                 {
                     expand : true,
-                    dest   : 'dest',
-                    cwd    : 'src',
-                    ext    : '.js',
+                    dest   : "dest",
+                    cwd    : "src",
+                    ext    : ".js",
                     src    : [
-                        '*.ts',
-                        '!*.d.ts'
+                        "*.ts",
+                        "!*.d.ts"
                     ]
                 },
                 // Compile many to one
