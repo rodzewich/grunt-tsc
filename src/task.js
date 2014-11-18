@@ -272,7 +272,12 @@ module.exports = function (grunt) {
 
             function getWorkingDirectory() {
                 if (typeof workingDirectory === 'undefined') {
-                    workingDirectory = String(item.cwd || '');
+                    workingDirectory = "";
+                    if (typeof item.cwd !== "undefined") {
+                        workingDirectory = String(item.cwd || '');
+                    } else if (item.orig && typeof item.orig.cwd !== "undefined") {
+                        workingDirectory = String(item.orig.cwd || "");
+                    }
                 }
                 return workingDirectory;
             }
@@ -309,10 +314,10 @@ module.exports = function (grunt) {
                 if (hasSourceMap()) {
                     args.push('--sourcemap');
                     if (getSourceRoot() !== null) {
-                        args.push('--sourceRoot', getSourceRoot());
+                        args.push('--sourceRoot', path.join(getSourceRoot(), path.relative(getWorkingDirectory(), getSourceDirectory())));
                     }
                     if (getMapRoot() !== null) {
-                        args.push('--mapRoot', getMapRoot());
+                        args.push('--mapRoot', path.join(getMapRoot(), path.relative(getWorkingDirectory(), getSourceDirectory())));
                     }
                 }
                 args.push(getSourceFile());

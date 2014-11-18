@@ -3,34 +3,34 @@
 
 module.exports = function(grunt) {
 
-    grunt.loadTasks('../src');
-
-    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadTasks("../src");
 
     grunt.initConfig({
         tsc: {
-            test1: {
-                options: {
-                    target: "es3",
-                    module: "commonjs",
-                    declaration: true,
-                    comments: true,
-                    sourcemap: true,
-                    implicitAny: true,
-                    preserveConstEnums: false,
-                    sourceRoot: '',
-                    mapRoot: '',
-                    encoding: "utf8"
-                },
+            options: {
+                target             : "latest",
+                module             : "commonjs",
+                declaration        : true,
+                comments           : true,
+                sourcemap          : true,
+                implicitAny        : true,
+                preserveConstEnums : false,
+                sourceRoot         : "/public/sources",
+                mapRoot            : "/public/maps",
+                encoding           : "utf8"
+            },
+            task: {
                 files: [
                     {
-                        ext    : '.js',
+                        ext    : ".js",
                         expand : true,
-                        dest   : 'dest',
-                        cwd    : 'src',
+                        dest   : "dest",
+                        cwd    : "src",
                         src    : [
-                            '*.ts',
-                            '!*.d.ts'
+                            "*.ts",
+                            "**/*.ts",
+                            "!*.d.ts",
+                            "!**/*.d.ts"
                         ]
                     }
                 ]
@@ -38,7 +38,6 @@ module.exports = function(grunt) {
         }
     });
 
-
-    grunt.registerTask('default', 'Test all.', ['tsc']);
+    grunt.registerTask("default", "Test all.", ["tsc"]);
 
 };
