@@ -29,7 +29,7 @@ Then add some configuration for the plugin like so:
 ``` javascript
 grunt.initConfig({
     tsc: {
-        // Global options
+        // global options
         options: {
             target:             "default",
             module:             "commonjs",
@@ -43,6 +43,8 @@ grunt.initConfig({
             encoding:           "utf8"
         },
         task1: {
+            // task options
+            options: {},
             files: [{
                 expand : true,
                 dest   : "dest",
