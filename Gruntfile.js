@@ -4,6 +4,8 @@
 var fs = require('fs'),
     spawn = require('child_process').spawn;
 
+// todo: use compiler version
+
 module.exports = function(grunt) {
     "use strict";
 
