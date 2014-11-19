@@ -5,11 +5,6 @@ var spawn = require("child_process").spawn,
     path = require("path"),
     fs = require("fs");
 
-// todo: noResolve
-// todo: ignoreError
-// todo: noLib
-// see: https://www.npmjs.org/package/grunt-typescript
-
 module.exports = function (grunt) {
     "use strict";
 
