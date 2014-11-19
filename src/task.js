@@ -7,7 +7,6 @@ var spawn = require('child_process').spawn,
 
 // todo: noResolve
 // todo: ignoreError
-// todo: references
 // todo: noLib
 // see: https://www.npmjs.org/package/grunt-typescript
 
@@ -423,15 +422,15 @@ module.exports = function (grunt) {
                     return declarationResult;
                 }
                 function getDeclarationDestination() {
-                    var destination;
-                    var directory;
-                    var extension;
-                    var filename;
+                    var destination,
+                        directory,
+                        extension,
+                        filename;
                     if (typeof declarationDestination === 'undefined') {
-                        destination    = getDestination();
-                        extension      = path.extname(destination);
-                        filename       = path.basename(destination, extension);
-                        directory      = path.dirname(destination);
+                        destination            = getDestination();
+                        extension              = path.extname(destination);
+                        filename               = path.basename(destination, extension);
+                        directory              = path.dirname(destination);
                         declarationDestination = path.join(directory, filename + '.d.ts');
 
                     }
