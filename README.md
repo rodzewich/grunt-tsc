@@ -144,7 +144,7 @@ Source file encoding.
 
 ### options.references
 
-* **type** <string|string[]>
+* **type** &lt;string|string[]&gt;
 * **default** []
 
 Additional references.
