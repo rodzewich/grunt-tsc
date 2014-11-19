@@ -147,7 +147,7 @@ Source file encoding.
 * **type** &lt;string|string[]&gt;
 * **default** []
 
-Additional references.
+Additional *.d.ts references.
 
 
 ## Examples
