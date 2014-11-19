@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         function saveVersions(versions, callback) {
             setTimeout(function () {
                 try {
-                    grunt.file.write("var compilerVersions=" + JSON.stringify(versions));
+                    grunt.file.write("bin/versions.js", "var compilerVersions=" + JSON.stringify(versions) + ";");
                     callback();
                 } catch (error) {
                     callback(error);
@@ -75,7 +75,9 @@ module.exports = function(grunt) {
                 if (code !== 0) {
                     callback(new Error("bla bla bla"));
                 } else {
-                    versions = content.join(" ").split(/\s+/m);
+                    versions = content.join(" ").split(/\s+/m).filter(function (element) {
+                        return !!element;
+                    });
                     saveVersions(versions, function (error) {
                         if (error) {
                             callback(error, null);
@@ -113,7 +115,11 @@ module.exports = function(grunt) {
             });
             process.on("close", function (code) {
                 console.log("child process exited with code " + code);
-                done();
+                getVersions(function (error, versions) {
+                    console.log('error', error);
+                    console.log("versions", versions);
+                    done();
+                });
             });
         }
         function checkExists2() {
