@@ -1,6 +1,8 @@
 /*jslint */
 /*global module, require, setTimeout */
 
+// todo: use this https://github.com/npm/node-semver
+
 var compilerVersions = [],
     spawn = require("child_process").spawn,
     path = require("path"),

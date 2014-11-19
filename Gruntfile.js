@@ -1,5 +1,5 @@
 /*jslint */
-/*global module, require */
+/*global module, require, setTimeout */
 
 var fs = require("fs"),
     spawn = require("child_process").spawn;
@@ -50,10 +50,21 @@ module.exports = function(grunt) {
 
     grunt.registerTask("dependencies", "Download source dependencies.", function() {
         var done = this.async();
+        function saveVersions(versions, callback) {
+            setTimeout(function () {
+                try {
+                    grunt.file.write("var compilerVersions=" + JSON.stringify(versions));
+                    callback();
+                } catch (error) {
+                    callback(error);
+                }
+            }, 0);
+        }
         function getVersions(callback) {
             var process = spawn("/usr/bin/env", ["git", "tag"], {cwd: "temp/typescript"}),
                 content = [],
-                errors  = [];
+                errors  = [],
+                versions;
             process.stdout.on("data", function (data) {
                 content.push(String(data || ""));
             });
@@ -64,7 +75,14 @@ module.exports = function(grunt) {
                 if (code !== 0) {
                     callback(new Error("bla bla bla"));
                 } else {
-                    callback(null, content.join(" ").split(/\s+/m));
+                    versions = content.join(" ").split(/\s+/m);
+                    saveVersions(versions, function (error) {
+                        if (error) {
+                            callback(error, null);
+                        } else {
+                            callback(null, versions);
+                        }
+                    });
                 }
             });
         }
