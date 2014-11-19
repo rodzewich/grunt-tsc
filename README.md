@@ -64,7 +64,7 @@ grunt.initConfig({
 
 ### options.target
 
-* **type** string
+* **type** &lt;string&gt;
 * **default** "default"
 
 Specify ECMAScript target version: "default", "es3", "es5", "es6" or "latest".
@@ -72,7 +72,7 @@ Specify ECMAScript target version: "default", "es3", "es5", "es6" or "latest".
 
 ### options.module
 
-* **type** string
+* **type** &lt;string&gt;
 * **default** "commonjs"
 
 Specify module code generation: "commonjs" or "amd".
@@ -80,7 +80,7 @@ Specify module code generation: "commonjs" or "amd".
 
 ### options.declaration
 
-* **type** boolean
+* **type** &lt;boolean&gt;
 * **default** false
 
 Generates corresponding *.d.ts file.
@@ -88,7 +88,7 @@ Generates corresponding *.d.ts file.
 
 ### options.comments
 
-* **type** boolean
+* **type** &lt;boolean&gt;
 * **default** true
 
 Emit comments to output.
@@ -96,7 +96,7 @@ Emit comments to output.
 
 ### options.sourcemap
 
-* **type** boolean
+* **type** &lt;boolean&gt;
 * **default** false
 
 Generates corresponding *.map file.
@@ -104,7 +104,7 @@ Generates corresponding *.map file.
 
 ### options.implicitAny
 
-* **type** boolean
+* **type** &lt;boolean&gt;
 * **default** false
 
 Warn on expressions and declarations with an implied 'any' type.
@@ -112,7 +112,7 @@ Warn on expressions and declarations with an implied 'any' type.
 
 ### options.preserveConstEnums
 
-* **type** boolean
+* **type** &lt;boolean&gt;
 * **default** false
 
 Do not erase const enum declarations in generated code.
@@ -120,7 +120,7 @@ Do not erase const enum declarations in generated code.
 
 ### options.sourceRoot
 
-* **type** string
+* **type** &lt;string&gt;
 * **default** null
 
 Specifies the location where debugger should locate typescript files instead of source locations.
@@ -128,7 +128,7 @@ Specifies the location where debugger should locate typescript files instead of 
 
 ### options.mapRoot
 
-* **type** <string>
+* **type** &lt;string&gt;
 * **default** null
 
 Specifies the location where debugger should locate map files instead of generated locations.
@@ -136,7 +136,7 @@ Specifies the location where debugger should locate map files instead of generat
 
 ### options.encoding
 
-* **type** <string>
+* **type** &lt;string&gt;
 * **default** "utf8"
 
 Source file encoding.
