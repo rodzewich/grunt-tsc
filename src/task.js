@@ -1,7 +1,8 @@
 /*jslint */
 /*global module, require, setTimeout */
 
-var spawn = require("child_process").spawn,
+var compilerVersions = [],
+    spawn = require("child_process").spawn,
     path = require("path"),
     fs = require("fs");
 
