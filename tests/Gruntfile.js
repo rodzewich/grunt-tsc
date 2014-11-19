@@ -17,7 +17,11 @@ module.exports = function(grunt) {
                 preserveConstEnums : false,
                 sourceRoot         : "/public/sources",
                 mapRoot            : "/public/maps",
-                encoding           : "utf8"
+                encoding           : "utf8",
+                references         : [
+                    "refs/*",
+                    "refs/**/*"
+                ]
             },
             task: {
                 files: [

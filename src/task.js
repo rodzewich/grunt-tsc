@@ -34,7 +34,8 @@ module.exports = function (grunt) {
             compilerPath,
             comments,
             implicitAny,
-            preserveConstEnums;
+            preserveConstEnums,
+            references;
 
         compile();
 
@@ -43,6 +44,27 @@ module.exports = function (grunt) {
                 options = self.options() || {};
             }
             return options;
+        }
+
+        function getReferences() {
+            var options;
+            if (typeof references === "undefined") {
+                options = getOptions();
+                references = [];
+                if (typeof options.references !== "undefined") {
+                    try {
+                        references = grunt.file.expand({
+                            filter: function (filename) {
+                                return grunt.file.isFile(filename) &&
+                                    filename.substr(-5).toLowerCase() === '.d.ts';
+                            }
+                        }, options.references);
+                    } catch (error) {
+                        throw new Error("bla bla bla");
+                    }
+                }
+            }
+            return references;
         }
 
         function getTarget() {
@@ -320,6 +342,9 @@ module.exports = function (grunt) {
                         args.push('--mapRoot', path.join(getMapRoot(), path.relative(getWorkingDirectory(), getSourceDirectory())));
                     }
                 }
+                getReferences().forEach(function (filename) {
+                    args.push(path.relative(getSourceDirectory(), filename));
+                });
                 args.push(getSourceFile());
                 process = spawn(
                     '/usr/bin/env', args,
@@ -532,6 +557,9 @@ module.exports = function (grunt) {
                         args.push('--mapRoot', getMapRoot());
                     }
                 }
+                getReferences().forEach(function (filename) {
+                    args.push(filename);
+                });
                 getSources().forEach(function (source) {
                     args.push(path.join(getWorkingDirectory(), source));
                 });
