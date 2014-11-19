@@ -128,7 +128,7 @@ Specifies the location where debugger should locate typescript files instead of 
 
 ### options.mapRoot
 
-* **type** string
+* **type** <string>
 * **default** null
 
 Specifies the location where debugger should locate map files instead of generated locations.
@@ -136,10 +136,18 @@ Specifies the location where debugger should locate map files instead of generat
 
 ### options.encoding
 
-* **type** string
+* **type** <string>
 * **default** "utf8"
 
 Source file encoding.
+
+
+### options.references
+
+* **type** <string|string[]>
+* **default** []
+
+Additional references.
 
 
 ## Examples
