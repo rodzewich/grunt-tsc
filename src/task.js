@@ -1,23 +1,17 @@
 /*jslint */
 /*global module, require, process, __dirname, setTimeout */
 
-// todo: use this https://github.com/npm/node-semver
-
 var spawn    = require("child_process").spawn,
     path     = require("path"),
     fs       = require("fs"),
     rows     = process.stdout.rows,
-    columns  = process.stdout.columns,
-    versions = require(path.join(__dirname, '../versions.js'));
+    columns  = process.stdout.columns;
 
 process.stdout.on('resize', function () {
     "use strict";
     rows    = process.stdout.rows;
     columns = process.stdout.columns;
 });
-
-var semver = require("semver");
-console.log("valid", semver.valid("1.1.0"));
 
 module.exports = function (grunt) {
     "use strict";
@@ -43,8 +37,7 @@ module.exports = function (grunt) {
             comments,
             implicitAny,
             preserveConstEnums,
-            references,
-            versions;
+            references;
 
         compile();
 
@@ -223,13 +216,6 @@ module.exports = function (grunt) {
             }
             temp = String(value + 0.0001).split(".");
             return (temp[0] + (useDot ? "." + temp[1].substr(0, 1) : "")) + ext;
-        }
-
-        function getVersions() {
-            if (typeof versions === "undefined") {
-                versions = compilerVersions.slice(0);
-            }
-            return versions;
         }
 
         function getCompilerVersion(callback) {
