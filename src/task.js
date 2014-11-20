@@ -16,6 +16,9 @@ process.stdout.on('resize', function () {
     columns = process.stdout.columns;
 });
 
+var semver = require("semver");
+console.log("valid", semver.valid("1.1.0"));
+
 module.exports = function (grunt) {
     "use strict";
 
@@ -40,7 +43,8 @@ module.exports = function (grunt) {
             comments,
             implicitAny,
             preserveConstEnums,
-            references;
+            references,
+            versions;
 
         compile();
 
@@ -219,6 +223,13 @@ module.exports = function (grunt) {
             }
             temp = String(value + 0.0001).split(".");
             return (temp[0] + (useDot ? "." + temp[1].substr(0, 1) : "")) + ext;
+        }
+
+        function getVersions() {
+            if (typeof versions === "undefined") {
+                versions = compilerVersions.slice(0);
+            }
+            return versions;
         }
 
         function getCompilerVersion(callback) {
