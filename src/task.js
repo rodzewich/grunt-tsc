@@ -1,12 +1,20 @@
 /*jslint */
-/*global module, require, setTimeout */
+/*global module, require, process, __dirname, setTimeout */
 
 // todo: use this https://github.com/npm/node-semver
 
-var compilerVersions = [],
-    spawn = require("child_process").spawn,
-    path = require("path"),
-    fs = require("fs");
+var spawn    = require("child_process").spawn,
+    path     = require("path"),
+    fs       = require("fs"),
+    rows     = process.stdout.rows,
+    columns  = process.stdout.columns,
+    versions = require(path.join(__dirname, '../versions.js'));
+
+process.stdout.on('resize', function () {
+    "use strict";
+    rows    = process.stdout.rows;
+    columns = process.stdout.columns;
+});
 
 module.exports = function (grunt) {
     "use strict";

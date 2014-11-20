@@ -1,8 +1,17 @@
 /*jslint */
-/*global module, require, setTimeout */
+/*global module, require, process, setTimeout */
 
-var fs = require("fs"),
-    spawn = require("child_process").spawn;
+var fs      = require("fs"),
+    spawn   = require("child_process").spawn,
+    rows    = process.stdout.rows,
+    columns = process.stdout.columns;
+
+process.stdout.on('resize', function () {
+    "use strict";
+    rows    = process.stdout.rows;
+    columns = process.stdout.columns;
+});
+
 
 // todo: use compiler version
 
@@ -48,12 +57,17 @@ module.exports = function(grunt) {
         ]
     });
 
-    grunt.registerTask("dependencies", "Download source dependencies.", function() {
+    grunt.registerTask("dependencies", "Download source dependencies.", function () {
         var done = this.async();
         function saveVersions(versions, callback) {
             setTimeout(function () {
+                var temp;
                 try {
-                    grunt.file.write("bin/versions.js", "var compilerVersions=" + JSON.stringify(versions) + ";");
+                    // todo: remake this
+                    temp = versions.split(0).sort(function (version1, version2) {
+                        return 0;
+                    });
+                    grunt.file.write("bin/versions.js", "module.exports=" + JSON.stringify(versions) + ";");
                     callback();
                 } catch (error) {
                     callback(error);
@@ -73,6 +87,19 @@ module.exports = function(grunt) {
             });
             process.on("close", function (code) {
                 if (code !== 0) {
+                    errors.join("\n").split(/(?:\n|\r)+/).
+                        forEach(function (item) {
+                            item = item.replace(/\s+$/, '');
+                            item = item.replace(/\s+/, ' ');
+                            if (item) {
+                                while (item) {
+                                    item = item.replace(/^\s+/, '');
+                                    grunt.log.write(' * '.yellow);
+                                    grunt.log.writeln(item.substr(0, columns - 3));
+                                    item = item.substr(columns - 3);
+                                }
+                            }
+                        });
                     callback(new Error("bla bla bla"));
                 } else {
                     versions = content.join(" ").split(/\s+/m).filter(function (element) {
@@ -88,39 +115,74 @@ module.exports = function(grunt) {
                 }
             });
         }
-        function fetchSources() {
-            var process = spawn("/usr/bin/env", ["git", "clone", "https://github.com/Microsoft/TypeScript.git", "temp/typescript"]);
-            process.stdout.on("data", function (data) {
-                console.log("stdout: " + data);
-            });
+        function cloneSources() {
+            var process = spawn("/usr/bin/env", ["git", "clone", "https://github.com/Microsoft/TypeScript.git", "temp/typescript"]),
+                errors  = [];
             process.stderr.on("data", function (data) {
-                console.log("stderr: " + data);
+                errors.push(String(data || ""));
             });
             process.on("close", function (code) {
-                console.log("child process exited with code " + code);
-                getVersions(function (error, versions) {
-                    console.log('error', error);
-                    console.log("versions", versions);
-                    done();
-                });
+                if (code !== 0) {
+                    errors.join("\n").split(/(?:\n|\r)+/).
+                        forEach(function (item) {
+                            item = item.replace(/\s+$/, '');
+                            item = item.replace(/\s+/, ' ');
+                            if (item) {
+                                while (item) {
+                                    item = item.replace(/^\s+/, '');
+                                    grunt.log.write(' * '.yellow);
+                                    grunt.log.writeln(item.substr(0, columns - 3));
+                                    item = item.substr(columns - 3);
+                                }
+                            }
+                        });
+                } else {
+                    getVersions(function (error, versions) {
+                        console.log('error', error);
+                        console.log("versions", versions);
+                        done();
+                    });
+                }
             });
         }
-        function updateSources() {
-            var process = spawn("/usr/bin/env", ["git", "pull"], {cwd: "temp/typescript"});
-            process.stdout.on("data", function (data) {
-                console.log("stdout: " + data);
-            });
+        function pullSources() {
+            var process = spawn("/usr/bin/env", ["git", "pull"], {cwd: "temp/typescript"}),
+                errors  = [];
             process.stderr.on("data", function (data) {
-                console.log("stderr: " + data);
+                errors.push(String(data || ""));
             });
             process.on("close", function (code) {
-                console.log("child process exited with code " + code);
-                getVersions(function (error, versions) {
-                    console.log('error', error);
-                    console.log("versions", versions);
-                    done();
-                });
+                if (code !== 0) {
+                    errors.join("\n").split(/(?:\n|\r)+/).
+                        forEach(function (item) {
+                            item = item.replace(/\s+$/, '');
+                            item = item.replace(/\s+/, ' ');
+                            if (item) {
+                                while (item) {
+                                    item = item.replace(/^\s+/, '');
+                                    grunt.log.write(' * '.yellow);
+                                    grunt.log.writeln(item.substr(0, columns - 3));
+                                    item = item.substr(columns - 3);
+                                }
+                            }
+                        });
+                } else {
+                    getVersions(function (error, versions) {
+                        console.log('error', error);
+                        console.log("versions", versions);
+                        done();
+                    });
+                }
             });
+        }
+        function copyVersion(version) {
+
+        }
+        function copyAllVersions(versions, callback) {
+
+        }
+        function clean(callback) {
+
         }
         function checkExists2() {
             fs.stat("temp/typescript", function (error, stats) {
@@ -131,14 +193,14 @@ module.exports = function(grunt) {
                     // todo: stop process and show errors
                     throw new Error("bla bla bla");
                 } else {
-                    updateSources();
+                    pullSources();
                 }
             });
         }
         function checkExists1() {
             fs.exists("temp/typescript", function (exists) {
                 if (!exists) {
-                    fetchSources();
+                    cloneSources();
                 } else {
                     checkExists2();
                 }
