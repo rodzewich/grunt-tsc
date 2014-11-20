@@ -35,7 +35,8 @@ module.exports = function (grunt) {
             comments,
             implicitAny,
             preserveConstEnums,
-            references;
+            references,
+            versions;
 
         compile();
 
@@ -216,10 +217,9 @@ module.exports = function (grunt) {
             return (temp[0] + (useDot ? "." + temp[1].substr(0, 1) : "")) + ext;
         }
 
-        var versions;
         function getVersions() {
             if (typeof versions === "undefined") {
-                versions = compilerVersions.slice(0).push("default", "latest");
+                versions = compilerVersions.slice(0);
             }
             return versions;
         }
