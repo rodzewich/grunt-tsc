@@ -16,6 +16,21 @@ process.stdout.on('resize', function () {
 module.exports = function (grunt) {
     "use strict";
 
+    function showErrors(string) {
+        string.split(/(?:\n|\r)+/).forEach(function (item) {
+            item = item.replace(/\s+$/, '');
+            item = item.replace(/\s+/, ' ');
+            if (item) {
+                while (item) {
+                    item = item.replace(/^\s+/, '');
+                    grunt.log.write(' * '.yellow);
+                    grunt.log.writeln(item.substr(0, columns - 3));
+                    item = item.substr(columns - 3);
+                }
+            }
+        });
+    }
+
     grunt.registerMultiTask("tsc", "Compile *.ts files", function () {
 
         var self = this,
@@ -257,7 +272,7 @@ module.exports = function (grunt) {
                     "(354ms)"
                 ].join("")
             );
-            done(); // todo call by success result
+            done(true); // todo call by success result
         }
 
         function iterate(item) {
@@ -357,7 +372,9 @@ module.exports = function (grunt) {
                 });
                 process.on("close", function (code) {
                     if (code !== 0) {
-                        // todo: show error
+                        showErrors(errors.join("\n"));
+                        grunt.fail.warn("Something went wrong.");
+                        done(false);
                     } else {
                         moveFiles();
                     }
@@ -572,7 +589,7 @@ module.exports = function (grunt) {
                 });
                 process.on("close", function (code) {
                     if (code !== 0) {
-                        grunt.verbose.or.error().error(errors.join("\n"));
+                        showErrors(errors.join("\n"));
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
