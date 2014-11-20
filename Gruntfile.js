@@ -12,11 +12,10 @@ process.stdout.on('resize', function () {
     columns = process.stdout.columns;
 });
 
-
-// todo: use compiler version
-
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     "use strict";
+
+    var version = "";
 
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-clean");
@@ -31,8 +30,8 @@ module.exports = function(grunt) {
                     dest: "bin",
                     cwd: "temp/typescript/bin",
                     src: [
-                        "*/*.d.ts",
-                        "*/tsc.js"
+                        "*.d.ts",
+                        "tsc.js"
                     ]
                 }]
             }
@@ -43,12 +42,9 @@ module.exports = function(grunt) {
             },
             tasks: {
                 files: [{
-                    expand: false,
-                    dest: "tasks/tsc.js",
-                    src: [
-                        "src/*.js",
-                        "bin/versions.js"
-                    ]
+                    expand : false,
+                    dest   : "tasks/tsc.js",
+                    src    : "src/*.js"
                 }]
             }
         },
@@ -59,59 +55,17 @@ module.exports = function(grunt) {
 
     grunt.registerTask("dependencies", "Download source dependencies.", function () {
         var done = this.async();
-        function saveVersions(versions, callback) {
-            setTimeout(function () {
-                var temp;
-                try {
-                    // todo: remake this
-                    temp = versions.split(0).sort(function (version1, version2) {
-                        return 0;
-                    });
-                    grunt.file.write("bin/versions.js", "module.exports=" + JSON.stringify(versions) + ";");
-                    callback();
-                } catch (error) {
-                    callback(error);
-                }
-            }, 0);
-        }
-        function getVersions(callback) {
-            var process = spawn("/usr/bin/env", ["git", "tag"], {cwd: "temp/typescript"}),
-                content = [],
-                errors  = [],
-                versions;
-            process.stdout.on("data", function (data) {
-                content.push(String(data || ""));
-            });
-            process.stderr.on("data", function (data) {
-                errors.push(String(data || ""));
-            });
-            process.on("close", function (code) {
-                if (code !== 0) {
-                    errors.join("\n").split(/(?:\n|\r)+/).
-                        forEach(function (item) {
-                            item = item.replace(/\s+$/, '');
-                            item = item.replace(/\s+/, ' ');
-                            if (item) {
-                                while (item) {
-                                    item = item.replace(/^\s+/, '');
-                                    grunt.log.write(' * '.yellow);
-                                    grunt.log.writeln(item.substr(0, columns - 3));
-                                    item = item.substr(columns - 3);
-                                }
-                            }
-                        });
-                    callback(new Error("bla bla bla"));
-                } else {
-                    versions = content.join(" ").split(/\s+/m).filter(function (element) {
-                        return !!element;
-                    });
-                    saveVersions(versions, function (error) {
-                        if (error) {
-                            callback(error, null);
-                        } else {
-                            callback(null, versions);
-                        }
-                    });
+        function showErrors(string) {
+            string.split(/(?:\n|\r)+/).forEach(function (item) {
+                item = item.replace(/\s+$/, '');
+                item = item.replace(/\s+/, ' ');
+                if (item) {
+                    while (item) {
+                        item = item.replace(/^\s+/, '');
+                        grunt.log.write(' * '.yellow);
+                        grunt.log.writeln(item.substr(0, columns - 3));
+                        item = item.substr(columns - 3);
+                    }
                 }
             });
         }
@@ -123,25 +77,9 @@ module.exports = function(grunt) {
             });
             process.on("close", function (code) {
                 if (code !== 0) {
-                    errors.join("\n").split(/(?:\n|\r)+/).
-                        forEach(function (item) {
-                            item = item.replace(/\s+$/, '');
-                            item = item.replace(/\s+/, ' ');
-                            if (item) {
-                                while (item) {
-                                    item = item.replace(/^\s+/, '');
-                                    grunt.log.write(' * '.yellow);
-                                    grunt.log.writeln(item.substr(0, columns - 3));
-                                    item = item.substr(columns - 3);
-                                }
-                            }
-                        });
+                    showErrors(errors.join("\n"));
                 } else {
-                    getVersions(function (error, versions) {
-                        console.log('error', error);
-                        console.log("versions", versions);
-                        done();
-                    });
+                    done();
                 }
             });
         }
@@ -153,36 +91,11 @@ module.exports = function(grunt) {
             });
             process.on("close", function (code) {
                 if (code !== 0) {
-                    errors.join("\n").split(/(?:\n|\r)+/).
-                        forEach(function (item) {
-                            item = item.replace(/\s+$/, '');
-                            item = item.replace(/\s+/, ' ');
-                            if (item) {
-                                while (item) {
-                                    item = item.replace(/^\s+/, '');
-                                    grunt.log.write(' * '.yellow);
-                                    grunt.log.writeln(item.substr(0, columns - 3));
-                                    item = item.substr(columns - 3);
-                                }
-                            }
-                        });
+                    showErrors(errors.join("\n"));
                 } else {
-                    getVersions(function (error, versions) {
-                        console.log('error', error);
-                        console.log("versions", versions);
-                        done();
-                    });
+                    done();
                 }
             });
-        }
-        function copyVersion(version) {
-
-        }
-        function copyAllVersions(versions, callback) {
-
-        }
-        function clean(callback) {
-
         }
         function checkExists2() {
             fs.stat("temp/typescript", function (error, stats) {
