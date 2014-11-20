@@ -8,6 +8,9 @@ var compilerVersions = [],
     path = require("path"),
     fs = require("fs");
 
+var semver = require("semver");
+console.log("valid", semver.valid("1.1.0"));
+
 module.exports = function (grunt) {
     "use strict";
 
@@ -211,6 +214,14 @@ module.exports = function (grunt) {
             }
             temp = String(value + 0.0001).split(".");
             return (temp[0] + (useDot ? "." + temp[1].substr(0, 1) : "")) + ext;
+        }
+
+        var versions;
+        function getVersions() {
+            if (typeof versions === "undefined") {
+                versions = compilerVersions.slice(0).push("default", "latest");
+            }
+            return versions;
         }
 
         function getCompilerVersion(callback) {

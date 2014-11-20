@@ -26,6 +26,10 @@ module test1 {
             this.prop2 = value;
         }
 
+        static factory(): Test1 {
+            return new Test1();
+        }
+
     }
 
 }
