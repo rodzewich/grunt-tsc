@@ -2,7 +2,7 @@
 /*global module */
 
 module.exports = function (grunt) {
-    "use struct";
+    "use strict";
 
     grunt.loadTasks("../src");
 
