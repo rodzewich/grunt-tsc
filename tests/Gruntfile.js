@@ -1,7 +1,8 @@
 /*jslint */
 /*global module */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
+    "use struct";
 
     grunt.loadTasks("../src");
 
