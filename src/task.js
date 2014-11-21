@@ -496,27 +496,31 @@ module.exports = function (grunt) {
                         }, 0);
                     }
                     function callback(error, stats, path) {
+                        function showStdout() {
+                            var prefix = "            " + "output:".yellow;
+                            if (path.substr(-5) === ".d.ts") {
+                                prefix = "       " + "declaration:".yellow;
+                            } else if (path.substr(-7) === ".js.map") {
+                                prefix = "         " + "sourcemap:".yellow;
+                            }
+                            grunt.log.writeln(prefix + " " + path.green + String(" (" + getSize(stats.size) + ")").yellow);
+                        }
                         if (error) {
                             showErrors(String(error || ''));
                             done(false);
                         } else {
                             workers--;
-
                             if (firstRun) {
-                                grunt.log.write("Compile".green + " " + getSource() + " (" + getTime() + ")");
+                                grunt.log.writeln(String(" * " + getSource()).green + String(" (" + getTime() + ")").yellow);
                             }
-
-                            grunt.log.write((firstRun ? " -> " : ", ") + path + " (" + getSize(stats.size) + ")");
-
+                            showStdout();
                             if (!workers) {
-                                grunt.log.writeln(".");
                                 if (files.length) {
                                     iterate(files.shift());
                                 } else {
                                     complete();
                                 }
                             }
-
                             firstRun = false;
                         }
                     }
