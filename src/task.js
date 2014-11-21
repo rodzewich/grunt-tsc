@@ -235,16 +235,18 @@ module.exports = function (grunt) {
 
         function getCompilerVersion(callback) {
             var content = "",
+                errors  = [],
                 process = spawn("/usr/bin/env", ["node", getCompilerPath(), "--version"]);
             process.stderr.on("data", function (data) {
-                content += data.toString();
+                errors.push(String(data || ''));
             });
             process.stdout.on("data", function (data) {
                 content += data.toString();
             });
             process.on("close", function (code) {
                 if (code !== 0) {
-                    // todo: show error
+                    showErrors(errors.join("\n"));
+                    done(false);
                 } else {
                     if (/^.*version\s+(\S+).*$/im.test(content)) {
                         callback(content.replace(/^.*version\s+(\S+).*$/im, "$1").split("\r").join("").split("\n").join(""));
@@ -272,7 +274,7 @@ module.exports = function (grunt) {
                     "(354ms)"
                 ].join("")
             );
-            done(true); // todo call by success result
+            done(true);
         }
 
         function iterate(item) {
@@ -495,7 +497,8 @@ module.exports = function (grunt) {
                     }
                     function callback(error, stats, path) {
                         if (error) {
-                            // todo: show error
+                            showErrors(String(error || ''));
+                            done(false);
                         } else {
                             workers--;
 
