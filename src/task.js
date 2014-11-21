@@ -634,8 +634,8 @@ module.exports = function (grunt) {
 
 /*
 * path/path/path/path/filename.ts (0.983sec)
-    output:      path/path/path/filename.js
-    sourcemap:   path/path/path/filename.js.map
-    declaration: path/path/path/filename.d.ts
+    output:      path/path/path/filename.js (23B)
+    sourcemap:   path/path/path/filename.js.map (23B)
+    declaration: path/path/path/filename.d.ts (23B)
 
 */
