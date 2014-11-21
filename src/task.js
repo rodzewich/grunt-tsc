@@ -97,7 +97,7 @@ module.exports = function (grunt) {
                 } else if (["ES3", "ES5", "ES6"].indexOf(temp) !== -1) {
                     target = temp;
                 } else {
-                    throw new Error("bla bla bla");
+                    throw new Error("Incorrect \"target\" option, must be \"default\", \"es3\", \"es5\", \"es6\" or \"latest\".");
                 }
             }
             return target;
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
                 } else if (["commonjs", "amd"].indexOf(temp) !== -1) {
                     module = temp;
                 } else {
-                    throw new Error("bla bla bla");
+                    throw new Error("Incorrect \"module\" option, must be \"commonjs\" or \"amd\".");
                 }
             }
             return module;
@@ -631,3 +631,11 @@ module.exports = function (grunt) {
     });
 
 };
+
+/*
+* path/path/path/path/filename.ts (0.983sec)
+    output:      path/path/path/filename.js
+    sourcemap:   path/path/path/filename.js.map
+    declaration: path/path/path/filename.d.ts
+
+*/
