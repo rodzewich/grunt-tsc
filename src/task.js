@@ -480,13 +480,12 @@ module.exports = function (grunt) {
                     var workers = 0,
                         firstRun = true;
                     moveJavascript();
-                    if (hasDeclaration()) {
-                        moveDeclaration();
-                    }
                     if (hasSourceMap()) {
                         moveSourceMap();
                     }
-
+                    if (hasDeclaration()) {
+                        moveDeclaration();
+                    }
                     function move(path1, path2, callback) {
                         // todo: fix this
                         setTimeout(function () {
