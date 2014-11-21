@@ -372,10 +372,12 @@ module.exports = function (grunt) {
                 process.stderr.on("data", function (data) {
                     errors.push(data.toString());
                 });
+                process.stdout.on("data", function (data) {
+                    errors.push(data.toString());
+                });
                 process.on("close", function (code) {
                     if (code !== 0) {
                         showErrors(errors.join("\n"));
-                        console.log('2');
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
@@ -591,13 +593,15 @@ module.exports = function (grunt) {
                 });
                 args.push("--out", getDestination());
                 process = spawn("/usr/bin/env", args);
+                process.stdout.on("data", function (data) {
+                    errors.push(data.toString());
+                });
                 process.stderr.on("data", function (data) {
                     errors.push(data.toString());
                 });
                 process.on("close", function (code) {
                     if (code !== 0) {
                         showErrors(errors.join("\n"));
-                        console.log('1');
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
