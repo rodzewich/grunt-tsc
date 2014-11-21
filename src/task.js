@@ -375,6 +375,7 @@ module.exports = function (grunt) {
                 process.on("close", function (code) {
                     if (code !== 0) {
                         showErrors(errors.join("\n"));
+                        console.log('2');
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
@@ -596,6 +597,7 @@ module.exports = function (grunt) {
                 process.on("close", function (code) {
                     if (code !== 0) {
                         showErrors(errors.join("\n"));
+                        console.log('1');
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
