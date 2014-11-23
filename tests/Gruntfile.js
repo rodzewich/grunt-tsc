@@ -9,8 +9,8 @@ module.exports = function (grunt) {
     grunt.initConfig({
         tsc: {
             options: {
-                target             : "latest",
-                module             : "commonjs",
+                target             : "es3",
+                module             : "amd",
                 declaration        : true,
                 comments           : true,
                 sourcemap          : true,

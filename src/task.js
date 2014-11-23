@@ -245,6 +245,8 @@ module.exports = function (grunt) {
             }
             args.push(getCompilerPath());
             args.push("--version");
+            grunt.log.debug("command:", command);
+            grunt.log.debug("args:", args.join(" "));
             process = spawn(command, args);
             process.stderr.on("data", function (data) {
                 errors.push(String(data || ''));
@@ -496,6 +498,8 @@ module.exports = function (grunt) {
                     function move(path1, path2, callback) {
                         // todo: fix this
                         setTimeout(function () {
+                            grunt.log.debug("copy:", path1, path2);
+                            grunt.log.debug("delete:", path1);
                             grunt.file.copy(path1, path2, {encoding: getEncoding()});
                             grunt.file.delete(path1, {force: true});
                             callback(null, fs.statSync(path2), path2);
@@ -517,7 +521,7 @@ module.exports = function (grunt) {
                         } else {
                             workers--;
                             if (firstRun) {
-                                grunt.log.writeln(">>>".green + " Compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + getSource().green + " (" + String(getTime()).yellow + ")");
+                                grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + getSource().green + " (" + String(getTime()).yellow + ")");
                             }
                             showStdout();
                             if (!workers) {
@@ -601,6 +605,8 @@ module.exports = function (grunt) {
                     args.push(path.join(getWorkingDirectory(), source));
                 });
                 args.push("--out", getDestination());
+                grunt.log.debug("command:", command);
+                grunt.log.debug("args:", args.join(" "));
                 process = spawn(command, args);
                 process.stdout.on("data", function (data) {
                     errors.push(data.toString());
@@ -672,6 +678,9 @@ module.exports = function (grunt) {
                     mapRoot:            getMapRoot(),
                     encoding:           getEncoding()
                 }, "options");
+                if (getReferences().length) {
+                    grunt.log.writeflags(getReferences(), "references");
+                }
                 if (files.length) {
                     iterate(files.shift());
                 } else {
