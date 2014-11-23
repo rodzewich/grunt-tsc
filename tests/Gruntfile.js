@@ -37,6 +37,17 @@ module.exports = function (grunt) {
                             "!*.d.ts",
                             "!**/*.d.ts"
                         ]
+                    },
+                    {
+                        expand : false,
+                        dest   : "dest/core.js",
+                        cwd    : "src",
+                        src    : [
+                            "*.ts",
+                            "**/*.ts",
+                            "!*.d.ts",
+                            "!**/*.d.ts"
+                        ]
                     }
                 ]
             }
