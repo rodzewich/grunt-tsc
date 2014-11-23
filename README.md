@@ -64,7 +64,7 @@ grunt.initConfig({
 
 ### options.target
 
-* **type** `&lt;string&gt;`
+* **type** `<string>`
 * **default** "default"
 
 Specify ECMAScript target version: "default", "es3", "es5", "es6" or "latest".
