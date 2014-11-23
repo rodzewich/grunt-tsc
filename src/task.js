@@ -8,7 +8,7 @@ var spawn    = require("child_process").spawn,
     rows     = process.stdout.rows,
     columns  = process.stdout.columns;
 
-process.stdout.on('resize', function () {
+process.stdout.on("resize", function () {
     "use strict";
     rows    = process.stdout.rows;
     columns = process.stdout.columns;
@@ -35,12 +35,12 @@ module.exports = function (grunt) {
     }
     function displayErrors(string) {
         string.split(/(?:\n|\r)+/).forEach(function (item) {
-            item = item.replace(/\s+$/, '');
-            item = item.replace(/\s+/, ' ');
+            item = item.replace(/\s+$/, "");
+            item = item.replace(/\s+/, " ");
             if (item) {
                 while (item) {
-                    item = item.replace(/^\s+/, '');
-                    grunt.log.write(' * '.yellow);
+                    item = item.replace(/^\s+/, "");
+                    grunt.log.write(" * ".yellow);
                     grunt.log.writeln(item.substr(0, columns - 3));
                     item = item.substr(columns - 3);
                 }
@@ -249,7 +249,7 @@ module.exports = function (grunt) {
             grunt.log.debug("args:", args.join(" "));
             process = spawn(command, args);
             process.stderr.on("data", function (data) {
-                errors.push(String(data || ''));
+                errors.push(String(data || ""));
             });
             process.stdout.on("data", function (data) {
                 content += data.toString();
@@ -514,7 +514,7 @@ module.exports = function (grunt) {
                             grunt.log.writeln(getTitle(prefix) + path.cyan + " (" + String(getSize(stats.size)).yellow + ")");
                         }
                         if (error) {
-                            displayErrors(String(error || ''));
+                            displayErrors(String(error || ""));
                             done(false);
                         } else {
                             workers--;
@@ -649,7 +649,7 @@ module.exports = function (grunt) {
                         extname = path.extname(destination);
                         dirname = path.dirname(destination);
                         basename = path.basename(destination, extname);
-                        declaration = path.join(dirname, basename + '.d.ts');
+                        declaration = path.join(dirname, basename + ".d.ts");
                     }
                     return declaration;
                 }
