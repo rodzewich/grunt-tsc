@@ -498,8 +498,6 @@ module.exports = function (grunt) {
                     function move(path1, path2, callback) {
                         // todo: fix this
                         setTimeout(function () {
-                            grunt.log.debug("copy:", path1, path2);
-                            grunt.log.debug("delete:", path1);
                             grunt.file.copy(path1, path2, {encoding: getEncoding()});
                             grunt.file.delete(path1, {force: true});
                             callback(null, fs.statSync(path2), path2);
@@ -620,7 +618,7 @@ module.exports = function (grunt) {
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
-                        grunt.log.writeln(">>>".green + " Compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
+                        grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         countDestinations++;
                         getSources().forEach(function (source) {
                             grunt.log.writeln(getTitle("input") + path.join(getWorkingDirectory(), source).green);
