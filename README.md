@@ -12,7 +12,7 @@ You'll need to install grunt-tsc first:
 npm install grunt-tsc --save-dev
 ```
 
-or add the following line to __devDependencies__ in your `package.json`
+or add the following line to `devDependencies` in your `package.json`
 
 ``` javascript
 "grunt-tsc": "",
@@ -64,7 +64,7 @@ grunt.initConfig({
 
 ### options.target
 
-* **type** &lt;string&gt;
+* **type** `&lt;string&gt;`
 * **default** "default"
 
 Specify ECMAScript target version: "default", "es3", "es5", "es6" or "latest".
