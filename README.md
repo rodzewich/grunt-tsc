@@ -65,87 +65,87 @@ grunt.initConfig({
 ### options.target
 
 * **type** `<string>`
-* **default** "default"
+* **default** `"default"`
 
 Specify ECMAScript target version: "default", "es3", "es5", "es6" or "latest".
 
 
 ### options.module
 
-* **type** &lt;string&gt;
-* **default** "commonjs"
+* **type** `<string>`
+* **default** `"commonjs"`
 
 Specify module code generation: "commonjs" or "amd".
 
 
 ### options.declaration
 
-* **type** &lt;boolean&gt;
-* **default** false
+* **type** `<boolean>`
+* **default** `false`
 
 Generates corresponding *.d.ts file.
 
 
 ### options.comments
 
-* **type** &lt;boolean&gt;
-* **default** true
+* **type** `<boolean>`
+* **default** `true`
 
 Emit comments to output.
 
 
 ### options.sourcemap
 
-* **type** &lt;boolean&gt;
-* **default** false
+* **type** `<boolean>`
+* **default** `false`
 
 Generates corresponding *.map file.
 
 
 ### options.implicitAny
 
-* **type** &lt;boolean&gt;
-* **default** false
+* **type** `<boolean>`
+* **default** `false`
 
 Warn on expressions and declarations with an implied 'any' type.
 
 
 ### options.preserveConstEnums
 
-* **type** &lt;boolean&gt;
-* **default** false
+* **type** `<boolean>`
+* **default** `false`
 
 Do not erase const enum declarations in generated code.
 
 
 ### options.sourceRoot
 
-* **type** &lt;string&gt;
-* **default** null
+* **type** `<string>`
+* **default** `null`
 
 Specifies the location where debugger should locate typescript files instead of source locations.
 
 
 ### options.mapRoot
 
-* **type** &lt;string&gt;
-* **default** null
+* **type** `<string>`
+* **default** `null`
 
 Specifies the location where debugger should locate map files instead of generated locations.
 
 
 ### options.encoding
 
-* **type** &lt;string&gt;
-* **default** "utf8"
+* **type** `<string>`
+* **default** `"utf8"`
 
 Source file encoding.
 
 
 ### options.references
 
-* **type** &lt;string|string[]&gt;
-* **default** []
+* **type** `<string|string[]>`
+* **default** `[]`
 
 Additional *.d.ts references.
 
