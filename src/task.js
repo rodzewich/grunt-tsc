@@ -147,19 +147,19 @@ module.exports = function (grunt) {
                 options = getOptions();
                 references = [];
                 if (isCoreLibrary()) {
-                    references.push("node_modules/grunt_tsc/bin/lib.core.d.ts");
+                    references.push("node_modules/grunt-tsc/bin/lib.core.d.ts");
                 }
                 if (isBrowserLibrary()) {
-                    references.push("node_modules/grunt_tsc/bin/lib.d.ts");
+                    references.push("node_modules/grunt-tsc/bin/lib.d.ts");
                 }
                 if (isDomLibrary()) {
-                    references.push("node_modules/grunt_tsc/bin/lib.dom.d.ts");
+                    references.push("node_modules/grunt-tsc/bin/lib.dom.d.ts");
                 }
                 if (isScriptHostLibrary()) {
-                    references.push("node_modules/grunt_tsc/bin/lib.scriptHost.d.ts");
+                    references.push("node_modules/grunt-tsc/bin/lib.scriptHost.d.ts");
                 }
                 if (isWebWorkerLibrary()) {
-                    references.push("node_modules/grunt_tsc/bin/lib.webworker.d.ts");
+                    references.push("node_modules/grunt-tsc/bin/lib.webworker.d.ts");
                 }
                 if (typeof options.references !== "undefined") {
                     try {
