@@ -155,7 +155,7 @@ Additional *.d.ts references.
 * **type** `<boolean>`
 * **default** `false`
 
-Enable general library references.
+Enable general library references (include all references).
 
 
 ### options.coreLibrary
@@ -171,7 +171,7 @@ Enable core library references only.
 * **type** `<boolean>`
 * **default** `false`
 
-Enable dom library references.
+Enable dom library references (include core references).
 
 
 ### options.scriptHostLibrary
@@ -179,7 +179,7 @@ Enable dom library references.
 * **type** `<boolean>`
 * **default** `false`
 
-Enable windows scripts library references.
+Enable windows scripts library references (include core references).
 
 
 ### options.webWorkerLibrary
@@ -187,7 +187,7 @@ Enable windows scripts library references.
 * **type** `<boolean>`
 * **default** `false`
 
-Enable web worker library references.
+Enable web worker library references (include core references).
 
 
 ## Examples
