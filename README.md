@@ -150,6 +150,36 @@ Source file encoding.
 Additional *.d.ts references.
 
 
+### options.coreLibrary
+
+* **type** `<boolean>`
+* **default** `false`
+
+
+### options.browserLibrary
+
+* **type** `<boolean>`
+* **default** `false`
+
+
+### options.domLibrary
+
+* **type** `<boolean>`
+* **default** `false`
+
+
+### options.scriptHostLibrary
+
+* **type** `<boolean>`
+* **default** `false`
+
+
+### options.webWorkerLibrary
+
+* **type** `<boolean>`
+* **default** `false`
+
+
 ## Examples
 
 ```javascript
