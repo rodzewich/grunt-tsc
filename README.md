@@ -150,18 +150,20 @@ Source file encoding.
 Additional *.d.ts references.
 
 
-### options.coreLibrary
-
-* **type** `<boolean>`
-* **default** `false`
-
-
 ### options.library
 
 * **type** `<boolean>`
 * **default** `false`
 
-Include general library references.
+Enable general library references.
+
+
+### options.coreLibrary
+
+* **type** `<boolean>`
+* **default** `false`
+
+Enable core library references only.
 
 
 ### options.domLibrary
@@ -169,17 +171,23 @@ Include general library references.
 * **type** `<boolean>`
 * **default** `false`
 
+Enable dom library references.
+
 
 ### options.scriptHostLibrary
 
 * **type** `<boolean>`
 * **default** `false`
 
+Enable windows scripts library references.
+
 
 ### options.webWorkerLibrary
 
 * **type** `<boolean>`
 * **default** `false`
+
+Enable web worker library references.
 
 
 ## Examples
