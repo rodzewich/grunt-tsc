@@ -39,7 +39,7 @@ module.exports = function (grunt) {
             preserveConstEnums,
             references,
             coreLibrary,
-            browserLibrary,
+            library,
             domLibrary,
             scriptHostLibrary,
             webWorkerLibrary,
@@ -81,6 +81,52 @@ module.exports = function (grunt) {
             }
             return options;
         }
+        function isLibrary() {
+            var options;
+            if (typeof library === "undefined") {
+                options = getOptions();
+                if (typeof options.library === "string") {
+                    library = ["off", "no", "false", "0", ""].indexOf(String(options.library).toLowerCase()) === -1;
+                } else {
+                    library = !!options.library;
+                }
+                library = library || (isDomLibrary() && isScriptHostLibrary() && isWebWorkerLibrary());
+            }
+            return library;
+            function isDomLibrary() {
+                var result     = false,
+                    options    = getOptions(),
+                    domLibrary = options.domLibrary;
+                if (typeof domLibrary === "string") {
+                    result = ["off", "no", "false", "0", ""].indexOf(String(domLibrary).toLowerCase()) === -1;
+                } else {
+                    result = !!domLibrary;
+                }
+                return result;
+            }
+            function isScriptHostLibrary() {
+                var result            = false,
+                    options           = getOptions(),
+                    scriptHostLibrary = options.scriptHostLibrary;
+                if (typeof scriptHostLibrary === "string") {
+                    result = ["off", "no", "false", "0", ""].indexOf(String(scriptHostLibrary).toLowerCase()) === -1;
+                } else {
+                    result = !!scriptHostLibrary;
+                }
+                return result;
+            }
+            function isWebWorkerLibrary() {
+                var result           = false,
+                    options          = getOptions(),
+                    webWorkerLibrary = options.webWorkerLibrary;
+                if (typeof webWorkerLibrary === "string") {
+                    result = ["off", "no", "false", "0", ""].indexOf(String(webWorkerLibrary).toLowerCase()) === -1;
+                } else {
+                    result = !!webWorkerLibrary;
+                }
+                return result;
+            }
+        }
         function isCoreLibrary() {
             var options;
             if (typeof coreLibrary === "undefined") {
@@ -90,20 +136,9 @@ module.exports = function (grunt) {
                 } else {
                     coreLibrary = !!options.coreLibrary;
                 }
+                coreLibrary = coreLibrary && !(isLibrary() || isDomLibrary() || isScriptHostLibrary() || isWebWorkerLibrary());
             }
             return coreLibrary;
-        }
-        function isBrowserLibrary() {
-            var options;
-            if (typeof browserLibrary === "undefined") {
-                options = getOptions();
-                if (typeof options.browserLibrary === "string") {
-                    browserLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.browserLibrary).toLowerCase()) === -1;
-                } else {
-                    browserLibrary = !!options.browserLibrary;
-                }
-            }
-            return browserLibrary;
         }
         function isDomLibrary() {
             var options;
@@ -114,6 +149,7 @@ module.exports = function (grunt) {
                 } else {
                     domLibrary = !!options.domLibrary;
                 }
+                domLibrary = domLibrary && !isLibrary();
             }
             return domLibrary;
         }
@@ -126,6 +162,7 @@ module.exports = function (grunt) {
                 } else {
                     scriptHostLibrary = !!options.scriptHostLibrary;
                 }
+                scriptHostLibrary = scriptHostLibrary && !isLibrary();
             }
             return scriptHostLibrary;
         }
@@ -138,6 +175,7 @@ module.exports = function (grunt) {
                 } else {
                     webWorkerLibrary = !!options.webWorkerLibrary;
                 }
+                webWorkerLibrary = webWorkerLibrary && !isLibrary();
             }
             return webWorkerLibrary;
         }
@@ -149,7 +187,7 @@ module.exports = function (grunt) {
                 if (isCoreLibrary()) {
                     references.push("node_modules/grunt-tsc/bin/lib.core.d.ts");
                 }
-                if (isBrowserLibrary()) {
+                if (isLibrary()) {
                     references.push("node_modules/grunt-tsc/bin/lib.d.ts");
                 }
                 if (isDomLibrary()) {
@@ -757,7 +795,7 @@ module.exports = function (grunt) {
                     mapRoot:            getMapRoot(),
                     encoding:           getEncoding(),
                     coreLibrary:        isCoreLibrary().toString(),
-                    browserLibrary:     isBrowserLibrary().toString(),
+                    library:     isLibrary().toString(),
                     domLibrary:         isDomLibrary().toString(),
                     scriptHostLibrary:  isScriptHostLibrary().toString(),
                     workerLibrary:      isWebWorkerLibrary().toString()

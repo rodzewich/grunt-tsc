@@ -156,10 +156,12 @@ Additional *.d.ts references.
 * **default** `false`
 
 
-### options.browserLibrary
+### options.library
 
 * **type** `<boolean>`
 * **default** `false`
+
+Include general library references.
 
 
 ### options.domLibrary
