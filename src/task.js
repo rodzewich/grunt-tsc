@@ -16,37 +16,6 @@ process.stdout.on("resize", function () {
 
 module.exports = function (grunt) {
     "use strict";
-    var system,
-        windows;
-    function getSystem() {
-        if (typeof system === "undefined") {
-            system = os.type();
-        }
-        return system;
-    }
-    function isWindows() {
-        if (typeof windows === "undefined") {
-            windows = /^windows/i.test(getSystem());
-        }
-        return windows;
-    }
-    function getTitle(value) {
-        return (new Array(20 - value.length)).join(" ") + value + ": ";
-    }
-    function displayErrors(string) {
-        string.split(/(?:\n|\r)+/).forEach(function (item) {
-            item = item.replace(/\s+$/, "");
-            item = item.replace(/\s+/, " ");
-            if (item) {
-                while (item) {
-                    item = item.replace(/^\s+/, "");
-                    grunt.log.write(" * ".yellow);
-                    grunt.log.writeln(item.substr(0, columns - 3));
-                    item = item.substr(columns - 3);
-                }
-            }
-        });
-    }
     grunt.registerMultiTask("tsc", "Compile *.ts files", function () {
         var self = this,
             files = self.files,
@@ -68,28 +37,140 @@ module.exports = function (grunt) {
             comments,
             implicitAny,
             preserveConstEnums,
-            references;
+            references,
+            coreLibrary,
+            browserLibrary,
+            domLibrary,
+            scriptHostLibrary,
+            webWorkerLibrary,
+            system,
+            windows;
         compile();
+        function getSystem() {
+            if (typeof system === "undefined") {
+                system = os.type();
+            }
+            return system;
+        }
+        function isWindows() {
+            if (typeof windows === "undefined") {
+                windows = /^windows/i.test(getSystem());
+            }
+            return windows;
+        }
+        function getTitle(value) {
+            return (new Array(20 - value.length)).join(" ") + value + ": ";
+        }
+        function displayErrors(string) {
+            string.split(/(?:\n|\r)+/).forEach(function (item) {
+                item = item.replace(/\s+$/, "");
+                item = item.replace(/\s+/, " ");
+                if (item) {
+                    while (item) {
+                        item = item.replace(/^\s+/, "");
+                        grunt.log.write(" * ".yellow);
+                        grunt.log.writeln(item.substr(0, columns - 3));
+                        item = item.substr(columns - 3);
+                    }
+                }
+            });
+        }
         function getOptions() {
             if (typeof options === "undefined") {
                 options = self.options() || {};
             }
             return options;
         }
+        function isCoreLibrary() {
+            var options;
+            if (typeof coreLibrary === "undefined") {
+                options = getOptions();
+                if (typeof options.coreLibrary === "string") {
+                    coreLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.coreLibrary).toLowerCase()) === -1;
+                } else {
+                    coreLibrary = !!options.coreLibrary;
+                }
+            }
+            return coreLibrary;
+        }
+        function isBrowserLibrary() {
+            var options;
+            if (typeof browserLibrary === "undefined") {
+                options = getOptions();
+                if (typeof options.browserLibrary === "string") {
+                    browserLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.browserLibrary).toLowerCase()) === -1;
+                } else {
+                    browserLibrary = !!options.browserLibrary;
+                }
+            }
+            return browserLibrary;
+        }
+        function isDomLibrary() {
+            var options;
+            if (typeof domLibrary === "undefined") {
+                options = getOptions();
+                if (typeof options.domLibrary === "string") {
+                    domLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.domLibrary).toLowerCase()) === -1;
+                } else {
+                    domLibrary = !!options.domLibrary;
+                }
+            }
+            return domLibrary;
+        }
+        function isScriptHostLibrary() {
+            var options;
+            if (typeof scriptHostLibrary === "undefined") {
+                options = getOptions();
+                if (typeof options.scriptHostLibrary === "string") {
+                    scriptHostLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.scriptHostLibrary).toLowerCase()) === -1;
+                } else {
+                    scriptHostLibrary = !!options.scriptHostLibrary;
+                }
+            }
+            return scriptHostLibrary;
+        }
+        function isWebWorkerLibrary() {
+            var options;
+            if (typeof webWorkerLibrary === "undefined") {
+                options = getOptions();
+                if (typeof options.webWorkerLibrary === "string") {
+                    webWorkerLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.webWorkerLibrary).toLowerCase()) === -1;
+                } else {
+                    webWorkerLibrary = !!options.webWorkerLibrary;
+                }
+            }
+            return webWorkerLibrary;
+        }
         function getReferences() {
             var options;
             if (typeof references === "undefined") {
                 options = getOptions();
                 references = [];
+                if (isCoreLibrary()) {
+                    references.push("node_modules/grunt_tsc/bin/lib.core.d.ts");
+                }
+                if (isBrowserLibrary()) {
+                    references.push("node_modules/grunt_tsc/bin/lib.d.ts");
+                }
+                if (isDomLibrary()) {
+                    references.push("node_modules/grunt_tsc/bin/lib.dom.d.ts");
+                }
+                if (isScriptHostLibrary()) {
+                    references.push("node_modules/grunt_tsc/bin/lib.scriptHost.d.ts");
+                }
+                if (isWebWorkerLibrary()) {
+                    references.push("node_modules/grunt_tsc/bin/lib.webworker.d.ts");
+                }
                 if (typeof options.references !== "undefined") {
                     try {
-                        references = grunt.file.expand({
+                        references = references.concat(grunt.file.expand({
                             filter: function (filename) {
                                 return grunt.file.isFile(filename) &&
                                     filename.substr(-5).toLowerCase() === ".d.ts";
                             }
-                        }, options.references);
+                        }, options.references));
                     } catch (error) {
+                        references = [];
                         throw new Error("Incorrect references: " + String(error || ""));
                     }
                 }
@@ -674,7 +755,12 @@ module.exports = function (grunt) {
                     preserveConstEnums: hasPreserveConstEnums().toString(),
                     sourceRoot:         getSourceRoot(),
                     mapRoot:            getMapRoot(),
-                    encoding:           getEncoding()
+                    encoding:           getEncoding(),
+                    coreLibrary:        isCoreLibrary(),
+                    browserLibrary:     isBrowserLibrary(),
+                    domLibrary:         isDomLibrary(),
+                    scriptHostLibrary:  isScriptHostLibrary(),
+                    workerLibrary:      isWebWorkerLibrary()
                 }, "options");
                 if (getReferences().length) {
                     grunt.log.writeflags(getReferences(), "references");
