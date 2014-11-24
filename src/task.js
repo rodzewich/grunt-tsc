@@ -794,8 +794,8 @@ module.exports = function (grunt) {
                     sourceRoot:         getSourceRoot(),
                     mapRoot:            getMapRoot(),
                     encoding:           getEncoding(),
+                    library:            isLibrary().toString(),
                     coreLibrary:        isCoreLibrary().toString(),
-                    library:     isLibrary().toString(),
                     domLibrary:         isDomLibrary().toString(),
                     scriptHostLibrary:  isScriptHostLibrary().toString(),
                     workerLibrary:      isWebWorkerLibrary().toString()
