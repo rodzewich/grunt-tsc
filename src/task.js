@@ -756,11 +756,11 @@ module.exports = function (grunt) {
                     sourceRoot:         getSourceRoot(),
                     mapRoot:            getMapRoot(),
                     encoding:           getEncoding(),
-                    coreLibrary:        isCoreLibrary(),
-                    browserLibrary:     isBrowserLibrary(),
-                    domLibrary:         isDomLibrary(),
-                    scriptHostLibrary:  isScriptHostLibrary(),
-                    workerLibrary:      isWebWorkerLibrary()
+                    coreLibrary:        isCoreLibrary().toString(),
+                    browserLibrary:     isBrowserLibrary().toString(),
+                    domLibrary:         isDomLibrary().toString(),
+                    scriptHostLibrary:  isScriptHostLibrary().toString(),
+                    workerLibrary:      isWebWorkerLibrary().toString()
                 }, "options");
                 if (getReferences().length) {
                     grunt.log.writeflags(getReferences(), "references");
