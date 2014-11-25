@@ -1,7 +1,7 @@
 {
   "name": "grunt-tsc",
-  "description": "Typescript compiler",
-  "version": "0.3.3",
+  "description": "Compile *.ts files via grunt tasks",
+  "version": "0.3.4",
   "homepage": "https://github.com/rodzewich/grunt-tsc",
   "author": {
     "name": "Oleg Rodzewich",
