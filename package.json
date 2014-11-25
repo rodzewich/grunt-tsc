@@ -1,6 +1,6 @@
 {
   "name": "grunt-tsc",
-  "description": "Compile *.ts files via grunt tasks",
+  "description": "Compile typescript files via grunt tasks",
   "version": "0.3.4",
   "homepage": "https://github.com/rodzewich/grunt-tsc",
   "author": {

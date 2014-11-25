@@ -2,7 +2,7 @@
 
 [![Npm Downloads](https://nodei.co/npm/grunt-tsc.png?downloads=true&stars=true)](https://www.npmjs.org/package/grunt-tsc)
 
-Compile *.ts files via [grunt](http://gruntjs.com/) tasks.
+Compile typescript files via [grunt](http://gruntjs.com/) tasks.
 
 ## Documentation
 
