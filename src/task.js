@@ -1,6 +1,8 @@
 /*jslint */
 /*global module, require, process, __dirname, setTimeout */
 
+// todo: adjust use options.compilerVersion
+
 var spawn    = require("child_process").spawn,
     path     = require("path"),
     fs       = require("fs"),
