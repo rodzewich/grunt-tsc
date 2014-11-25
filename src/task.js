@@ -798,7 +798,7 @@ module.exports = function (grunt) {
                     coreLibrary:        isCoreLibrary().toString(),
                     domLibrary:         isDomLibrary().toString(),
                     scriptHostLibrary:  isScriptHostLibrary().toString(),
-                    webWorkerLibrary:      isWebWorkerLibrary().toString()
+                    webWorkerLibrary:   isWebWorkerLibrary().toString()
                 }, "options");
                 if (getReferences().length) {
                     grunt.log.writeflags(getReferences(), "references");
