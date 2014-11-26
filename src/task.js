@@ -90,13 +90,13 @@ module.exports = function (grunt) {
                 ].join("")
             );
         }
+        function isTypescriptError(content) {
+
+        }
         function displayTypescriptError(content) {
 
         }
         function displayError(error) {
-
-        }
-        function isTypescriptError(content) {
 
         }
         function getOptions() {
