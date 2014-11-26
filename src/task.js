@@ -96,7 +96,7 @@ module.exports = function (grunt) {
                     if (!grunt.file.isPathAbsolute()) {
                         throw new Error("Incorrect \"nodePath\" option, path should be absolute and file should be executable.");
                     }
-                    // todo: check what file can executed
+                    // todo: check what file can be executed
                     nodePath = temp;
                 }
             }
