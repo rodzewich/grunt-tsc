@@ -19,11 +19,11 @@ process.stdout.on("resize", function () {
 module.exports = function (grunt) {
     "use strict";
     grunt.registerMultiTask("tsc", "Compile *.ts files", function () {
-        var self = this,
-            files = self.files,
+        var self   = this,
+            files  = self.files,
             length = files.length,
-            done = this.async(),
-            time1 = Number(new Date()),
+            done   = this.async(),
+            time1  = Number(new Date()),
             countDeclarations = 0,
             countDestinations = 0,
             countMaps = 0,
@@ -524,10 +524,10 @@ module.exports = function (grunt) {
                 return workingDirectory;
             }
             function compileManyToMany() {
-                var args = [],
+                var args    = [],
                     command = "node",
-                    errors = [],
-                    time = Number(new Date()),
+                    errors  = [],
+                    time    = Number(new Date()),
                     process,
                     sourceFile,
                     sourceDirectory,
