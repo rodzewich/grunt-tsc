@@ -508,6 +508,7 @@ module.exports = function (grunt) {
             }
             function hasExpand() {
                 if (typeof expand === "undefined") {
+                    // todo: fix this, may be use item.expand.
                     expand = !!item.orig.expand;
                 }
                 return expand;
