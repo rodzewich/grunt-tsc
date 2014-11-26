@@ -879,7 +879,6 @@ module.exports = function (grunt) {
         }
         function compile() {
             getCompilerVersion(function (version) {
-                grunt.log.writeln("compiler: " + version.green);
                 grunt.log.writeflags({
                     target:             getTarget(),
                     module:             getModule(),
@@ -895,7 +894,8 @@ module.exports = function (grunt) {
                     coreLibrary:        isCoreLibrary().toString(),
                     domLibrary:         isDomLibrary().toString(),
                     scriptHostLibrary:  isScriptHostLibrary().toString(),
-                    webWorkerLibrary:   isWebWorkerLibrary().toString()
+                    webWorkerLibrary:   isWebWorkerLibrary().toString(),
+                    compilerVersion:    version
                 }, "options");
                 if (getReferences().length) {
                     grunt.log.writeflags(getReferences(), "references");
