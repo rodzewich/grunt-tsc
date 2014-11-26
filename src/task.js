@@ -87,10 +87,16 @@ module.exports = function (grunt) {
         function getNodePath(callback) {
             var options,
                 temp;
+            function handler(error, nodePath) {
+                setTimeout(function () {
+                    callback(error, nodePath);
+                }, 0);
+            }
             if (typeof nodePath === "undefined") {
                 options = getOptions();
                 if (typeof options.nodePath === "undefined") {
                     nodePath = "node";
+                    handler(null, nodePath);
                 } else {
                     temp = String(options.nodePath || "");
                     if (!grunt.file.isPathAbsolute()) {
@@ -99,10 +105,9 @@ module.exports = function (grunt) {
                     // todo: check what file can be executed
                     nodePath = temp;
                 }
+            } else {
+                handler(null, nodePath);
             }
-            setTimeout(function () {
-                callback();
-            }, 0);
         }
         function isLibrary() {
             var options;
