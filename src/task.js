@@ -78,6 +78,27 @@ module.exports = function (grunt) {
                 }
             });
         }
+        function displayCompleteReport() {
+            var count = countDestinations + countDeclarations + countMaps;
+            grunt.log.writeln(
+                [
+                    "Created ", String(count).cyan, " files. ",
+                    "js: ", String(countDestinations).cyan, " files, ",
+                    "map: ", String(countMaps).cyan, " files, ",
+                    "declaration: ", String(countDeclarations).cyan, " files ",
+                    "(354ms)"
+                ].join("")
+            );
+        }
+        function displayTypescriptError(content) {
+
+        }
+        function displayError(error) {
+
+        }
+        function isTypescriptError(content) {
+
+        }
         function getOptions() {
             if (typeof options === "undefined") {
                 options = self.options() || {};
@@ -472,16 +493,7 @@ module.exports = function (grunt) {
             return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
         }
         function complete() {
-            var count = countDestinations + countDeclarations + countMaps;
-            grunt.log.writeln(
-                [
-                    "Created ", String(count).cyan, " files. ",
-                    "js: ", String(countDestinations).cyan, " files, ",
-                    "map: ", String(countMaps).cyan, " files, ",
-                    "declaration: ", String(countDeclarations).cyan, " files ",
-                    "(354ms)"
-                ].join("")
-            );
+            displayCompleteReport();
             done(true);
         }
         function iterate(item) {
