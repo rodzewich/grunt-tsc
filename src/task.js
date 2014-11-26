@@ -122,7 +122,7 @@ module.exports = function (grunt) {
                     function () {
                         fs.realpath(temp, function (error, realpath) {
                             if (error) {
-                                handler(error, null); // todo: adjust type error
+                                handler(error, null); // todo: adjust error type
                             } else if (realpath !== temp) {
                                 handler(new Error("Incorrect \"nodePath\" option, path should be absolute."), null);
                             } else {
@@ -133,7 +133,7 @@ module.exports = function (grunt) {
                     function () {
                         fs.stat(temp, function (error, result) {
                             if (error) {
-                                handler(error, null); // todo: adjust type error
+                                handler(error, null); // todo: adjust error type
                             } else {
                                 stats = result;
                                 iterate();
