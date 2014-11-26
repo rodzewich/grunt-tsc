@@ -64,7 +64,7 @@ module.exports = function (grunt) {
         function getTitle(value) {
             return (new Array(20 - value.length)).join(" ") + value + ": ";
         }
-        function displayErrors(string) {
+        function displayErrorContent(string) {
             string.split(/(?:\n|\r)+/).forEach(function (item) {
                 item = item.replace(/\s+$/, "");
                 item = item.replace(/\s+/, " ");
@@ -455,7 +455,7 @@ module.exports = function (grunt) {
             });
             process.on("close", function (code) {
                 if (code !== 0) {
-                    displayErrors(errors.join("\n"));
+                    displayErrorContent(errors.join("\n"));
                     done(false);
                 } else {
                     if (/^.*version\s+(\S+).*$/im.test(content)) {
@@ -583,7 +583,7 @@ module.exports = function (grunt) {
                         });
                         process.on("close", function (code) {
                             if (code !== 0) {
-                                displayErrors(errors.join("\n"));
+                                displayErrorContent(errors.join("\n"));
                                 grunt.fail.warn("Something went wrong.");
                                 done(false);
                             } else {
@@ -599,10 +599,10 @@ module.exports = function (grunt) {
                     return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
                 }
                 function getResult() {
-                    var source;
-                    var extension;
-                    var filename;
-                    var directory;
+                    var source,
+                        extension,
+                        filename,
+                        directory;
                     if (typeof result === "undefined") {
                         source    = getSource();
                         extension = path.extname(source);
@@ -613,10 +613,10 @@ module.exports = function (grunt) {
                     return result;
                 }
                 function getMapResult() {
-                    var source;
-                    var extension;
-                    var filename;
-                    var directory;
+                    var source,
+                        extension,
+                        filename,
+                        directory;
                     if (typeof mapResult === "undefined") {
                         source    = getSource();
                         extension = path.extname(source);
@@ -717,7 +717,7 @@ module.exports = function (grunt) {
                             grunt.log.writeln(getTitle(prefix) + path.cyan + " (" + String(getSize(stats.size)).yellow + ")");
                         }
                         if (error) {
-                            displayErrors(String(error || ""));
+                            displayErrorContent(String(error || ""));
                             done(false);
                         } else {
                             workers--;
@@ -817,7 +817,7 @@ module.exports = function (grunt) {
                 });
                 process.on("close", function (code) {
                     if (code !== 0) {
-                        displayErrors(errors.join("\n"));
+                        displayErrorContent(errors.join("\n"));
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
