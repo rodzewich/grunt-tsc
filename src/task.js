@@ -419,7 +419,7 @@ module.exports = function (grunt) {
             }
             return encoding;
         }
-        function getSize(value) {
+        function getFileSize(value) {
             var suffix = ["B", "K", "M", "G", "T"],
                 ext = suffix.shift(),
                 useDot = false,
@@ -714,7 +714,7 @@ module.exports = function (grunt) {
                             } else if (path.substr(-7) === ".js.map") {
                                 prefix = "sourcemap";
                             }
-                            grunt.log.writeln(getTitle(prefix) + path.cyan + " (" + String(getSize(stats.size)).yellow + ")");
+                            grunt.log.writeln(getTitle(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
                         }
                         if (error) {
                             displayErrorContent(String(error || ""));
