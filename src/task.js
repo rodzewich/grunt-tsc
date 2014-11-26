@@ -85,13 +85,59 @@ module.exports = function (grunt) {
             return options;
         }
         function getNodePath(callback) {
-            var options,
-                temp;
-            function handler(error, nodePath) {
-                setTimeout(function () {
-                    callback(error, nodePath);
-                }, 0);
-            }
+            var temp,
+                stats,
+                options,
+                actions = [
+                    function () {
+                        fs.exists(temp, function (resolve) {
+                            if (!resolve) {
+                                handler(new Error("Incorrect \"nodePath\" option, path not found."), null);
+                            } else {
+                                iterate();
+                            }
+                        });
+                    },
+                    function () {
+                        fs.realpath(temp, function (error, realpath) {
+                            if (error) {
+                                handler(error, null); // todo: adjust type error
+                            } else if (realpath !== temp) {
+                                handler(new Error("Incorrect \"nodePath\" option, path should be absolute."), null);
+                            } else {
+                                iterate();
+                            }
+                        });
+                    },
+                    function () {
+                        fs.stat(temp, function (error, result) {
+                            if (error) {
+                                handler(error, null); // todo: adjust type error
+                            } else {
+                                stats = result;
+                                iterate();
+                            }
+                        });
+                    },
+                    function () {
+                        if (!stats.isFile()) {
+                            handler(new Error("Incorrect \"nodePath\" option, path should be a file."), null);
+                        } else {
+                            iterate();
+                        }
+                    },
+                    function () {
+                        if (stats.mode === 0) { // todo: fix this, file should be executable.
+                            handler(new Error("Incorrect \"nodePath\" option, file should be executable."), null);
+                        } else {
+                            iterate();
+                        }
+                    },
+                    function () {
+                        nodePath = temp;
+                        handler(null, nodePath);
+                    }
+                ];
             if (typeof nodePath === "undefined") {
                 options = getOptions();
                 if (typeof options.nodePath === "undefined") {
@@ -99,14 +145,20 @@ module.exports = function (grunt) {
                     handler(null, nodePath);
                 } else {
                     temp = String(options.nodePath || "");
-                    if (!grunt.file.isPathAbsolute()) {
-                        throw new Error("Incorrect \"nodePath\" option, path should be absolute and file should be executable.");
-                    }
-                    // todo: check what file can be executed
-                    nodePath = temp;
+                    iterate();
                 }
             } else {
                 handler(null, nodePath);
+            }
+            function handler(error, nodePath) {
+                setTimeout(function () {
+                    callback(error, nodePath);
+                }, 0);
+            }
+            function iterate() {
+                setTimeout(function () {
+                    actions.shift()();
+                }, 0);
             }
         }
         function isLibrary() {
