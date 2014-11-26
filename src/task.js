@@ -61,7 +61,7 @@ module.exports = function (grunt) {
             }
             return windows;
         }
-        function getTitle(value) {
+        function getPropertyNameWithPadding(value) {
             return (new Array(20 - value.length)).join(" ") + value + ": ";
         }
         function displayErrorContent(string) {
@@ -726,7 +726,7 @@ module.exports = function (grunt) {
                             } else if (path.substr(-7) === ".js.map") {
                                 prefix = "sourcemap";
                             }
-                            grunt.log.writeln(getTitle(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
+                            grunt.log.writeln(getPropertyNameWithPadding(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
                         }
                         if (error) {
                             displayErrorContent(String(error || ""));
@@ -836,16 +836,16 @@ module.exports = function (grunt) {
                         grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         countDestinations++;
                         getSources().forEach(function (source) {
-                            grunt.log.writeln(getTitle("input") + path.join(getWorkingDirectory(), source).green);
+                            grunt.log.writeln(getPropertyNameWithPadding("input") + path.join(getWorkingDirectory(), source).green);
                         });
-                        grunt.log.writeln(getTitle("output") + getDestination().cyan + " (" + String("000B").yellow + ")");
+                        grunt.log.writeln(getPropertyNameWithPadding("output") + getDestination().cyan + " (" + String("000B").yellow + ")");
                         if (hasDeclaration()) {
                             countDeclarations++;
-                            grunt.log.writeln(getTitle("declaration") + getDeclaration().cyan + " (" + String("000B").yellow + ")");
+                            grunt.log.writeln(getPropertyNameWithPadding("declaration") + getDeclaration().cyan + " (" + String("000B").yellow + ")");
                         }
                         if (hasSourceMap()) {
                             countMaps++;
-                            grunt.log.writeln(getTitle("sourcemap") + getSourceMap().cyan + " (" + String("000B").yellow + ")");
+                            grunt.log.writeln(getPropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + String("000B").yellow + ")");
                         }
                         if (files.length) {
                             iterate(files.shift());
