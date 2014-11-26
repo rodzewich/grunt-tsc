@@ -28,6 +28,7 @@ module.exports = function (grunt) {
             countDestinations = 0,
             countMaps = 0,
             options,
+            nodePath,
             encoding,
             declaration,
             sourcemap,
@@ -82,6 +83,26 @@ module.exports = function (grunt) {
                 options = self.options() || {};
             }
             return options;
+        }
+        function getNodePath(callback) {
+            var options,
+                temp;
+            if (typeof nodePath === "undefined") {
+                options = getOptions();
+                if (typeof options.nodePath === "undefined") {
+                    nodePath = "node";
+                } else {
+                    temp = String(options.nodePath || "");
+                    if (!grunt.file.isPathAbsolute()) {
+                        throw new Error("Incorrect \"nodePath\" option, path should be absolute and file should be executable.");
+                    }
+                    // todo: check what file can executed
+                    nodePath = temp;
+                }
+            }
+            setTimeout(function () {
+                callback();
+            }, 0);
         }
         function isLibrary() {
             var options;
@@ -459,57 +480,61 @@ module.exports = function (grunt) {
                     declarationResult,
                     declarationDestination,
                     source;
-                if (!isWindows()) {
-                    command = "/usr/bin/env";
-                    args.push("node");
-                }
-                args.push(getCompilerPath());
-                args.push("--target", getTarget());
-                args.push("--module", getModule());
-                if (!hasComments()) {
-                    args.push("--removeComments");
-                }
-                if (hasDeclaration()) {
-                    args.push("--declaration");
-                }
-                if (!hasImplicitAny()) {
-                    args.push("--noImplicitAny");
-                }
-                if (hasPreserveConstEnums()) {
-                    args.push("--preserveConstEnums");
-                }
-                if (hasSourceMap()) {
-                    args.push("--sourcemap");
-                    if (getSourceRoot() !== null) {
-                        //args.push("--sourceRoot", path.join(getSourceRoot(), path.relative(getWorkingDirectory(), getSourceDirectory())));
-                        args.push("--sourceRoot", getSourceRoot());
-                    }
-                    if (getMapRoot() !== null) {
-                        //args.push("--mapRoot", path.join(getMapRoot(), path.relative(getWorkingDirectory(), getSourceDirectory())));
-                        args.push("--mapRoot", getMapRoot());
-                    }
-                }
-                getReferences().forEach(function (filename) {
-                    args.push(path.relative(getSourceDirectory(), filename));
-                });
-                args.push(getSourceFile());
-                grunt.log.debug("command:", command);
-                grunt.log.debug("args:", args.join(" "));
-                grunt.log.debug("cwd:", getSourceDirectory());
-                process = spawn(command, args, {cwd: getSourceDirectory()});
-                process.stderr.on("data", function (data) {
-                    errors.push(data.toString());
-                });
-                process.stdout.on("data", function (data) {
-                    errors.push(data.toString());
-                });
-                process.on("close", function (code) {
-                    if (code !== 0) {
-                        displayErrors(errors.join("\n"));
-                        grunt.fail.warn("Something went wrong.");
-                        done(false);
-                    } else {
-                        moveFiles();
+                getNodePath(function (path) {
+                    try {
+                        if (!isWindows()) {
+                            command = "/usr/bin/env";
+                            args.push("node");
+                        }
+                        args.push(getCompilerPath());
+                        args.push("--target", getTarget());
+                        args.push("--module", getModule());
+                        if (!hasComments()) {
+                            args.push("--removeComments");
+                        }
+                        if (hasDeclaration()) {
+                            args.push("--declaration");
+                        }
+                        if (!hasImplicitAny()) {
+                            args.push("--noImplicitAny");
+                        }
+                        if (hasPreserveConstEnums()) {
+                            args.push("--preserveConstEnums");
+                        }
+                        if (hasSourceMap()) {
+                            args.push("--sourcemap");
+                            if (getSourceRoot() !== null) {
+                                args.push("--sourceRoot", getSourceRoot());
+                            }
+                            if (getMapRoot() !== null) {
+                                args.push("--mapRoot", getMapRoot());
+                            }
+                        }
+                        getReferences().forEach(function (filename) {
+                            args.push(path.relative(getSourceDirectory(), filename));
+                        });
+                        args.push(getSourceFile());
+                        grunt.log.debug("command:", command);
+                        grunt.log.debug("args:", args.join(" "));
+                        grunt.log.debug("cwd:", getSourceDirectory());
+                        process = spawn(command, args, {cwd: getSourceDirectory()});
+                        process.stderr.on("data", function (data) {
+                            errors.push(data.toString());
+                        });
+                        process.stdout.on("data", function (data) {
+                            errors.push(data.toString());
+                        });
+                        process.on("close", function (code) {
+                            if (code !== 0) {
+                                displayErrors(errors.join("\n"));
+                                grunt.fail.warn("Something went wrong.");
+                                done(false);
+                            } else {
+                                moveFiles();
+                            }
+                        });
+                    } catch (error) {
+                        // todo: show errors
                     }
                 });
                 function getTime() {
