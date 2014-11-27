@@ -721,10 +721,11 @@ module.exports = function (grunt) {
                     }
                     function callback(error, stats, path) {
                         function displayStdout() {
-                            var prefix = "output";
-                            if (path.substr(-5) === ".d.ts") {
+                            var prefix = "output",
+                                temp = String(path).toLowerCase();
+                            if (temp.substr(-5) === ".d.ts") {
                                 prefix = "declaration";
-                            } else if (path.substr(-7) === ".js.map") {
+                            } else if (temp.substr(-7) === ".js.map") {
                                 prefix = "sourcemap";
                             }
                             grunt.log.writeln(getPropertyNameWithPadding(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
