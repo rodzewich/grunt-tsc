@@ -38,7 +38,7 @@ module.exports = function (grunt) {
         },
         uglify: {
             options: {
-                banner: grunt.file.read("banner.txt")
+                banner: grunt.file.read("src/banner.txt")
             },
             tasks: {
                 files: [{

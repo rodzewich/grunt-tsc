@@ -720,7 +720,7 @@ module.exports = function (grunt) {
                         }, 0);
                     }
                     function callback(error, stats, path) {
-                        function showStdout() {
+                        function displayStdout() {
                             var prefix = "output";
                             if (path.substr(-5) === ".d.ts") {
                                 prefix = "declaration";
@@ -737,7 +737,7 @@ module.exports = function (grunt) {
                             if (firstRun) {
                                 grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + getSource().green + " (" + String(getTime()).yellow + ")");
                             }
-                            showStdout();
+                            displayStdout();
                             if (!workers) {
                                 if (files.length) {
                                     iterate(files.shift());
