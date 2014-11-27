@@ -61,7 +61,7 @@ module.exports = function (grunt) {
             }
             return windows;
         }
-        function getPropertyNameWithPadding(value) {
+        function compilePropertyNameWithPadding(value) {
             return (new Array(20 - value.length)).join(" ") + value + ": ";
         }
         function displayErrorContent(string) {
@@ -105,7 +105,7 @@ module.exports = function (grunt) {
             }
             return options;
         }
-        function getNodePath(callback) {
+        function getNodePathOption(callback) {
             var temp,
                 stats,
                 options,
@@ -182,7 +182,7 @@ module.exports = function (grunt) {
                 }, 0);
             }
         }
-        function isLibrary() {
+        function hasLibraryOption() {
             var options;
             if (typeof library === "undefined") {
                 options = getOptions();
@@ -191,10 +191,10 @@ module.exports = function (grunt) {
                 } else {
                     library = !!options.library;
                 }
-                library = library || (isDomLibrary() && isScriptHostLibrary() && isWebWorkerLibrary());
+                library = library || (hasDomLibraryOption() && hasScriptHostLibraryOption() && hasWebWorkerLibraryOption());
             }
             return library;
-            function isDomLibrary() {
+            function hasDomLibraryOption() {
                 var result     = false,
                     options    = getOptions(),
                     domLibrary = options.domLibrary;
@@ -205,7 +205,7 @@ module.exports = function (grunt) {
                 }
                 return result;
             }
-            function isScriptHostLibrary() {
+            function hasScriptHostLibraryOption() {
                 var result            = false,
                     options           = getOptions(),
                     scriptHostLibrary = options.scriptHostLibrary;
@@ -216,7 +216,7 @@ module.exports = function (grunt) {
                 }
                 return result;
             }
-            function isWebWorkerLibrary() {
+            function hasWebWorkerLibraryOption() {
                 var result           = false,
                     options          = getOptions(),
                     webWorkerLibrary = options.webWorkerLibrary;
@@ -228,7 +228,7 @@ module.exports = function (grunt) {
                 return result;
             }
         }
-        function isCoreLibrary() {
+        function hasCoreLibraryOption() {
             var options;
             if (typeof coreLibrary === "undefined") {
                 options = getOptions();
@@ -237,11 +237,11 @@ module.exports = function (grunt) {
                 } else {
                     coreLibrary = !!options.coreLibrary;
                 }
-                coreLibrary = coreLibrary && !(isLibrary() || isDomLibrary() || isScriptHostLibrary() || isWebWorkerLibrary());
+                coreLibrary = coreLibrary && !(hasLibraryOption() || hasDomLibraryOption() || hasScriptHostLibraryOption() || hasWebWorkerLibraryOption());
             }
             return coreLibrary;
         }
-        function isDomLibrary() {
+        function hasDomLibraryOption() {
             var options;
             if (typeof domLibrary === "undefined") {
                 options = getOptions();
@@ -250,11 +250,11 @@ module.exports = function (grunt) {
                 } else {
                     domLibrary = !!options.domLibrary;
                 }
-                domLibrary = domLibrary && !isLibrary();
+                domLibrary = domLibrary && !hasLibraryOption();
             }
             return domLibrary;
         }
-        function isScriptHostLibrary() {
+        function hasScriptHostLibraryOption() {
             var options;
             if (typeof scriptHostLibrary === "undefined") {
                 options = getOptions();
@@ -263,11 +263,11 @@ module.exports = function (grunt) {
                 } else {
                     scriptHostLibrary = !!options.scriptHostLibrary;
                 }
-                scriptHostLibrary = scriptHostLibrary && !isLibrary();
+                scriptHostLibrary = scriptHostLibrary && !hasLibraryOption();
             }
             return scriptHostLibrary;
         }
-        function isWebWorkerLibrary() {
+        function hasWebWorkerLibraryOption() {
             var options;
             if (typeof webWorkerLibrary === "undefined") {
                 options = getOptions();
@@ -276,28 +276,28 @@ module.exports = function (grunt) {
                 } else {
                     webWorkerLibrary = !!options.webWorkerLibrary;
                 }
-                webWorkerLibrary = webWorkerLibrary && !isLibrary();
+                webWorkerLibrary = webWorkerLibrary && !hasLibraryOption();
             }
             return webWorkerLibrary;
         }
-        function getReferences() {
+        function getReferencesOption() {
             var options;
             if (typeof references === "undefined") {
                 options = getOptions();
                 references = [];
-                if (isCoreLibrary()) {
+                if (hasCoreLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.core.d.ts");
                 }
-                if (isLibrary()) {
+                if (hasLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.d.ts");
                 }
-                if (isDomLibrary()) {
+                if (hasDomLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.dom.d.ts");
                 }
-                if (isScriptHostLibrary()) {
+                if (hasScriptHostLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.scriptHost.d.ts");
                 }
-                if (isWebWorkerLibrary()) {
+                if (hasWebWorkerLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.webworker.d.ts");
                 }
                 if (typeof options.references !== "undefined") {
@@ -316,7 +316,7 @@ module.exports = function (grunt) {
             }
             return references;
         }
-        function getTarget() {
+        function getTargetOption() {
             var options,
                 temp;
             if (typeof target !== "string") {
@@ -334,7 +334,7 @@ module.exports = function (grunt) {
             }
             return target;
         }
-        function getModule() {
+        function getModuleOption() {
             var options,
                 temp;
             if (typeof module !== "string") {
@@ -356,7 +356,7 @@ module.exports = function (grunt) {
             }
             return compilerPath;
         }
-        function hasDeclaration() {
+        function hasDeclarationOption() {
             var options;
             if (typeof declaration === "undefined") {
                 options = getOptions();
@@ -368,7 +368,7 @@ module.exports = function (grunt) {
             }
             return !!declaration;
         }
-        function hasComments() {
+        function hasCommentsOption() {
             var options;
             if (typeof comments === "undefined") {
                 options = getOptions();
@@ -382,7 +382,7 @@ module.exports = function (grunt) {
             }
             return !!comments;
         }
-        function hasSourceMap() {
+        function hasSourceMapOption() {
             var options;
             if (typeof sourcemap === "undefined") {
                 options = getOptions();
@@ -394,7 +394,7 @@ module.exports = function (grunt) {
             }
             return !!sourcemap;
         }
-        function hasImplicitAny() {
+        function hasImplicitAnyOption() {
             var options;
             if (typeof implicitAny === "undefined") {
                 options = getOptions();
@@ -408,7 +408,7 @@ module.exports = function (grunt) {
             }
             return !!implicitAny;
         }
-        function hasPreserveConstEnums() {
+        function hasPreserveConstEnumsOption() {
             var options;
             if (typeof preserveConstEnums === "undefined") {
                 options = getOptions();
@@ -420,19 +420,19 @@ module.exports = function (grunt) {
             }
             return !!preserveConstEnums;
         }
-        function getSourceRoot() {
+        function getSourceRootOption() {
             if (typeof sourceRoot === "undefined") {
                 sourceRoot = String(options.sourceRoot || "") || null;
             }
             return sourceRoot;
         }
-        function getMapRoot() {
+        function getMapRootOption() {
             if (typeof mapRoot === "undefined") {
                 mapRoot = String(options.mapRoot || "") || null;
             }
             return mapRoot;
         }
-        function getEncoding() {
+        function getEncodingOption() {
             var options;
             if (typeof encoding === "undefined") {
                 options = getOptions();
@@ -550,37 +550,37 @@ module.exports = function (grunt) {
                     declarationResult,
                     declarationDestination,
                     source;
-                getNodePath(function (path) {
+                getNodePathOption(function (path) {
                     try {
                         if (!isWindows()) {
                             command = "/usr/bin/env";
                             args.push("node");
                         }
                         args.push(getCompilerPath());
-                        args.push("--target", getTarget());
-                        args.push("--module", getModule());
-                        if (!hasComments()) {
+                        args.push("--target", getTargetOption());
+                        args.push("--module", getModuleOption());
+                        if (!hasCommentsOption()) {
                             args.push("--removeComments");
                         }
-                        if (hasDeclaration()) {
+                        if (hasDeclarationOption()) {
                             args.push("--declaration");
                         }
-                        if (!hasImplicitAny()) {
+                        if (!hasImplicitAnyOption()) {
                             args.push("--noImplicitAny");
                         }
-                        if (hasPreserveConstEnums()) {
+                        if (hasPreserveConstEnumsOption()) {
                             args.push("--preserveConstEnums");
                         }
-                        if (hasSourceMap()) {
+                        if (hasSourceMapOption()) {
                             args.push("--sourcemap");
-                            if (getSourceRoot() !== null) {
-                                args.push("--sourceRoot", getSourceRoot());
+                            if (getSourceRootOption() !== null) {
+                                args.push("--sourceRoot", getSourceRootOption());
                             }
-                            if (getMapRoot() !== null) {
-                                args.push("--mapRoot", getMapRoot());
+                            if (getMapRootOption() !== null) {
+                                args.push("--mapRoot", getMapRootOption());
                             }
                         }
-                        getReferences().forEach(function (filename) {
+                        getReferencesOption().forEach(function (filename) {
                             args.push(path.relative(getSourceDirectory(), filename));
                         });
                         args.push(getSourceFile());
@@ -705,16 +705,16 @@ module.exports = function (grunt) {
                     var workers = 0,
                         firstRun = true;
                     moveJavascript();
-                    if (hasSourceMap()) {
+                    if (hasSourceMapOption()) {
                         moveSourceMap();
                     }
-                    if (hasDeclaration()) {
+                    if (hasDeclarationOption()) {
                         moveDeclaration();
                     }
                     function move(path1, path2, callback) {
                         // todo: fix this
                         setTimeout(function () {
-                            grunt.file.copy(path1, path2, {encoding: getEncoding()});
+                            grunt.file.copy(path1, path2, {encoding: getEncodingOption()});
                             grunt.file.delete(path1, {force: true});
                             callback(null, fs.statSync(path2), path2);
                         }, 0);
@@ -728,7 +728,7 @@ module.exports = function (grunt) {
                             } else if (temp.substr(-7) === ".js.map") {
                                 prefix = "sourcemap";
                             }
-                            grunt.log.writeln(getPropertyNameWithPadding(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
+                            grunt.log.writeln(compilePropertyNameWithPadding(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
                         }
                         if (error) {
                             displayErrorContent(String(error || ""));
@@ -790,30 +790,30 @@ module.exports = function (grunt) {
                     args.push("node");
                 }
                 args.push(getCompilerPath());
-                args.push("--target", getTarget());
-                args.push("--module", getModule());
-                if (!hasComments()) {
+                args.push("--target", getTargetOption());
+                args.push("--module", getModuleOption());
+                if (!hasCommentsOption()) {
                     args.push("--removeComments");
                 }
-                if (hasDeclaration()) {
+                if (hasDeclarationOption()) {
                     args.push("--declaration");
                 }
-                if (!hasImplicitAny()) {
+                if (!hasImplicitAnyOption()) {
                     args.push("--noImplicitAny");
                 }
-                if (hasPreserveConstEnums()) {
+                if (hasPreserveConstEnumsOption()) {
                     args.push("--preserveConstEnums");
                 }
-                if (hasSourceMap()) {
+                if (hasSourceMapOption()) {
                     args.push("--sourcemap");
-                    if (getSourceRoot() !== null) {
-                        args.push("--sourceRoot", getSourceRoot());
+                    if (getSourceRootOption() !== null) {
+                        args.push("--sourceRoot", getSourceRootOption());
                     }
-                    if (getMapRoot() !== null) {
-                        args.push("--mapRoot", getMapRoot());
+                    if (getMapRootOption() !== null) {
+                        args.push("--mapRoot", getMapRootOption());
                     }
                 }
-                getReferences().forEach(function (filename) {
+                getReferencesOption().forEach(function (filename) {
                     args.push(filename);
                 });
                 getSources().forEach(function (source) {
@@ -838,16 +838,16 @@ module.exports = function (grunt) {
                         grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         countDestinations++;
                         getSources().forEach(function (source) {
-                            grunt.log.writeln(getPropertyNameWithPadding("input") + path.join(getWorkingDirectory(), source).green);
+                            grunt.log.writeln(compilePropertyNameWithPadding("input") + path.join(getWorkingDirectory(), source).green);
                         });
-                        grunt.log.writeln(getPropertyNameWithPadding("output") + getDestination().cyan + " (" + String("000B").yellow + ")");
-                        if (hasDeclaration()) {
+                        grunt.log.writeln(compilePropertyNameWithPadding("output") + getDestination().cyan + " (" + String("000B").yellow + ")");
+                        if (hasDeclarationOption()) {
                             countDeclarations++;
-                            grunt.log.writeln(getPropertyNameWithPadding("declaration") + getDeclaration().cyan + " (" + String("000B").yellow + ")");
+                            grunt.log.writeln(compilePropertyNameWithPadding("declaration") + getDeclaration().cyan + " (" + String("000B").yellow + ")");
                         }
-                        if (hasSourceMap()) {
+                        if (hasSourceMapOption()) {
                             countMaps++;
-                            grunt.log.writeln(getPropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + String("000B").yellow + ")");
+                            grunt.log.writeln(compilePropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + String("000B").yellow + ")");
                         }
                         if (files.length) {
                             iterate(files.shift());
@@ -881,25 +881,25 @@ module.exports = function (grunt) {
         function compile() {
             getCompilerVersion(function (version) {
                 grunt.log.writeflags({
-                    target:             getTarget(),
-                    module:             getModule(),
-                    declaration:        hasDeclaration().toString(),
-                    comments:           hasComments().toString(),
-                    sourcemap:          hasSourceMap().toString(),
-                    implicitAny:        hasImplicitAny().toString(),
-                    preserveConstEnums: hasPreserveConstEnums().toString(),
-                    sourceRoot:         getSourceRoot(),
-                    mapRoot:            getMapRoot(),
-                    encoding:           getEncoding(),
-                    library:            isLibrary().toString(),
-                    coreLibrary:        isCoreLibrary().toString(),
-                    domLibrary:         isDomLibrary().toString(),
-                    scriptHostLibrary:  isScriptHostLibrary().toString(),
-                    webWorkerLibrary:   isWebWorkerLibrary().toString(),
+                    target:             getTargetOption(),
+                    module:             getModuleOption(),
+                    declaration:        hasDeclarationOption().toString(),
+                    comments:           hasCommentsOption().toString(),
+                    sourcemap:          hasSourceMapOption().toString(),
+                    implicitAny:        hasImplicitAnyOption().toString(),
+                    preserveConstEnums: hasPreserveConstEnumsOption().toString(),
+                    sourceRoot:         getSourceRootOption(),
+                    mapRoot:            getMapRootOption(),
+                    encoding:           getEncodingOption(),
+                    library:            hasLibraryOption().toString(),
+                    coreLibrary:        hasCoreLibraryOption().toString(),
+                    domLibrary:         hasDomLibraryOption().toString(),
+                    scriptHostLibrary:  hasScriptHostLibraryOption().toString(),
+                    webWorkerLibrary:   hasWebWorkerLibraryOption().toString(),
                     compilerVersion:    version
                 }, "options");
-                if (getReferences().length) {
-                    grunt.log.writeflags(getReferences(), "references");
+                if (getReferencesOption().length) {
+                    grunt.log.writeflags(getReferencesOption(), "references");
                 }
                 if (files.length) {
                     iterate(files.shift());
