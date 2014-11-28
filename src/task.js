@@ -550,7 +550,7 @@ module.exports = function (grunt) {
                     declarationResult,
                     declarationDestination,
                     source;
-                getNodePathOption(function (path) {
+                getNodePathOption(function (nodePath) {
                     try {
                         if (!isWindows()) {
                             command = "/usr/bin/env";
@@ -604,7 +604,8 @@ module.exports = function (grunt) {
                             }
                         });
                     } catch (error) {
-                        // todo: show errors
+                        displayError(error);
+                        done(false);
                     }
                 });
                 function getTime() {

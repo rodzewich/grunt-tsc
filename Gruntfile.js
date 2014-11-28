@@ -15,8 +15,6 @@ process.stdout.on('resize', function () {
 module.exports = function (grunt) {
     "use strict";
 
-    var version = "";
-
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-uglify");
