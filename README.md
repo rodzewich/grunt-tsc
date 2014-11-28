@@ -189,6 +189,15 @@ Enable windows scripts library references (include core references).
 
 Enable web worker library references (include core references).
 
+### options.nodePath
+
+### options.compilerVersion
+
+### options.fileMode
+
+### options.dirMode
+
+
 
 ## Examples
 

@@ -47,6 +47,8 @@ module.exports = function (grunt) {
             domLibrary,
             scriptHostLibrary,
             webWorkerLibrary,
+            fileMode,
+            dirMode,
             system,
             windows;
         compile();
@@ -89,21 +91,17 @@ module.exports = function (grunt) {
                         if (error) {
                             callback(error);
                         } else {
-                            // todo: adjust use options.dirMode
-                            fs.mkdir(dir, 511, function (error) {
-                                grunt.log.debug("mkdir", dir);
-                                callback(error || null); // todo: adjust error type
+                            fs.mkdir(dir, getDirModeOption(), function (error) {
+                                callback(error || null);
                             });
                         }
                     });
                 }
             ]);
         }
-        function move(path1, path2, fileMode, dirMode, callback) {
+        function move(path1, path2, callback) {
             var stats,
                 content;
-            // todo: adjust use fileMode
-            // todo: adjust use dirMode
             deferred([
                 function (iterate) {
                     mkdir(path.join(cwd, path.dirname(path2)), function (error) {
@@ -120,7 +118,6 @@ module.exports = function (grunt) {
                             callback(error, null);
                         } else {
                             content = data;
-                            grunt.log.debug("read", path1);
                             iterate();
                         }
                     });
@@ -130,7 +127,15 @@ module.exports = function (grunt) {
                         if (error) {
                             callback(error, null);
                         } else {
-                            grunt.log.debug("write", path2);
+                            iterate();
+                        }
+                    });
+                },
+                function (iterate) {
+                    fs.chmod(path2, getFileModeOption(), function (error) {
+                        if (error) {
+                            callback(error, null);
+                        } else {
                             iterate();
                         }
                     });
@@ -204,8 +209,36 @@ module.exports = function (grunt) {
             }
             return options;
         }
-        function getFileModeOption() {}
-        function getDirModeOption() {}
+        function getFileModeOption() {
+            var opt,
+                temp;
+            if (typeof fileMode === "undefined") {
+                opt = getOptions();
+                temp = String(opt.fileMode || "");
+                if (typeof opt.fileMode === "undefined") {
+                    temp = "644";
+                } else if (!/^[0-7]{3,3}$/.test(temp)) {
+                    throw new Error("bla bla bla");
+                }
+                fileMode = parseInt(temp, 8);
+            }
+            return fileMode;
+        }
+        function getDirModeOption() {
+            var opt,
+                temp;
+            if (typeof dirMode === "undefined") {
+                opt = getOptions();
+                temp = String(opt.dirMode || "");
+                if (typeof opt.dirMode === "undefined") {
+                    temp = "755";
+                } else if (!/^[0-7]{3,3}$/.test(temp)) {
+                    throw new Error("bla bla bla");
+                }
+                dirMode = parseInt(temp, 8);
+            }
+            return dirMode;
+        }
         function getNodePathOption(callback) {
             var temp,
                 stats,
@@ -808,9 +841,7 @@ module.exports = function (grunt) {
                 function moveFiles() {
                     var workers = 0,
                         firstRun = true,
-                        actions = [],
-                        dirMode = 0,
-                        fileMode = 0;
+                        actions = [];
                     moveJavascript();
                     if (hasSourceMapOption()) {
                         moveSourceMap();
@@ -855,7 +886,7 @@ module.exports = function (grunt) {
                         workers++;
                         countDestinations++;
                         actions.push(function (iterate) {
-                            move(getResult(), getDestination(), fileMode, dirMode, function (error, stats, path) {
+                            move(getResult(), getDestination(), function (error, stats, path) {
                                 callback(error, stats, path);
                                 if (!error) {
                                     iterate();
@@ -867,7 +898,7 @@ module.exports = function (grunt) {
                         workers++;
                         countDeclarations++;
                         actions.push(function (iterate) {
-                            move(getDeclarationResult(), getDeclarationDestination(), fileMode, dirMode, function (error, stats, path) {
+                            move(getDeclarationResult(), getDeclarationDestination(), function (error, stats, path) {
                                 callback(error, stats, path);
                                 if (!error) {
                                     iterate();
@@ -879,7 +910,7 @@ module.exports = function (grunt) {
                         workers++;
                         countMaps++;
                         actions.push(function (iterate) {
-                            move(getMapResult(), getMapDestination(), fileMode, dirMode, function (error, stats, path) {
+                            move(getMapResult(), getMapDestination(), function (error, stats, path) {
                                 callback(error, stats, path);
                                 if (!error) {
                                     iterate();
