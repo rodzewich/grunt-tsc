@@ -103,60 +103,59 @@ module.exports = function (grunt) {
             var stats,
                 content;
             deferred([
-                function (iterate) {
+                function (next) {
                     mkdir(path.join(cwd, path.dirname(path2)), function (error) {
                         if (error) {
                             callback(error, null);
                         } else {
-                            iterate();
+                            next();
                         }
                     });
                 },
-                function (iterate) {
+                function (next) {
                     fs.readFile(path1, {encoding: getEncodingOption()}, function (error, data) {
                         if (error) {
                             callback(error, null);
                         } else {
                             content = data;
-                            iterate();
+                            next();
                         }
                     });
                 },
-                function (iterate) {
+                function (next) {
                     fs.writeFile(path2, content, {encoding: getEncodingOption()}, function (error) {
                         if (error) {
                             callback(error, null);
                         } else {
-                            iterate();
+                            next();
                         }
                     });
                 },
-                function (iterate) {
+                function (next) {
+                    fs.unlink(path1, function (error) {
+                        if (error) {
+                            callback(error, null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function (next) {
                     fs.chmod(path2, getFileModeOption(), function (error) {
                         if (error) {
                             callback(error, null);
                         } else {
-                            iterate();
+                            next();
                         }
                     });
                 },
-                function (iterate) {
+                function (next) {
                     fs.stat(path2, function (error, result) {
                         if (error) {
                             callback(error, null);
                         } else {
                             stats = result;
-                            iterate();
-                        }
-                    });
-                },
-                function (iterate) {
-                    fs.unlink(path1, function (error) {
-                        if (error) {
-                            callback(error, null);
-                        } else {
-                            grunt.log.debug("delete", path1);
-                            iterate();
+                            next();
                         }
                     });
                 },
@@ -734,8 +733,17 @@ module.exports = function (grunt) {
                                 grunt.fail.warn("Something went wrong.");
                                 done(false);
                             } else {
-                                moveFiles(function (error) {
-
+                                moveResult(function (error) {
+                                    if (error) {
+                                        displayErrorContent(error);
+                                        done(false);
+                                        return;
+                                    }
+                                    if (files.length) {
+                                        iterate(files.shift());
+                                    } else {
+                                        complete();
+                                    }
                                 });
                             }
                         });
@@ -838,9 +846,8 @@ module.exports = function (grunt) {
                     }
                     return sourceDirectory;
                 }
-                function moveFiles() {
-                    var workers = 0,
-                        firstRun = true,
+                function moveResult(callback) {
+                    var firstRun = true,
                         actions = [];
                     moveJavascript();
                     if (hasSourceMapOption()) {
@@ -849,10 +856,7 @@ module.exports = function (grunt) {
                     if (hasDeclarationOption()) {
                         moveDeclaration();
                     }
-                    actions.push(function () {
-
-                    });
-                    function callback(error, stats, path) {
+                    function handler(next, error, stats, path) {
                         function displayStdout() {
                             var prefix = "output",
                                 temp = String(path).toLowerCase();
@@ -864,60 +868,49 @@ module.exports = function (grunt) {
                             grunt.log.writeln(compilePropertyNameWithPadding(prefix) + path.cyan + " (" + String(getFileSize(stats.size)).yellow + ")");
                         }
                         if (error) {
-                            displayErrorContent(String(error || ""));
-                            done(false);
+                            callback(error);
                         } else {
-                            workers--;
                             if (firstRun) {
                                 grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + getSource().green + " (" + String(getTime()).yellow + ")");
                             }
                             displayStdout();
-                            if (!workers) {
-                                if (files.length) {
-                                    iterate(files.shift());
-                                } else {
-                                    complete();
-                                }
-                            }
                             firstRun = false;
+                            next();
                         }
                     }
                     function moveJavascript() {
-                        workers++;
                         countDestinations++;
-                        actions.push(function (iterate) {
-                            move(getResult(), getDestination(), function (error, stats, path) {
-                                callback(error, stats, path);
-                                if (!error) {
-                                    iterate();
-                                }
+                        actions.push(function (next) {
+                            var path1 = getResult(),
+                                path2 = getDestination();
+                            move(path1, path2, function (error, stats, path) {
+                                handler(next, error, stats, path);
                             });
                         });
                     }
                     function moveDeclaration() {
-                        workers++;
                         countDeclarations++;
-                        actions.push(function (iterate) {
-                            move(getDeclarationResult(), getDeclarationDestination(), function (error, stats, path) {
-                                callback(error, stats, path);
-                                if (!error) {
-                                    iterate();
-                                }
+                        actions.push(function (next) {
+                            var path1 = getDeclarationResult(),
+                                path2 = getDeclarationDestination();
+                            move(path1, path2, function (error, stats, path) {
+                                handler(next, error, stats, path);
                             });
                         });
                     }
                     function moveSourceMap() {
-                        workers++;
                         countMaps++;
-                        actions.push(function (iterate) {
-                            move(getMapResult(), getMapDestination(), function (error, stats, path) {
-                                callback(error, stats, path);
-                                if (!error) {
-                                    iterate();
-                                }
+                        actions.push(function (next) {
+                            var path1 = getMapResult(),
+                                path2 = getMapDestination();
+                            move(path1, path2, function (error, stats, path) {
+                                handler(next, error, stats, path);
                             });
                         });
                     }
+                    actions.push(function () {
+                        callback(null);
+                    });
                     deferred(actions);
                 }
             }

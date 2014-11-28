@@ -198,7 +198,6 @@ Enable web worker library references (include core references).
 ### options.dirMode
 
 
-
 ## Examples
 
 ```javascript
