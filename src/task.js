@@ -188,6 +188,9 @@ module.exports = function (grunt) {
         }
         function displayCompleteReport() {
             var count = countDestinations + countDeclarations + countMaps;
+            if (!length) {
+                grunt.log.writeln("bla bla bla");
+            }
             grunt.log.writeln(
                 [
                     "Created ", String(count).cyan, " files. ",
@@ -1031,30 +1034,75 @@ module.exports = function (grunt) {
                     errors.push(data.toString());
                 });
                 process.on("close", function (code) {
+                    var outputSize,
+                        declarationSize,
+                        sourcemapSize;
                     if (code !== 0) {
                         displayErrorContent(errors.join("\n"));
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
-                        grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         countDestinations++;
+                        grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         getSources().forEach(function (source) {
                             grunt.log.writeln(compilePropertyNameWithPadding("input") + path.join(getWorkingDirectory(), source).green);
                         });
-                        grunt.log.writeln(compilePropertyNameWithPadding("output") + getDestination().cyan + " (" + String("000B").yellow + ")");
-                        if (hasDeclarationOption()) {
-                            countDeclarations++;
-                            grunt.log.writeln(compilePropertyNameWithPadding("declaration") + getDeclaration().cyan + " (" + String("000B").yellow + ")");
-                        }
-                        if (hasSourceMapOption()) {
-                            countMaps++;
-                            grunt.log.writeln(compilePropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + String("000B").yellow + ")");
-                        }
-                        if (files.length) {
-                            iterate(files.shift());
-                        } else {
-                            complete();
-                        }
+                        deferred([
+                            function (next) {
+                                fs.stat(getDestination(), function (error, stats) {
+                                    if (error) {
+                                        // todo: display error
+                                    } else {
+                                        outputSize = stats.mode;
+                                        next();
+                                    }
+                                });
+                            },
+                            function (next) {
+                                if (hasSourceMapOption()) {
+                                    fs.stat(getSourceMap(), function (error, stats) {
+                                        if (error) {
+                                            // todo: display error
+                                        } else {
+                                            sourcemapSize = stats.mode;
+                                            next();
+                                        }
+                                    });
+                                } else {
+                                    next();
+                                }
+                            },
+                            function (next) {
+                                if (hasDeclarationOption()) {
+                                    fs.stat(getDeclaration(), function (error, stats) {
+                                        if (error) {
+                                            // todo: display error
+                                        } else {
+                                            declarationSize = stats.mode;
+                                            next();
+                                        }
+                                    });
+                                } else {
+                                    next();
+                                }
+                            },
+                            function () {
+                                grunt.log.writeln(compilePropertyNameWithPadding("output") + getDestination().cyan + " (" + getFileSize(outputSize).yellow + ")");
+                                if (hasSourceMapOption()) {
+                                    countMaps++;
+                                    grunt.log.writeln(compilePropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + getFileSize(sourcemapSize).yellow + ")");
+                                }
+                                if (hasDeclarationOption()) {
+                                    countDeclarations++;
+                                    grunt.log.writeln(compilePropertyNameWithPadding("declaration") + getDeclaration().cyan + " (" + getFileSize(declarationSize).yellow + ")");
+                                }
+                                if (files.length) {
+                                    iterate(files.shift());
+                                } else {
+                                    complete();
+                                }
+                            }
+                        ]);
                     }
                 });
                 function getDeclaration() {
@@ -1135,9 +1183,6 @@ module.exports = function (grunt) {
                     if (getReferencesOption().length) {
                         grunt.log.writeflags(getReferencesOption(), "references");
                     }
-                    if (!length) {
-                        grunt.log.writeln("bla bla bla");
-                    }
                     if (files.length) {
                         iterate(files.shift());
                     } else {
@@ -1146,6 +1191,6 @@ module.exports = function (grunt) {
                 }
             ]);
         }
+        compile();
     });
-    compile();
 };
