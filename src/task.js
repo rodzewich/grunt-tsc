@@ -49,33 +49,27 @@ module.exports = function (grunt) {
             webWorkerLibrary,
             fileMode,
             dirMode,
-            system,
-            windows,
             compiler,
             nodePath,
             compilerVersion;
-        function getSystem() {
-            if (typeof system === "undefined") {
-                system = os.type();
+        function typeOf(value) {
+            var type  = String(Object.prototype.toString.call(value) || '').slice(8, -1) || 'Object',
+                types = ['Arguments', 'Array', 'Boolean', 'Date', 'Error', 'Function', 'Null', 'Number', 'Object', 'String', 'Undefined'];
+            if (types.indexOf(type) !== -1) {
+                type = type.toLowerCase();
             }
-            return system;
-        }
-        function isWindows() {
-            if (typeof windows === "undefined") {
-                windows = /^windows/i.test(getSystem());
-            }
-            return windows;
+            return type;
         }
         function deferred(actions) {
-            iterate();
             function iterate() {
                 setTimeout(function () {
                     var action = actions.shift();
-                    if (typeof action === "function") {
+                    if (typeOf(action) === "function") {
                         action(iterate);
                     }
                 }, 0);
             }
+            iterate();
         }
         function mkdir(dir, callback) {
             deferred([
@@ -170,7 +164,8 @@ module.exports = function (grunt) {
             return (mode & 73) === 73;
         }
         function compilePropertyNameWithPadding(value) {
-            return (new Array(20 - value.length)).join(" ") + value + ": ";
+            var array = new Array(20 - value.length);
+            return array.join(" ") + value + ": ";
         }
         function displayErrorContent(string) {
             string.split(/(?:\n|\r)+/).forEach(function (item) {
@@ -189,17 +184,18 @@ module.exports = function (grunt) {
         function displayCompleteReport() {
             var count = countDestinations + countDeclarations + countMaps;
             if (!length) {
-                grunt.log.writeln("bla bla bla");
+                grunt.log.writeln("Nothing to compile.".yellow);
+            } else {
+                grunt.log.writeln(
+                    [
+                        "Created ", String(count).cyan, " files. ",
+                        "js: ", String(countDestinations).cyan, " files, ",
+                        "map: ", String(countMaps).cyan, " files, ",
+                        "declaration: ", String(countDeclarations).cyan, " files ",
+                        "(354ms)"
+                    ].join("")
+                );
             }
-            grunt.log.writeln(
-                [
-                    "Created ", String(count).cyan, " files. ",
-                    "js: ", String(countDestinations).cyan, " files, ",
-                    "map: ", String(countMaps).cyan, " files, ",
-                    "declaration: ", String(countDeclarations).cyan, " files ",
-                    "(354ms)"
-                ].join("")
-            );
         }
         function isTypescriptError(content) {
 
@@ -211,7 +207,7 @@ module.exports = function (grunt) {
 
         }
         function getOptions() {
-            if (typeof options === "undefined") {
+            if (typeOf(options) === "undefined") {
                 options = self.options() || {};
             }
             return options;
@@ -219,10 +215,10 @@ module.exports = function (grunt) {
         function getFileModeOption() {
             var opt,
                 temp;
-            if (typeof fileMode === "undefined") {
+            if (typeOf(fileMode) === "undefined") {
                 opt = getOptions();
                 temp = String(opt.fileMode || "");
-                if (typeof opt.fileMode === "undefined") {
+                if (typeOf(opt.fileMode) === "undefined") {
                     temp = "644";
                 } else if (!/^[0-7]{3,3}$/.test(temp)) {
                     throw new Error("bla bla bla");
@@ -234,10 +230,10 @@ module.exports = function (grunt) {
         function getDirModeOption() {
             var opt,
                 temp;
-            if (typeof dirMode === "undefined") {
+            if (typeOf(dirMode) === "undefined") {
                 opt = getOptions();
                 temp = String(opt.dirMode || "");
-                if (typeof opt.dirMode === "undefined") {
+                if (typeOf(opt.dirMode) === "undefined") {
                     temp = "755";
                 } else if (!/^[0-7]{3,3}$/.test(temp)) {
                     throw new Error("bla bla bla");
@@ -257,7 +253,7 @@ module.exports = function (grunt) {
             }
             deferred([
                 function (next) {
-                    if (typeof temp === "undefined") {
+                    if (typeOf(temp) === "undefined") {
                         handler(null, null);
                     } else {
                         next();
@@ -303,7 +299,7 @@ module.exports = function (grunt) {
                     handler(null, temp);
                 }
             ]);
-            if (typeof opt.compiler !== "undefined") {
+            if (typeOf(opt.compiler) !== "undefined") {
                 temp = String(opt.compiler);
             }
         }
@@ -324,7 +320,7 @@ module.exports = function (grunt) {
             }
             deferred([
                 function (next) {
-                    if (typeof temp === "undefined") {
+                    if (typeOf(temp) === "undefined") {
                         handler(null, null);
                     } else {
                         next();
@@ -377,7 +373,7 @@ module.exports = function (grunt) {
                     handler(null, temp);
                 }
             ]);
-            if (typeof opt.nodePath !== "undefined") {
+            if (typeOf(opt.nodePath) !== "undefined") {
                 temp = String(opt.nodePath);
             }
         }
@@ -388,107 +384,104 @@ module.exports = function (grunt) {
             nodePath = value || execPath;
         }
         function hasLibraryOption() {
-            var options;
-            if (typeof library === "undefined") {
-                options = getOptions();
-                if (typeof options.library === "string") {
-                    library = ["off", "no", "false", "0", ""].indexOf(String(options.library).toLowerCase()) === -1;
-                } else {
-                    library = !!options.library;
-                }
-                library = library || (hasDomLibraryOption() && hasScriptHostLibraryOption() && hasWebWorkerLibraryOption());
-            }
-            return library;
+            var opt;
             function hasDomLibraryOption() {
-                var result     = false,
-                    options    = getOptions(),
-                    domLibrary = options.domLibrary;
-                if (typeof domLibrary === "string") {
-                    result = ["off", "no", "false", "0", ""].indexOf(String(domLibrary).toLowerCase()) === -1;
+                var result = false,
+                    temp   = opt.domLibrary;
+                if (typeOf(temp) === "string") {
+                    result = ["off", "no", "false", "0", ""].indexOf(String(temp).toLowerCase()) === -1;
                 } else {
-                    result = !!domLibrary;
+                    result = !!temp;
                 }
                 return result;
             }
             function hasScriptHostLibraryOption() {
-                var result            = false,
-                    options           = getOptions(),
-                    scriptHostLibrary = options.scriptHostLibrary;
-                if (typeof scriptHostLibrary === "string") {
-                    result = ["off", "no", "false", "0", ""].indexOf(String(scriptHostLibrary).toLowerCase()) === -1;
+                var result = false,
+                    temp   = opt.scriptHostLibrary;
+                if (typeOf(temp) === "string") {
+                    result = ["off", "no", "false", "0", ""].indexOf(String(temp).toLowerCase()) === -1;
                 } else {
-                    result = !!scriptHostLibrary;
+                    result = !!temp;
                 }
                 return result;
             }
             function hasWebWorkerLibraryOption() {
-                var result           = false,
-                    options          = getOptions(),
-                    webWorkerLibrary = options.webWorkerLibrary;
-                if (typeof webWorkerLibrary === "string") {
-                    result = ["off", "no", "false", "0", ""].indexOf(String(webWorkerLibrary).toLowerCase()) === -1;
+                var result = false,
+                    temp   = opt.webWorkerLibrary;
+                if (typeOf(temp) === "string") {
+                    result = ["off", "no", "false", "0", ""].indexOf(String(temp).toLowerCase()) === -1;
                 } else {
-                    result = !!webWorkerLibrary;
+                    result = !!temp;
                 }
                 return result;
             }
+            if (typeOf(library) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.library) === "string") {
+                    library = ["off", "no", "false", "0", ""].indexOf(String(opt.library).toLowerCase()) === -1;
+                } else {
+                    library = !!opt.library;
+                }
+                library = library || (hasDomLibraryOption() && hasScriptHostLibraryOption() && hasWebWorkerLibraryOption());
+            }
+            return library;
         }
         function hasCoreLibraryOption() {
-            var options;
-            if (typeof coreLibrary === "undefined") {
-                options = getOptions();
-                if (typeof options.coreLibrary === "string") {
-                    coreLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.coreLibrary).toLowerCase()) === -1;
+            var opt;
+            if (typeOf(coreLibrary) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.coreLibrary) === "string") {
+                    coreLibrary = ["off", "no", "false", "0", ""].indexOf(String(opt.coreLibrary).toLowerCase()) === -1;
                 } else {
-                    coreLibrary = !!options.coreLibrary;
+                    coreLibrary = !!opt.coreLibrary;
                 }
                 coreLibrary = coreLibrary && !(hasLibraryOption() || hasDomLibraryOption() || hasScriptHostLibraryOption() || hasWebWorkerLibraryOption());
             }
             return coreLibrary;
         }
         function hasDomLibraryOption() {
-            var options;
-            if (typeof domLibrary === "undefined") {
-                options = getOptions();
-                if (typeof options.domLibrary === "string") {
-                    domLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.domLibrary).toLowerCase()) === -1;
+            var opt;
+            if (typeOf(domLibrary) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.domLibrary) === "string") {
+                    domLibrary = ["off", "no", "false", "0", ""].indexOf(String(opt.domLibrary).toLowerCase()) === -1;
                 } else {
-                    domLibrary = !!options.domLibrary;
+                    domLibrary = !!opt.domLibrary;
                 }
                 domLibrary = domLibrary && !hasLibraryOption();
             }
             return domLibrary;
         }
         function hasScriptHostLibraryOption() {
-            var options;
-            if (typeof scriptHostLibrary === "undefined") {
-                options = getOptions();
-                if (typeof options.scriptHostLibrary === "string") {
-                    scriptHostLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.scriptHostLibrary).toLowerCase()) === -1;
+            var opt;
+            if (typeOf(scriptHostLibrary) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.scriptHostLibrary) === "string") {
+                    scriptHostLibrary = ["off", "no", "false", "0", ""].indexOf(String(opt.scriptHostLibrary).toLowerCase()) === -1;
                 } else {
-                    scriptHostLibrary = !!options.scriptHostLibrary;
+                    scriptHostLibrary = !!opt.scriptHostLibrary;
                 }
                 scriptHostLibrary = scriptHostLibrary && !hasLibraryOption();
             }
             return scriptHostLibrary;
         }
         function hasWebWorkerLibraryOption() {
-            var options;
-            if (typeof webWorkerLibrary === "undefined") {
-                options = getOptions();
-                if (typeof options.webWorkerLibrary === "string") {
-                    webWorkerLibrary = ["off", "no", "false", "0", ""].indexOf(String(options.webWorkerLibrary).toLowerCase()) === -1;
+            var opt;
+            if (typeOf(webWorkerLibrary) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.webWorkerLibrary) === "string") {
+                    webWorkerLibrary = ["off", "no", "false", "0", ""].indexOf(String(opt.webWorkerLibrary).toLowerCase()) === -1;
                 } else {
-                    webWorkerLibrary = !!options.webWorkerLibrary;
+                    webWorkerLibrary = !!opt.webWorkerLibrary;
                 }
                 webWorkerLibrary = webWorkerLibrary && !hasLibraryOption();
             }
             return webWorkerLibrary;
         }
         function getReferencesOption() {
-            var options;
-            if (typeof references === "undefined") {
-                options = getOptions();
+            var opt;
+            if (typeOf(references) === "undefined") {
+                opt = getOptions();
                 references = [];
                 if (hasCoreLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.core.d.ts");
@@ -505,14 +498,14 @@ module.exports = function (grunt) {
                 if (hasWebWorkerLibraryOption()) {
                     references.push("node_modules/grunt-tsc/bin/lib.webworker.d.ts");
                 }
-                if (typeof options.references !== "undefined") {
+                if (typeOf(opt.references) !== "undefined") {
                     try {
                         references = references.concat(grunt.file.expand({
                             filter: function (filename) {
                                 return grunt.file.isFile(filename) &&
                                     filename.substr(-5).toLowerCase() === ".d.ts";
                             }
-                        }, options.references));
+                        }, opt.references));
                     } catch (error) {
                         references = [];
                         throw new Error("Incorrect references: " + String(error || ""));
@@ -524,10 +517,10 @@ module.exports = function (grunt) {
         function getTargetOption() {
             var options,
                 temp;
-            if (typeof target !== "string") {
+            if (typeOf(target) !== "string") {
                 options = getOptions();
                 temp = String(options.target || "").toUpperCase();
-                if (typeof options.target === "undefined" || temp === "DEFAULT") {
+                if (typeOf(options.target) === "undefined" || temp === "DEFAULT") {
                     target = "ES3";
                 } else if (temp === "LATEST") {
                     target = "ES6";
@@ -542,10 +535,10 @@ module.exports = function (grunt) {
         function getModuleOption() {
             var options,
                 temp;
-            if (typeof module !== "string") {
+            if (typeOf(module) !== "string") {
                 options = getOptions();
                 temp = String(options.module || "").toLowerCase();
-                if (typeof options.module === "undefined") {
+                if (typeOf(options.module) === "undefined") {
                     module = "commonjs";
                 } else if (["commonjs", "amd"].indexOf(temp) !== -1) {
                     module = temp;
@@ -556,16 +549,16 @@ module.exports = function (grunt) {
             return module;
         }
         function getCompilerDefault() {
-            if (typeof compilerPath === "undefined") {
+            if (typeOf(compilerPath) === "undefined") {
                 compilerPath = path.join(__dirname, "../bin/tsc.js");
             }
             return compilerPath;
         }
         function hasDeclarationOption() {
             var options;
-            if (typeof declaration === "undefined") {
+            if (typeOf(declaration) === "undefined") {
                 options = getOptions();
-                if (typeof options.declaration === "string") {
+                if (typeOf(options.declaration) === "string") {
                     declaration = ["off", "no", "false", "0", ""].indexOf(String(options.declaration).toLowerCase()) === -1;
                 } else {
                     declaration = !!options.declaration;
@@ -575,11 +568,11 @@ module.exports = function (grunt) {
         }
         function hasCommentsOption() {
             var options;
-            if (typeof comments === "undefined") {
+            if (typeOf(comments) === "undefined") {
                 options = getOptions();
-                if (typeof options.comments === "undefined") {
+                if (typeOf(options.comments) === "undefined") {
                     comments = true;
-                } else if (typeof options.comments === "string") {
+                } else if (typeOf(options.comments) === "string") {
                     comments = ["off", "no", "false", "0", ""].indexOf(String(options.comments).toLowerCase()) === -1;
                 } else {
                     comments = !!options.comments;
@@ -589,9 +582,9 @@ module.exports = function (grunt) {
         }
         function hasSourceMapOption() {
             var options;
-            if (typeof sourcemap === "undefined") {
+            if (typeOf(sourcemap) === "undefined") {
                 options = getOptions();
-                if (typeof options.sourcemap === "string") {
+                if (typeOf(options.sourcemap) === "string") {
                     sourcemap = ["off", "no", "false", "0", ""].indexOf(String(options.sourcemap).toLowerCase()) === -1;
                 } else {
                     sourcemap = !!options.sourcemap;
@@ -601,11 +594,11 @@ module.exports = function (grunt) {
         }
         function hasImplicitAnyOption() {
             var options;
-            if (typeof implicitAny === "undefined") {
+            if (typeOf(implicitAny) === "undefined") {
                 options = getOptions();
-                if (typeof options.implicitAny === "undefined") {
+                if (typeOf(options.implicitAny) === "undefined") {
                     implicitAny = true;
-                } else if (typeof options.implicitAny === "string") {
+                } else if (typeOf(options.implicitAny) === "string") {
                     implicitAny = ["off", "no", "false", "0", ""].indexOf(String(options.implicitAny).toLowerCase()) === -1;
                 } else {
                     implicitAny = !!options.implicitAny;
@@ -615,9 +608,9 @@ module.exports = function (grunt) {
         }
         function hasPreserveConstEnumsOption() {
             var options;
-            if (typeof preserveConstEnums === "undefined") {
+            if (typeOf(preserveConstEnums) === "undefined") {
                 options = getOptions();
-                if (typeof options.preserveConstEnums === "string") {
+                if (typeOf(options.preserveConstEnums) === "string") {
                     preserveConstEnums = ["off", "no", "false", "0", ""].indexOf(String(options.preserveConstEnums).toLowerCase()) === -1;
                 } else {
                     preserveConstEnums = !!options.preserveConstEnums;
@@ -626,20 +619,20 @@ module.exports = function (grunt) {
             return !!preserveConstEnums;
         }
         function getSourceRootOption() {
-            if (typeof sourceRoot === "undefined") {
+            if (typeOf(sourceRoot) === "undefined") {
                 sourceRoot = String(options.sourceRoot || "") || null;
             }
             return sourceRoot;
         }
         function getMapRootOption() {
-            if (typeof mapRoot === "undefined") {
+            if (typeOf(mapRoot) === "undefined") {
                 mapRoot = String(options.mapRoot || "") || null;
             }
             return mapRoot;
         }
         function getEncodingOption() {
             var options;
-            if (typeof encoding === "undefined") {
+            if (typeOf(encoding) === "undefined") {
                 options = getOptions();
                 encoding = String(options.encoding || "utf8") || "utf8";
             }
@@ -662,13 +655,9 @@ module.exports = function (grunt) {
             var content = "",
                 errors  = [],
                 args    = [],
-                command = "node",
+                command = getNodePathOption(),
                 process;
-            if (!isWindows()) {
-                args.push("node");
-                command = "/usr/bin/env";
-            }
-            args.push(getCompilerDefault());
+            args.push(getCompilerOption());
             args.push("--version");
             grunt.log.debug("command:", command);
             grunt.log.debug("args:", args.join(" "));
@@ -725,23 +714,23 @@ module.exports = function (grunt) {
                 return expand;
             }
             function getSources() {
-                if (typeof sources === "undefined") {
+                if (typeOf(sources) === "undefined") {
                     sources = item.src;
                 }
                 return sources;
             }
             function getDestination() {
-                if (typeof destination === "undefined") {
+                if (typeOf(destination) === "undefined") {
                     destination = String(item.dest || "");
                 }
                 return destination;
             }
             function getWorkingDirectory() {
-                if (typeof workingDirectory === "undefined") {
+                if (typeOf(workingDirectory) === "undefined") {
                     workingDirectory = "";
-                    if (typeof item.cwd !== "undefined") {
+                    if (typeOf(item.cwd) !== "undefined") {
                         workingDirectory = String(item.cwd || "");
-                    } else if (item.orig && typeof item.orig.cwd !== "undefined") {
+                    } else if (item.orig && typeOf(item.orig.cwd) !== "undefined") {
                         workingDirectory = String(item.orig.cwd || "");
                     }
                 }
@@ -833,7 +822,7 @@ module.exports = function (grunt) {
                         extension,
                         filename,
                         directory;
-                    if (typeof result === "undefined") {
+                    if (typeOf(result) === "undefined") {
                         source    = getSource();
                         extension = path.extname(source);
                         filename  = path.basename(source, extension);
@@ -847,7 +836,7 @@ module.exports = function (grunt) {
                         extension,
                         filename,
                         directory;
-                    if (typeof mapResult === "undefined") {
+                    if (typeOf(mapResult) === "undefined") {
                         source    = getSource();
                         extension = path.extname(source);
                         filename  = path.basename(source, extension);
@@ -861,7 +850,7 @@ module.exports = function (grunt) {
                     var directory;
                     var extension;
                     var filename;
-                    if (typeof mapDestination === "undefined") {
+                    if (typeOf(mapDestination) === "undefined") {
                         destination    = getDestination();
                         extension      = path.extname(destination);
                         filename       = path.basename(destination, extension);
@@ -876,7 +865,7 @@ module.exports = function (grunt) {
                     var extension;
                     var filename;
                     var directory;
-                    if (typeof declarationResult === "undefined") {
+                    if (typeOf(declarationResult) === "undefined") {
                         source    = getSource();
                         extension = path.extname(source);
                         filename  = path.basename(source, extension);
@@ -890,7 +879,7 @@ module.exports = function (grunt) {
                         directory,
                         extension,
                         filename;
-                    if (typeof declarationDestination === "undefined") {
+                    if (typeOf(declarationDestination) === "undefined") {
                         destination            = getDestination();
                         extension              = path.extname(destination);
                         filename               = path.basename(destination, extension);
@@ -901,19 +890,19 @@ module.exports = function (grunt) {
                     return declarationDestination;
                 }
                 function getSource() {
-                    if (typeof source === "undefined") {
+                    if (typeOf(source) === "undefined") {
                         source = String(getSources()[0] || "");
                     }
                     return source;
                 }
                 function getSourceFile() {
-                    if (typeof sourceFile !== "string") {
+                    if (typeOf(sourceFile) !== "string") {
                         sourceFile = path.basename(getSources()[0]);
                     }
                     return sourceFile;
                 }
                 function getSourceDirectory() {
-                    if (typeof sourceDirectory !== "string") {
+                    if (typeOf(sourceDirectory) !== "string") {
                         sourceDirectory = path.dirname(getSources()[0]);
                     }
                     return sourceDirectory;
@@ -1110,7 +1099,7 @@ module.exports = function (grunt) {
                         extname,
                         dirname,
                         basename;
-                    if (typeof declaration === "undefined") {
+                    if (typeOf(declaration) === "undefined") {
                         destination = getDestination();
                         extname     = path.extname(destination);
                         dirname     = path.dirname(destination);
@@ -1120,7 +1109,7 @@ module.exports = function (grunt) {
                     return declaration;
                 }
                 function getSourceMap() {
-                    if (typeof sourcemap === "undefined") {
+                    if (typeOf(sourcemap) === "undefined") {
                         sourcemap = getDestination() + ".map";
                     }
                     return sourcemap;

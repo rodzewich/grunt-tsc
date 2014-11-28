@@ -24,7 +24,7 @@ module.exports = function (grunt) {
                     "refs/**/*"
                 ]
             },
-            task: {
+            task1: {
                 files: [
                     {
                         ext    : ".js",
@@ -50,7 +50,8 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
-            }
+            },
+            task2: {}
         }
     });
 
