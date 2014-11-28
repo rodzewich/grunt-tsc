@@ -515,12 +515,12 @@ module.exports = function (grunt) {
             return references;
         }
         function getTargetOption() {
-            var options,
+            var opt,
                 temp;
             if (typeOf(target) !== "string") {
-                options = getOptions();
-                temp = String(options.target || "").toUpperCase();
-                if (typeOf(options.target) === "undefined" || temp === "DEFAULT") {
+                opt = getOptions();
+                temp = String(opt.target || "").toUpperCase();
+                if (typeOf(opt.target) === "undefined" || temp === "DEFAULT") {
                     target = "ES3";
                 } else if (temp === "LATEST") {
                     target = "ES6";
@@ -533,12 +533,12 @@ module.exports = function (grunt) {
             return target;
         }
         function getModuleOption() {
-            var options,
+            var opt,
                 temp;
             if (typeOf(module) !== "string") {
-                options = getOptions();
-                temp = String(options.module || "").toLowerCase();
-                if (typeOf(options.module) === "undefined") {
+                opt = getOptions();
+                temp = String(opt.module || "").toLowerCase();
+                if (typeOf(opt.module) === "undefined") {
                     module = "commonjs";
                 } else if (["commonjs", "amd"].indexOf(temp) !== -1) {
                     module = temp;
@@ -555,86 +555,88 @@ module.exports = function (grunt) {
             return compilerPath;
         }
         function hasDeclarationOption() {
-            var options;
+            var opt;
             if (typeOf(declaration) === "undefined") {
-                options = getOptions();
-                if (typeOf(options.declaration) === "string") {
-                    declaration = ["off", "no", "false", "0", ""].indexOf(String(options.declaration).toLowerCase()) === -1;
+                opt = getOptions();
+                if (typeOf(opt.declaration) === "string") {
+                    declaration = ["off", "no", "false", "0", ""].indexOf(String(opt.declaration).toLowerCase()) === -1;
                 } else {
-                    declaration = !!options.declaration;
+                    declaration = !!opt.declaration;
                 }
             }
             return !!declaration;
         }
         function hasCommentsOption() {
-            var options;
+            var opt;
             if (typeOf(comments) === "undefined") {
-                options = getOptions();
-                if (typeOf(options.comments) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.comments) === "undefined") {
                     comments = true;
-                } else if (typeOf(options.comments) === "string") {
-                    comments = ["off", "no", "false", "0", ""].indexOf(String(options.comments).toLowerCase()) === -1;
+                } else if (typeOf(opt.comments) === "string") {
+                    comments = ["off", "no", "false", "0", ""].indexOf(String(opt.comments).toLowerCase()) === -1;
                 } else {
-                    comments = !!options.comments;
+                    comments = !!opt.comments;
                 }
             }
             return !!comments;
         }
         function hasSourceMapOption() {
-            var options;
+            var opt;
             if (typeOf(sourcemap) === "undefined") {
-                options = getOptions();
-                if (typeOf(options.sourcemap) === "string") {
-                    sourcemap = ["off", "no", "false", "0", ""].indexOf(String(options.sourcemap).toLowerCase()) === -1;
+                opt = getOptions();
+                if (typeOf(opt.sourcemap) === "string") {
+                    sourcemap = ["off", "no", "false", "0", ""].indexOf(String(opt.sourcemap).toLowerCase()) === -1;
                 } else {
-                    sourcemap = !!options.sourcemap;
+                    sourcemap = !!opt.sourcemap;
                 }
             }
             return !!sourcemap;
         }
         function hasImplicitAnyOption() {
-            var options;
+            var opt;
             if (typeOf(implicitAny) === "undefined") {
-                options = getOptions();
-                if (typeOf(options.implicitAny) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.implicitAny) === "undefined") {
                     implicitAny = true;
-                } else if (typeOf(options.implicitAny) === "string") {
-                    implicitAny = ["off", "no", "false", "0", ""].indexOf(String(options.implicitAny).toLowerCase()) === -1;
+                } else if (typeOf(opt.implicitAny) === "string") {
+                    implicitAny = ["off", "no", "false", "0", ""].indexOf(String(opt.implicitAny).toLowerCase()) === -1;
                 } else {
-                    implicitAny = !!options.implicitAny;
+                    implicitAny = !!opt.implicitAny;
                 }
             }
             return !!implicitAny;
         }
         function hasPreserveConstEnumsOption() {
-            var options;
+            var opt;
             if (typeOf(preserveConstEnums) === "undefined") {
-                options = getOptions();
-                if (typeOf(options.preserveConstEnums) === "string") {
-                    preserveConstEnums = ["off", "no", "false", "0", ""].indexOf(String(options.preserveConstEnums).toLowerCase()) === -1;
+                opt = getOptions();
+                if (typeOf(opt.preserveConstEnums) === "string") {
+                    preserveConstEnums = ["off", "no", "false", "0", ""].indexOf(String(opt.preserveConstEnums).toLowerCase()) === -1;
                 } else {
-                    preserveConstEnums = !!options.preserveConstEnums;
+                    preserveConstEnums = !!opt.preserveConstEnums;
                 }
             }
             return !!preserveConstEnums;
         }
         function getSourceRootOption() {
+            var opt = getOptions();
             if (typeOf(sourceRoot) === "undefined") {
-                sourceRoot = String(options.sourceRoot || "") || null;
+                sourceRoot = String(opt.sourceRoot || "") || null;
             }
             return sourceRoot;
         }
         function getMapRootOption() {
+            var opt = getOptions();
             if (typeOf(mapRoot) === "undefined") {
-                mapRoot = String(options.mapRoot || "") || null;
+                mapRoot = String(opt.mapRoot || "") || null;
             }
             return mapRoot;
         }
         function getEncodingOption() {
-            var options;
+            var opt;
             if (typeOf(encoding) === "undefined") {
-                options = getOptions();
-                encoding = String(options.encoding || "utf8") || "utf8";
+                opt = getOptions();
+                encoding = String(opt.encoding || "utf8") || "utf8";
             }
             return encoding;
         }
