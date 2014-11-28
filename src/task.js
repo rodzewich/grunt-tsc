@@ -1,21 +1,22 @@
 /*jslint */
 /*global module, require, process, __dirname, setTimeout */
 
-// todo: adjust use options.compilerVersion
-
 var spawn    = require("child_process").spawn,
     path     = require("path"),
     fs       = require("fs"),
     os       = require("os"),
     rows     = process.stdout.rows,
     columns  = process.stdout.columns,
-    cwd      = process.cwd();
+    cwd      = process.cwd(),
+    execPath = process.execPath;
 
 process.stdout.on("resize", function () {
     "use strict";
     rows    = process.stdout.rows;
     columns = process.stdout.columns;
 });
+
+// todo: adjust use options.compilerVersion
 
 module.exports = function (grunt) {
     "use strict";
@@ -29,7 +30,6 @@ module.exports = function (grunt) {
             countDestinations = 0,
             countMaps = 0,
             options,
-            nodePath,
             encoding,
             declaration,
             sourcemap,
@@ -50,8 +50,10 @@ module.exports = function (grunt) {
             fileMode,
             dirMode,
             system,
-            windows;
-        compile();
+            windows,
+            compiler,
+            nodePath,
+            compilerVersion;
         function getSystem() {
             if (typeof system === "undefined") {
                 system = os.type();
@@ -164,6 +166,9 @@ module.exports = function (grunt) {
                 }
             ]);
         }
+        function executable(mode) {
+            return (mode & 73) === 73;
+        }
         function compilePropertyNameWithPadding(value) {
             return (new Array(20 - value.length)).join(" ") + value + ": ";
         }
@@ -238,82 +243,146 @@ module.exports = function (grunt) {
             }
             return dirMode;
         }
-        function getNodePathOption(callback) {
-            var temp,
+        function fetchCompilerOption(callback) {
+            var opt = getOptions(),
                 stats,
-                options,
-                actions = [
-                    function () {
-                        fs.exists(temp, function (resolve) {
-                            if (!resolve) {
-                                handler(new Error("Incorrect \"nodePath\" option, path not found."), null);
-                            } else {
-                                iterate();
-                            }
-                        });
-                    },
-                    function () {
-                        fs.realpath(temp, function (error, realpath) {
-                            if (error) {
-                                handler(error, null); // todo: adjust error type
-                            } else if (realpath !== temp) {
-                                handler(new Error("Incorrect \"nodePath\" option, path should be absolute."), null);
-                            } else {
-                                iterate();
-                            }
-                        });
-                    },
-                    function () {
-                        fs.stat(temp, function (error, result) {
-                            if (error) {
-                                handler(error, null); // todo: adjust error type
-                            } else {
-                                stats = result;
-                                iterate();
-                            }
-                        });
-                    },
-                    function () {
-                        if (!stats.isFile()) {
-                            handler(new Error("Incorrect \"nodePath\" option, path should be a file."), null);
-                        } else {
-                            iterate();
-                        }
-                    },
-                    function () {
-                        if (stats.mode === 0) { // todo: fix this, file should be executable.
-                            handler(new Error("Incorrect \"nodePath\" option, file should be executable."), null);
-                        } else {
-                            iterate();
-                        }
-                    },
-                    function () {
-                        nodePath = temp;
-                        handler(null, nodePath);
+                temp;
+            function handler(error, resolve) {
+                setTimeout(function () {
+                    callback(error, resolve);
+                });
+            }
+            deferred([
+                function (next) {
+                    if (typeof temp === "undefined") {
+                        handler(null, null);
+                    } else {
+                        next();
                     }
-                ];
-            if (typeof nodePath === "undefined") {
-                options = getOptions();
-                if (typeof options.nodePath === "undefined") {
-                    nodePath = "node";
-                    handler(null, nodePath);
-                } else {
-                    temp = String(options.nodePath || "");
-                    iterate();
+                },
+                function (next) {
+                    fs.exists(temp, function (resolve) {
+                        if (!resolve) {
+                            callback(new Error("Incorrect \"compiler\" option, file not found."), null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fs.realpath(temp, function (error, realpath) {
+                        if (error) {
+                            handler(new Error("Incorrect \"compiler\" option, file not found."), null);
+                        } else {
+                            temp = realpath;
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fs.stat(temp, function (error, result) {
+                        if (error) {
+                            handler(new Error("Incorrect \"compiler\" option: " + error.message), null);
+                        } else {
+                            stats = result;
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    if (!stats.isFile()) {
+                        handler(new Error("Incorrect \"compiler\" option, path should be a file."), null);
+                    } else {
+                        next();
+                    }
+                },
+                function () {
+                    handler(null, temp);
                 }
-            } else {
-                handler(null, nodePath);
+            ]);
+            if (typeof opt.compiler !== "undefined") {
+                temp = String(opt.compiler);
             }
-            function handler(error, nodePath) {
+        }
+        function getCompilerOption() {
+            return compiler || getCompilerDefault();
+        }
+        function setCompilerOption(value) {
+            compiler = value || getCompilerDefault();
+        }
+        function fetchNodePathOption(callback) {
+            var opt = getOptions(),
+                temp,
+                stats;
+            function handler(error, resolve) {
                 setTimeout(function () {
-                    callback(error, nodePath);
-                }, 0);
+                    callback(error, resolve);
+                });
             }
-            function iterate() {
-                setTimeout(function () {
-                    actions.shift()();
-                }, 0);
+            deferred([
+                function (next) {
+                    if (typeof temp === "undefined") {
+                        handler(null, null);
+                    } else {
+                        next();
+                    }
+                },
+                function (next) {
+                    fs.exists(temp, function (resolve) {
+                        if (!resolve) {
+                            callback(new Error("Incorrect \"nodePath\" option, file not found."), null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fs.realpath(temp, function (error, realpath) {
+                        if (error) {
+                            handler(new Error("Incorrect \"nodePath\" option, file not found."), null);
+                        } else {
+                            temp = realpath;
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fs.stat(temp, function (error, result) {
+                        if (error) {
+                            handler(new Error("Incorrect \"nodePath\" option: " + error.message), null);
+                        } else {
+                            stats = result;
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    if (!stats.isFile()) {
+                        handler(new Error("Incorrect \"nodePath\" option, path should be a file."), null);
+                    } else {
+                        next();
+                    }
+                },
+                function (next) {
+                    if (!executable(stats.mode)) {
+                        handler(new Error("Incorrect \"nodePath\" option, file should be executable."), null);
+                    } else {
+                        next();
+                    }
+                },
+                function () {
+                    handler(null, temp);
+                }
+            ]);
+            if (typeof opt.nodePath !== "undefined") {
+                temp = String(opt.nodePath);
             }
+        }
+        function getNodePathOption() {
+            return nodePath || execPath;
+        }
+        function setNodePathOption(value) {
+            nodePath = value || execPath;
         }
         function hasLibraryOption() {
             var options;
@@ -483,7 +552,7 @@ module.exports = function (grunt) {
             }
             return module;
         }
-        function getCompilerPath() {
+        function getCompilerDefault() {
             if (typeof compilerPath === "undefined") {
                 compilerPath = path.join(__dirname, "../bin/tsc.js");
             }
@@ -586,7 +655,7 @@ module.exports = function (grunt) {
             temp = String(value + 0.0001).split(".");
             return (temp[0] + (useDot ? "." + temp[1].substr(0, 1) : "")) + ext;
         }
-        function getCompilerVersion(callback) {
+        function fetchCompilerVersionOption(callback) {
             var content = "",
                 errors  = [],
                 args    = [],
@@ -596,7 +665,7 @@ module.exports = function (grunt) {
                 args.push("node");
                 command = "/usr/bin/env";
             }
-            args.push(getCompilerPath());
+            args.push(getCompilerDefault());
             args.push("--version");
             grunt.log.debug("command:", command);
             grunt.log.debug("args:", args.join(" "));
@@ -606,19 +675,25 @@ module.exports = function (grunt) {
             });
             process.stdout.on("data", function (data) {
                 content += data.toString();
+                errors.push(String(data || ""));
             });
             process.on("close", function (code) {
                 if (code !== 0) {
-                    displayErrorContent(errors.join("\n"));
-                    done(false);
+                    callback(errors.join("\n"));
                 } else {
                     if (/^.*version\s+(\S+).*$/im.test(content)) {
-                        callback(content.replace(/^.*version\s+(\S+).*$/im, "$1").split("\r").join("").split("\n").join(""));
+                        callback(null, content.replace(/^.*version\s+(\S+).*$/im, "$1").split("\r").join("").split("\n").join(""));
                     } else {
-                        callback("unknown");
+                        callback(null, "unknown");
                     }
                 }
             });
+        }
+        function getCompilerVersionOption() {
+            return compilerVersion || "unknown";
+        }
+        function setCompilerVersionOption(value) {
+            compilerVersion = value || "unknown";
         }
         // todo: delete
         function time(value) {
@@ -671,8 +746,8 @@ module.exports = function (grunt) {
             }
             function compileManyToMany() {
                 var args    = [],
-                    command = "node",
                     errors  = [],
+                    command = getNodePathOption(),
                     time    = Number(new Date()),
                     compilerProcess,
                     sourceFile,
@@ -683,75 +758,69 @@ module.exports = function (grunt) {
                     declarationResult,
                     declarationDestination,
                     source;
-                getNodePathOption(function (nodePath) {
-                    try {
-                        if (!isWindows()) {
-                            command = "/usr/bin/env";
-                            args.push("node");
-                        }
-                        args.push(getCompilerPath());
-                        args.push("--target", getTargetOption());
-                        args.push("--module", getModuleOption());
-                        if (!hasCommentsOption()) {
-                            args.push("--removeComments");
-                        }
-                        if (hasDeclarationOption()) {
-                            args.push("--declaration");
-                        }
-                        if (!hasImplicitAnyOption()) {
-                            args.push("--noImplicitAny");
-                        }
-                        if (hasPreserveConstEnumsOption()) {
-                            args.push("--preserveConstEnums");
-                        }
-                        if (hasSourceMapOption()) {
-                            args.push("--sourcemap");
-                            if (getSourceRootOption() !== null) {
-                                args.push("--sourceRoot", getSourceRootOption());
-                            }
-                            if (getMapRootOption() !== null) {
-                                args.push("--mapRoot", getMapRootOption());
-                            }
-                        }
-                        getReferencesOption().forEach(function (filename) {
-                            args.push(path.relative(getSourceDirectory(), filename));
-                        });
-                        args.push(getSourceFile());
-                        grunt.log.debug("command:", command);
-                        grunt.log.debug("args:", args.join(" "));
-                        grunt.log.debug("cwd:", getSourceDirectory());
-                        compilerProcess = spawn(command, args, {cwd: getSourceDirectory()});
-                        compilerProcess.stderr.on("data", function (data) {
-                            errors.push(data.toString());
-                        });
-                        compilerProcess.stdout.on("data", function (data) {
-                            errors.push(data.toString());
-                        });
-                        compilerProcess.on("close", function (code) {
-                            if (code !== 0) {
-                                displayErrorContent(errors.join("\n"));
-                                grunt.fail.warn("Something went wrong.");
-                                done(false);
-                            } else {
-                                moveResult(function (error) {
-                                    if (error) {
-                                        displayErrorContent(error);
-                                        done(false);
-                                        return;
-                                    }
-                                    if (files.length) {
-                                        iterate(files.shift());
-                                    } else {
-                                        complete();
-                                    }
-                                });
-                            }
-                        });
-                    } catch (error) {
-                        displayError(error);
-                        done(false);
+                try {
+                    args.push(getCompilerOption());
+                    args.push("--target", getTargetOption());
+                    args.push("--module", getModuleOption());
+                    if (!hasCommentsOption()) {
+                        args.push("--removeComments");
                     }
-                });
+                    if (hasDeclarationOption()) {
+                        args.push("--declaration");
+                    }
+                    if (!hasImplicitAnyOption()) {
+                        args.push("--noImplicitAny");
+                    }
+                    if (hasPreserveConstEnumsOption()) {
+                        args.push("--preserveConstEnums");
+                    }
+                    if (hasSourceMapOption()) {
+                        args.push("--sourcemap");
+                        if (getSourceRootOption() !== null) {
+                            args.push("--sourceRoot", getSourceRootOption());
+                        }
+                        if (getMapRootOption() !== null) {
+                            args.push("--mapRoot", getMapRootOption());
+                        }
+                    }
+                    getReferencesOption().forEach(function (filename) {
+                        args.push(path.relative(getSourceDirectory(), filename));
+                    });
+                    args.push(getSourceFile());
+                    grunt.log.debug("command:", command);
+                    grunt.log.debug("args:", args.join(" "));
+                    grunt.log.debug("cwd:", getSourceDirectory());
+                    compilerProcess = spawn(command, args, {cwd: getSourceDirectory()});
+                    compilerProcess.stderr.on("data", function (data) {
+                        errors.push(data.toString());
+                    });
+                    compilerProcess.stdout.on("data", function (data) {
+                        errors.push(data.toString());
+                    });
+                    compilerProcess.on("close", function (code) {
+                        if (code !== 0) {
+                            displayErrorContent(errors.join("\n"));
+                            grunt.fail.warn("Something went wrong.");
+                            done(false);
+                        } else {
+                            moveResult(function (error) {
+                                if (error) {
+                                    displayError(error);
+                                    done(false);
+                                    return;
+                                }
+                                if (files.length) {
+                                    iterate(files.shift());
+                                } else {
+                                    complete();
+                                }
+                            });
+                        }
+                    });
+                } catch (error) {
+                    displayError(error);
+                    done(false);
+                }
                 function getTime() {
                     var temp = String((Number(new Date() - time)) / 1000 + 0.0001).split(".");
                     return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
@@ -916,16 +985,12 @@ module.exports = function (grunt) {
             }
             function compileManyToOne() {
                 var args = [],
-                    command = "node",
                     errors = [],
+                    command = getNodePathOption(),
                     declaration,
                     sourcemap,
                     process;
-                if (!isWindows()) {
-                    command = "/usr/bin/env";
-                    args.push("node");
-                }
-                args.push(getCompilerPath());
+                args.push(getCompilerOption());
                 args.push("--target", getTargetOption());
                 args.push("--module", getModuleOption());
                 if (!hasCommentsOption()) {
@@ -999,9 +1064,9 @@ module.exports = function (grunt) {
                         basename;
                     if (typeof declaration === "undefined") {
                         destination = getDestination();
-                        extname = path.extname(destination);
-                        dirname = path.dirname(destination);
-                        basename = path.basename(destination, extname);
+                        extname     = path.extname(destination);
+                        dirname     = path.dirname(destination);
+                        basename    = path.basename(destination, extname);
                         declaration = path.join(dirname, basename + ".d.ts");
                     }
                     return declaration;
@@ -1015,35 +1080,72 @@ module.exports = function (grunt) {
             }
         }
         function compile() {
-            getCompilerVersion(function (version) {
-                grunt.log.writeflags({
-                    target:             getTargetOption(),
-                    module:             getModuleOption(),
-                    declaration:        hasDeclarationOption().toString(),
-                    comments:           hasCommentsOption().toString(),
-                    sourcemap:          hasSourceMapOption().toString(),
-                    implicitAny:        hasImplicitAnyOption().toString(),
-                    preserveConstEnums: hasPreserveConstEnumsOption().toString(),
-                    sourceRoot:         getSourceRootOption(),
-                    mapRoot:            getMapRootOption(),
-                    encoding:           getEncodingOption(),
-                    library:            hasLibraryOption().toString(),
-                    coreLibrary:        hasCoreLibraryOption().toString(),
-                    domLibrary:         hasDomLibraryOption().toString(),
-                    scriptHostLibrary:  hasScriptHostLibraryOption().toString(),
-                    webWorkerLibrary:   hasWebWorkerLibraryOption().toString(),
-                    compilerVersion:    version
-                }, "options");
-                if (getReferencesOption().length) {
-                    grunt.log.writeflags(getReferencesOption(), "references");
+            deferred([
+                function (next) {
+                    fetchCompilerOption(function (error, compiler) {
+                        if (error) {
+                            displayError(error);
+                        } else {
+                            setCompilerOption(compiler);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchNodePathOption(function (error, nodePath) {
+                        if (error) {
+                            displayError(error);
+                        } else {
+                            setNodePathOption(nodePath);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchCompilerVersionOption(function (errorContent, version) {
+                        if (errorContent) {
+                            displayErrorContent(errorContent);
+                        } else {
+                            setCompilerVersionOption(version);
+                            next();
+                        }
+                    });
+                },
+                function () {
+                    grunt.log.writeflags({
+                        target:             getTargetOption(),
+                        module:             getModuleOption(),
+                        declaration:        hasDeclarationOption().toString(),
+                        comments:           hasCommentsOption().toString(),
+                        sourcemap:          hasSourceMapOption().toString(),
+                        implicitAny:        hasImplicitAnyOption().toString(),
+                        preserveConstEnums: hasPreserveConstEnumsOption().toString(),
+                        sourceRoot:         getSourceRootOption(),
+                        mapRoot:            getMapRootOption(),
+                        encoding:           getEncodingOption(),
+                        library:            hasLibraryOption().toString(),
+                        coreLibrary:        hasCoreLibraryOption().toString(),
+                        domLibrary:         hasDomLibraryOption().toString(),
+                        scriptHostLibrary:  hasScriptHostLibraryOption().toString(),
+                        webWorkerLibrary:   hasWebWorkerLibraryOption().toString(),
+                        compilerVersion:    getCompilerVersionOption(),
+                        compiler:           getCompilerOption(),
+                        nodePath:           getNodePathOption()
+                    }, "options");
+                    if (getReferencesOption().length) {
+                        grunt.log.writeflags(getReferencesOption(), "references");
+                    }
+                    if (!length) {
+                        grunt.log.writeln("bla bla bla");
+                    }
+                    if (files.length) {
+                        iterate(files.shift());
+                    } else {
+                        complete();
+                    }
                 }
-                if (files.length) {
-                    iterate(files.shift());
-                } else {
-                    complete();
-                }
-            });
+            ]);
         }
     });
-
+    compile();
 };
