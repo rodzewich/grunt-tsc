@@ -703,11 +703,6 @@ module.exports = function (grunt) {
                 destination,
                 workingDirectory,
                 sources;
-            if (hasExpand()) {
-                compileManyToMany();
-            } else {
-                compileManyToOne();
-            }
             function hasExpand() {
                 if (typeof expand === "undefined") {
                     // todo: fix this, may be use item.expand.
@@ -741,8 +736,8 @@ module.exports = function (grunt) {
             function compileManyToMany() {
                 var args    = [],
                     errors  = [],
-                    command = getNodePathOption(),
                     time    = Number(new Date()),
+                    command,
                     compilerProcess,
                     sourceFile,
                     sourceDirectory,
@@ -753,6 +748,7 @@ module.exports = function (grunt) {
                     declarationDestination,
                     source;
                 try {
+                    command = getNodePathOption();
                     args.push(getCompilerOption());
                     args.push("--target", getTargetOption());
                     args.push("--module", getModuleOption());
@@ -848,10 +844,10 @@ module.exports = function (grunt) {
                     return mapResult;
                 }
                 function getMapDestination() {
-                    var destination;
-                    var directory;
-                    var extension;
-                    var filename;
+                    var destination,
+                        directory,
+                        extension,
+                        filename;
                     if (typeOf(mapDestination) === "undefined") {
                         destination    = getDestination();
                         extension      = path.extname(destination);
@@ -863,10 +859,10 @@ module.exports = function (grunt) {
                     return mapDestination;
                 }
                 function getDeclarationResult() {
-                    var source;
-                    var extension;
-                    var filename;
-                    var directory;
+                    var source,
+                        extension,
+                        filename,
+                        directory;
                     if (typeOf(declarationResult) === "undefined") {
                         source    = getSource();
                         extension = path.extname(source);
@@ -912,13 +908,6 @@ module.exports = function (grunt) {
                 function moveResult(callback) {
                     var firstRun = true,
                         actions = [];
-                    moveJavascript();
-                    if (hasSourceMapOption()) {
-                        moveSourceMap();
-                    }
-                    if (hasDeclarationOption()) {
-                        moveDeclaration();
-                    }
                     function handler(next, error, stats, path) {
                         function displayStdout() {
                             var prefix = "output",
@@ -942,7 +931,7 @@ module.exports = function (grunt) {
                         }
                     }
                     function moveJavascript() {
-                        countDestinations++;
+                        countDestinations += 1;
                         actions.push(function (next) {
                             var path1 = getResult(),
                                 path2 = getDestination();
@@ -952,7 +941,7 @@ module.exports = function (grunt) {
                         });
                     }
                     function moveDeclaration() {
-                        countDeclarations++;
+                        countDeclarations += 1;
                         actions.push(function (next) {
                             var path1 = getDeclarationResult(),
                                 path2 = getDeclarationDestination();
@@ -962,7 +951,7 @@ module.exports = function (grunt) {
                         });
                     }
                     function moveSourceMap() {
-                        countMaps++;
+                        countMaps += 1;
                         actions.push(function (next) {
                             var path1 = getMapResult(),
                                 path2 = getMapDestination();
@@ -970,6 +959,13 @@ module.exports = function (grunt) {
                                 handler(next, error, stats, path);
                             });
                         });
+                    }
+                    moveJavascript();
+                    if (hasSourceMapOption()) {
+                        moveSourceMap();
+                    }
+                    if (hasDeclarationOption()) {
+                        moveDeclaration();
                     }
                     actions.push(function () {
                         callback(null);
@@ -980,10 +976,31 @@ module.exports = function (grunt) {
             function compileManyToOne() {
                 var args = [],
                     errors = [],
-                    command = getNodePathOption(),
+                    command,
                     declaration,
                     sourcemap,
                     process;
+                function getDeclaration() {
+                    var destination,
+                        extname,
+                        dirname,
+                        basename;
+                    if (typeOf(declaration) === "undefined") {
+                        destination = getDestination();
+                        extname     = path.extname(destination);
+                        dirname     = path.dirname(destination);
+                        basename    = path.basename(destination, extname);
+                        declaration = path.join(dirname, basename + ".d.ts");
+                    }
+                    return declaration;
+                }
+                function getSourceMap() {
+                    if (typeOf(sourcemap) === "undefined") {
+                        sourcemap = getDestination() + ".map";
+                    }
+                    return sourcemap;
+                }
+                command = getNodePathOption();
                 args.push(getCompilerOption());
                 args.push("--target", getTargetOption());
                 args.push("--module", getModuleOption());
@@ -1096,26 +1113,11 @@ module.exports = function (grunt) {
                         ]);
                     }
                 });
-                function getDeclaration() {
-                    var destination,
-                        extname,
-                        dirname,
-                        basename;
-                    if (typeOf(declaration) === "undefined") {
-                        destination = getDestination();
-                        extname     = path.extname(destination);
-                        dirname     = path.dirname(destination);
-                        basename    = path.basename(destination, extname);
-                        declaration = path.join(dirname, basename + ".d.ts");
-                    }
-                    return declaration;
-                }
-                function getSourceMap() {
-                    if (typeOf(sourcemap) === "undefined") {
-                        sourcemap = getDestination() + ".map";
-                    }
-                    return sourcemap;
-                }
+            }
+            if (hasExpand()) {
+                compileManyToMany();
+            } else {
+                compileManyToOne();
             }
         }
         function compile() {
