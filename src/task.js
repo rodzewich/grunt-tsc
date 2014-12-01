@@ -8,7 +8,8 @@ var spawn    = require("child_process").spawn,
     rows     = process.stdout.rows,
     columns  = process.stdout.columns,
     cwd      = process.cwd(),
-    execPath = process.execPath;
+    execPath = process.execPath,
+    versions = require(path.resolve(__dirname, "../bin/versions.js"));
 
 process.stdout.on("resize", function () {
     "use strict";
@@ -51,6 +52,7 @@ module.exports = function (grunt) {
             dirMode,
             compiler,
             nodePath,
+            realCompilerVersion,
             compilerVersion;
         function typeOf(value) {
             var type  = String(Object.prototype.toString.call(value) || '').slice(8, -1) || 'Object',
@@ -484,19 +486,19 @@ module.exports = function (grunt) {
                 opt = getOptions();
                 references = [];
                 if (hasCoreLibraryOption()) {
-                    references.push("node_modules/grunt-tsc/bin/lib.core.d.ts");
+                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.core.d.ts"));
                 }
                 if (hasLibraryOption()) {
-                    references.push("node_modules/grunt-tsc/bin/lib.d.ts");
+                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.d.ts"));
                 }
                 if (hasDomLibraryOption()) {
-                    references.push("node_modules/grunt-tsc/bin/lib.dom.d.ts");
+                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.dom.d.ts"));
                 }
                 if (hasScriptHostLibraryOption()) {
-                    references.push("node_modules/grunt-tsc/bin/lib.scriptHost.d.ts");
+                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.scriptHost.d.ts"));
                 }
                 if (hasWebWorkerLibraryOption()) {
-                    references.push("node_modules/grunt-tsc/bin/lib.webworker.d.ts");
+                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.webworker.d.ts"));
                 }
                 if (typeOf(opt.references) !== "undefined") {
                     try {
@@ -550,7 +552,7 @@ module.exports = function (grunt) {
         }
         function getCompilerDefault() {
             if (typeOf(compilerPath) === "undefined") {
-                compilerPath = path.join(__dirname, "../bin/tsc.js");
+                compilerPath = path.resolve(__dirname, "../bin/" + getCompilerVersionOption() + "/tsc.js");
             }
             return compilerPath;
         }
@@ -653,7 +655,7 @@ module.exports = function (grunt) {
             temp = String(value + 0.0001).split(".");
             return (temp[0] + (useDot ? "." + temp[1].substr(0, 1) : "")) + ext;
         }
-        function fetchCompilerVersionOption(callback) {
+        function fetchRealCompilerVersion(callback) {
             var content = "",
                 errors  = [],
                 args    = [],
@@ -683,11 +685,36 @@ module.exports = function (grunt) {
                 }
             });
         }
-        function getCompilerVersionOption() {
-            return compilerVersion || "unknown";
+        function getRealCompilerVersion() {
+            return realCompilerVersion || "unknown";
         }
-        function setCompilerVersionOption(value) {
-            compilerVersion = value || "unknown";
+        function setRealCompilerVersion(value) {
+            realCompilerVersion = value || "unknown";
+        }
+        function fetchDeclarationsPaths(callback) {
+
+        }
+        function setDeclarationsPaths(paths) {}
+        function getDeclarationsPaths() {}
+        function getCompilerVersionOption() {
+            var opt,
+                temp;
+            if (typeOf(compilerVersion) === "undefined") {
+                opt = getOptions();
+                if (typeOf(opt.compilerVersion) !== "undefined") {
+                    temp = String(opt.compilerVersion || "").toLowerCase();
+                    if (versions.indexOf(temp) === -1) {
+                        throw new Error("bla bla bla");
+                    }
+                    compilerVersion = temp;
+                } else {
+                    compilerVersion = "default";
+                }
+                if (["default", "latest"].indexOf(compilerVersion) === -1) {
+                    compilerVersion = "v" + compilerVersion;
+                }
+            }
+            return compilerVersion;
         }
         // todo: delete
         function time(value) {
@@ -1143,11 +1170,11 @@ module.exports = function (grunt) {
                     });
                 },
                 function (next) {
-                    fetchCompilerVersionOption(function (errorContent, version) {
+                    fetchRealCompilerVersion(function (errorContent, version) {
                         if (errorContent) {
                             displayErrorContent(errorContent);
                         } else {
-                            setCompilerVersionOption(version);
+                            setRealCompilerVersion(version);
                             next();
                         }
                     });
@@ -1169,7 +1196,7 @@ module.exports = function (grunt) {
                         domLibrary:         hasDomLibraryOption().toString(),
                         scriptHostLibrary:  hasScriptHostLibraryOption().toString(),
                         webWorkerLibrary:   hasWebWorkerLibraryOption().toString(),
-                        compilerVersion:    getCompilerVersionOption(),
+                        compilerVersion:    getRealCompilerVersion(),
                         compiler:           getCompilerOption(),
                         nodePath:           getNodePathOption()
                     }, "options");

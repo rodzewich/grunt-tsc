@@ -9,7 +9,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         tsc: {
             options: {
-                target             : "es6",
+                target             : "es3",
                 module             : "amd",
                 declaration        : true,
                 comments           : true,
@@ -19,6 +19,7 @@ module.exports = function (grunt) {
                 sourceRoot         : "/public/sources",
                 mapRoot            : "/public/maps",
                 encoding           : "utf8",
+                compilerVersion    : "1.1",
                 references         : [
                     "refs/*",
                     "refs/**/*"

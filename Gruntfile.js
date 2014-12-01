@@ -3,6 +3,7 @@
 
 var fs      = require("fs"),
     spawn   = require("child_process").spawn,
+    path    = require("path"),
     rows    = process.stdout.rows,
     columns = process.stdout.columns;
 
@@ -53,71 +54,205 @@ module.exports = function (grunt) {
 
     grunt.registerTask("dependencies", "Download source dependencies.", function () {
         var done = this.async();
-        function showErrors(string) {
-            string.split(/(?:\n|\r)+/).forEach(function (item) {
-                item = item.replace(/\s+$/, '');
-                item = item.replace(/\s+/, ' ');
-                if (item) {
-                    while (item) {
-                        item = item.replace(/^\s+/, '');
-                        grunt.log.write(' * '.yellow);
-                        grunt.log.writeln(item.substr(0, columns - 3));
-                        item = item.substr(columns - 3);
+
+        function typeOf(value) {
+            var type  = String(Object.prototype.toString.call(value) || '').slice(8, -1) || 'Object',
+                types = ['Arguments', 'Array', 'Boolean', 'Date', 'Error', 'Function', 'Null', 'Number', 'Object', 'String', 'Undefined'];
+            if (types.indexOf(type) !== -1) {
+                type = type.toLowerCase();
+            }
+            return type;
+        }
+        function deferred(actions) {
+            function iterate() {
+                setTimeout(function () {
+                    var action = actions.shift();
+                    if (typeOf(action) === "function") {
+                        action(iterate);
                     }
-                }
-            });
+                }, 0);
+            }
+            iterate();
         }
-        function cloneSources() {
-            var process = spawn("/usr/bin/env", ["git", "clone", "https://github.com/Microsoft/TypeScript.git", "temp/typescript"]),
-                errors  = [];
-            process.stderr.on("data", function (data) {
-                errors.push(String(data || ""));
-            });
-            process.on("close", function (code) {
-                if (code !== 0) {
-                    showErrors(errors.join("\n"));
-                } else {
-                    done();
-                }
-            });
-        }
-        function pullSources() {
-            var process = spawn("/usr/bin/env", ["git", "pull"], {cwd: "temp/typescript"}),
-                errors  = [];
-            process.stderr.on("data", function (data) {
-                errors.push(String(data || ""));
-            });
-            process.on("close", function (code) {
-                if (code !== 0) {
-                    showErrors(errors.join("\n"));
-                } else {
-                    done();
-                }
-            });
-        }
-        function checkExists2() {
-            fs.stat("temp/typescript", function (error, stats) {
-                if (error) {
-                    // todo: stop process and show errors
-                    throw new Error("bla bla bla");
-                } else if (!stats.isDirectory()) {
-                    // todo: stop process and show errors
-                    throw new Error("bla bla bla");
-                } else {
-                    pullSources();
-                }
-            });
-        }
-        function checkExists1() {
-            fs.exists("temp/typescript", function (exists) {
+
+        var exists,
+            versions = {},
+            binExists;
+
+        deferred([
+            function (next) {
+                fs.exists("temp/typescript", function (result) {
+                    exists = result;
+                    next();
+                });
+            },
+            function (next) {
+                var process,
+                    errors;
                 if (!exists) {
-                    cloneSources();
+                    process = spawn("/usr/bin/env", ["git", "clone", "https://github.com/Microsoft/TypeScript.git", "temp/typescript"]);
+                    errors  = [];
+                    process.stderr.on("data", function (data) {
+                        errors.push(String(data || ""));
+                    });
+                    process.on("close", function (code) {
+                        if (code !== 0) {
+                            // todo: display errors
+                        } else {
+                            next();
+                        }
+                    });
                 } else {
-                    checkExists2();
+                    next();
                 }
-            });
-        }
-        checkExists1();
+            },
+            function (next) {
+                var content = "",
+                    process = spawn("/usr/bin/env", ["git", "checkout", "master"], {cwd: "temp/typescript"}),
+                    errors  = [];
+                process.stdout.on("data", function (data) {
+                    content += data.toString("utf8");
+                    errors.push(String(data || ""));
+                });
+                process.stderr.on("data", function (data) {
+                    errors.push(String(data || ""));
+                });
+                process.on("close", function (code) {
+                    if (code !== 0) {
+                        // todo: display errors
+                        console.log(errors.join("\n"));
+                    } else {
+                        next();
+                    }
+                });
+            },
+            function (next) {
+                var process = spawn("/usr/bin/env", ["git", "pull"], {cwd: "temp/typescript"}),
+                    errors  = [];
+                process.stderr.on("data", function (data) {
+                    errors.push(String(data || ""));
+                });
+                process.on("close", function (code) {
+                    if (code !== 0) {
+                        // todo: display errors
+                        console.log(errors.join("\n"));
+                    } else {
+                        next();
+                    }
+                });
+            },
+            function (next) {
+                var content = "",
+                    process = spawn("/usr/bin/env", ["git", "branch", "-a", "--no-color"], {cwd: "temp/typescript"}),
+                    errors  = [];
+                process.stdout.on("data", function (data) {
+                    content += data.toString("utf8");
+                    errors.push(String(data || ""));
+                });
+                process.stderr.on("data", function (data) {
+                    errors.push(String(data || ""));
+                });
+                process.on("close", function (code) {
+                    var temp = [];
+                    if (code !== 0) {
+                        // todo: display errors
+                        console.log(errors.join("\n"));
+                    } else {
+                        content.split("\n").forEach(function (version) {
+                            if (/^\s+\S+\/release-\d+\.\d+(?:\.\d+)?$/.test(version)) {
+                                temp.push(version.replace(/^\s+\S+\/release-(\d+\.\d+(?:\.\d+)?)$/, "$1"));
+                            }
+                        });
+                        temp.sort();
+                        temp.forEach(function (version) {
+                            versions[version.replace(/^(\d+\.\d+)(?:\.\d+)?$/, "$1")] = version;
+                        });
+                        versions.latest = "master";
+                        versions.default = temp[0];
+                        next();
+                    }
+                });
+            },
+            function (next) {
+                fs.exists("bin", function (exists) {
+                    binExists = exists;
+                    next();
+                });
+            },
+            function (next) {
+                if (!binExists) {
+                    fs.mkdir("bin", parseInt("777", 8), function (error) {
+                        if (error) {
+                            // todo: display error
+                        } else {
+                            next();
+                        }
+                    });
+                } else {
+                    next();
+                }
+            },
+            function (next) {
+                fs.writeFile("bin/versions.js", "module.exports=" + JSON.stringify(Object.keys(versions)) + ";", {encoding: "utf8", mode: parseInt("666", 8)}, function (error) {
+                    if (error) {
+                        // todo: display error
+                        console.log(String(error));
+                    } else {
+                        next();
+                    }
+                });
+            },
+            function (next) {
+                var actions = [];
+                Object.keys(versions).forEach(function (version) {
+                    var branch = versions[version],
+                        folder = path.join("bin", "v" + version);
+                    if (branch !== "master") {
+                        branch = "release-" + branch;
+                    }
+                    if (["default", "latest"].indexOf(version) !== -1) {
+                        folder = path.join("bin", version);
+                    }
+                    actions.push(function (next) {
+                        var content = "",
+                            errors  = [],
+                            process;
+                        process = spawn("/usr/bin/env", ["git", "checkout", branch], {cwd: "temp/typescript"});
+                        process.stdout.on("data", function (data) {
+                            content += data.toString("utf8");
+                            errors.push(String(data || ""));
+                        });
+                        process.stderr.on("data", function (data) {
+                            errors.push(String(data || ""));
+                        });
+                        process.on("close", function (code) {
+                            if (code !== 0) {
+                                // todo: display errors
+                                console.log(errors.join("\n"));
+                            } else {
+                                next();
+                            }
+                        });
+                    });
+                    actions.push(function (next) {
+                        grunt.file.expand([
+                            "temp/typescript/bin/*.d.ts",
+                            "temp/typescript/bin/tsc.js"
+                        ]).forEach(function (filename) {
+                            grunt.file.copy(filename, path.join(folder, path.basename(filename)));
+                        });
+                        next();
+                    });
+                });
+                actions.push(function () {
+                    next();
+                });
+                deferred(actions);
+            },
+            function () {
+                done();
+            }
+        ]);
     });
 
     grunt.registerTask("default", "Build package.", ["uglify:tasks"]);
