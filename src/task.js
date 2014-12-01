@@ -1198,7 +1198,9 @@ module.exports = function (grunt) {
                         webWorkerLibrary:   hasWebWorkerLibraryOption().toString(),
                         compilerVersion:    getRealCompilerVersion(),
                         compiler:           getCompilerOption(),
-                        nodePath:           getNodePathOption()
+                        nodePath:           getNodePathOption(),
+                        fileMode:           getFileModeOption(),
+                        dirMode:            getDirModeOption()
                     }, "options");
                     if (getReferencesOption().length) {
                         grunt.log.writeflags(getReferencesOption(), "references");
