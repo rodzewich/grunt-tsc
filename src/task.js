@@ -842,6 +842,12 @@ module.exports = function (grunt) {
                     var temp = String((Number(new Date() - time)) / 1000 + 0.0001).split(".");
                     return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
                 }
+                function getSource() {
+                    if (typeOf(source) === "undefined") {
+                        source = String(getSources()[0] || "");
+                    }
+                    return source;
+                }
                 function getResult() {
                     var src, ext, name, dir;
                     if (typeOf(result) === "undefined") {
@@ -877,39 +883,27 @@ module.exports = function (grunt) {
                     return mapDestination;
                 }
                 function getDeclarationResult() {
-                    var source,
-                        extension,
-                        filename,
-                        directory;
+                    var src, ext, name, dir;
                     if (typeOf(declarationResult) === "undefined") {
-                        source    = getSource();
-                        extension = path.extname(source);
-                        filename  = path.basename(source, extension);
-                        directory = path.dirname(source);
-                        declarationResult = path.join(directory, filename + ".d.ts");
+                        src  = getSource();
+                        ext  = path.extname(src);
+                        name = path.basename(src, ext);
+                        dir  = path.dirname(src);
+                        declarationResult = path.join(dir, name + ".d.ts");
                     }
                     return declarationResult;
                 }
                 function getDeclarationDestination() {
-                    var destination,
-                        directory,
-                        extension,
-                        filename;
+                    var dest, dir, ext, name;
                     if (typeOf(declarationDestination) === "undefined") {
-                        destination            = getDestination();
-                        extension              = path.extname(destination);
-                        filename               = path.basename(destination, extension);
-                        directory              = path.dirname(destination);
-                        declarationDestination = path.join(directory, filename + ".d.ts");
+                        dest = getDestination();
+                        ext  = path.extname(dest);
+                        name = path.basename(dest, ext);
+                        dir  = path.dirname(dest);
+                        declarationDestination = path.join(dir, name + ".d.ts");
 
                     }
                     return declarationDestination;
-                }
-                function getSource() {
-                    if (typeOf(source) === "undefined") {
-                        source = String(getSources()[0] || "");
-                    }
-                    return source;
                 }
                 function getSourceFile() {
                     if (typeOf(sourceFile) !== "string") {
