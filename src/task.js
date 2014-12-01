@@ -1199,8 +1199,8 @@ module.exports = function (grunt) {
                         compilerVersion:    getRealCompilerVersion(),
                         compiler:           getCompilerOption(),
                         nodePath:           getNodePathOption(),
-                        fileMode:           getFileModeOption(),
-                        dirMode:            getDirModeOption()
+                        fileMode:           getFileModeOption().toString(8),
+                        dirMode:            getDirModeOption().toString(8)
                     }, "options");
                     if (getReferencesOption().length) {
                         grunt.log.writeflags(getReferencesOption(), "references");
