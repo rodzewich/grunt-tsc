@@ -843,44 +843,35 @@ module.exports = function (grunt) {
                     return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
                 }
                 function getResult() {
-                    var source,
-                        extension,
-                        filename,
-                        directory;
+                    var src, ext, name, dir;
                     if (typeOf(result) === "undefined") {
-                        source    = getSource();
-                        extension = path.extname(source);
-                        filename  = path.basename(source, extension);
-                        directory = path.dirname(source);
-                        result    = path.join(directory, filename + ".js");
+                        src  = getSource();
+                        ext  = path.extname(src);
+                        name = path.basename(src, ext);
+                        dir  = path.dirname(src);
+                        result = path.join(dir, name + ".js");
                     }
                     return result;
                 }
                 function getMapResult() {
-                    var source,
-                        extension,
-                        filename,
-                        directory;
+                    var src, ext, name, dir;
                     if (typeOf(mapResult) === "undefined") {
-                        source    = getSource();
-                        extension = path.extname(source);
-                        filename  = path.basename(source, extension);
-                        directory = path.dirname(source);
-                        mapResult = path.join(directory, filename + ".js.map");
+                        src  = getSource();
+                        ext  = path.extname(src);
+                        name = path.basename(src, ext);
+                        dir  = path.dirname(src);
+                        mapResult = path.join(dir, name + ".js.map");
                     }
                     return mapResult;
                 }
                 function getMapDestination() {
-                    var destination,
-                        directory,
-                        extension,
-                        filename;
+                    var dest, dir, ext, name;
                     if (typeOf(mapDestination) === "undefined") {
-                        destination    = getDestination();
-                        extension      = path.extname(destination);
-                        filename       = path.basename(destination, extension);
-                        directory      = path.dirname(destination);
-                        mapDestination = path.join(directory, filename + ".js.map");
+                        dest = getDestination();
+                        ext  = path.extname(dest);
+                        name = path.basename(dest, ext);
+                        dir  = path.dirname(dest);
+                        mapDestination = path.join(dir, name + ".js.map");
 
                     }
                     return mapDestination;
