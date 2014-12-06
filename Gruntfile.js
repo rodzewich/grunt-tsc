@@ -407,29 +407,50 @@ module.exports = function (grunt) {
                             }
                         });
                     });
+                    // copy bin files
                     actions.push(function (next) {
-                        var stack = [];
-                        grunt.file.expand([
-                            "temp/bin/*.d.ts",
-                            "temp/bin/tsc.js"
-                        ]).forEach(function (filename) {
-                            stack.push(function (next) {
-                                var target = path.join(folder, path.basename(filename));
-                                copy(filename, target, function (error) {
+                        var stack = [],
+                            files = [];
+                        deferred([
+                            function (next) {
+                                fs.readdir("temp/bin", function (error, result) {
                                     if (error) {
                                         displayError(error);
                                         done(false);
                                     } else {
+                                        result.forEach(function (filename) {
+                                            if (filename === "tsc.js" || filename.substr(-5) === ".d.ts") {
+                                                files.push(path.join("temp/bin", filename));
+                                            }
+                                        });
                                         next();
                                     }
                                 });
-                            });
-                        });
-                        stack.push(function () {
-                            displayPropertyWithPadding("create", path.join(cwd, folder));
-                            next();
-                        });
-                        deferred(stack);
+                            },
+                            function (next) {
+                                files.forEach(function (filename) {
+                                    stack.push(function (next) {
+                                        var target = path.join(folder, path.basename(filename));
+                                        copy(filename, target, function (error) {
+                                            if (error) {
+                                                displayError(error);
+                                                done(false);
+                                            } else {
+                                                next();
+                                            }
+                                        });
+                                    });
+                                });
+                                stack.push(function () {
+                                    displayPropertyWithPadding("create", path.join(cwd, folder));
+                                    next();
+                                });
+                                deferred(stack);
+                            },
+                            function () {
+                                next();
+                            }
+                        ]);
                     });
                 });
                 actions.push(function () {
