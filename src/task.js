@@ -26,6 +26,7 @@ module.exports = function (grunt) {
             length = files.length,
             done   = this.async(),
             time1  = Number(new Date()),
+            filesForClean     = [],
             countDeclarations = 0,
             countDestinations = 0,
             countMaps = 0,
@@ -51,6 +52,11 @@ module.exports = function (grunt) {
             dirMode,
             compiler,
             nodePath,
+            coreLibDeclaration,
+            libDeclaration,
+            domLibDeclaration,
+            scriptHostLibDeclaration,
+            webWorkerLibDeclaration,
             realCompilerVersion,
             compilerVersion;
         function typeOf(value) {
@@ -129,13 +135,11 @@ module.exports = function (grunt) {
                     });
                 },
                 function (next) {
-                    fs.unlink(path1, function (error) {
-                        if (error) {
-                            callback(error, null);
-                        } else {
-                            next();
-                        }
-                    });
+                    var filename = path.resolve(cwd, path1);
+                    if (filesForClean.indexOf(filename) === -1) {
+                        filesForClean.push(filename);
+                    }
+                    next();
                 },
                 function (next) {
                     fs.chmod(path2, getFileModeOption(), function (error) {
@@ -175,7 +179,7 @@ module.exports = function (grunt) {
                 if (item) {
                     while (item) {
                         item = item.replace(/^\s+/, "");
-                        grunt.log.write(" * ".yellow);
+                        grunt.log.write(">>".red + " ");
                         grunt.log.writeln(item.substr(0, columns - 3));
                         item = item.substr(columns - 3);
                     }
@@ -187,25 +191,15 @@ module.exports = function (grunt) {
             if (!length) {
                 grunt.log.writeln("Nothing to compile.".yellow);
             } else {
-                grunt.log.writeln(
-                    [
-                        "Created ", String(count).cyan, " files. ",
-                        "js: ", String(countDestinations).cyan, " files, ",
-                        "map: ", String(countMaps).cyan, " files, ",
-                        "declaration: ", String(countDeclarations).cyan, " files ",
-                        "(354ms)"
-                    ].join("")
-                );
+                // todo: implement display time
+                grunt.log.writeln(">>".green + " complete " + String(count).green + " files(s) (" + "2.345s".yellow + ")");
+                grunt.log.writeln(compilePropertyNameWithPadding("javascript") + String(countDestinations).cyan + " file(s)");
+                grunt.log.writeln(compilePropertyNameWithPadding("declaration") + String(countDeclarations).cyan + " file(s)");
+                grunt.log.writeln(compilePropertyNameWithPadding("sourcemap") + String(countMaps).cyan + " file(s)");
             }
         }
-        function isTypescriptError(content) {
-
-        }
-        function displayTypescriptError(content) {
-
-        }
         function displayError(error) {
-
+            grunt.log.writeln(">>".red + " " + String(error.name).red + " " + error.message);
         }
         function getOptions() {
             if (typeOf(options) === "undefined") {
@@ -394,7 +388,7 @@ module.exports = function (grunt) {
                 } else {
                     result = !!temp;
                 }
-                return result;
+                return result && getDomLibDeclaration() !== null;
             }
             function hasScriptHostLibraryOption() {
                 var result = false,
@@ -404,7 +398,7 @@ module.exports = function (grunt) {
                 } else {
                     result = !!temp;
                 }
-                return result;
+                return result && getScriptHostLibDeclaration() !== null;
             }
             function hasWebWorkerLibraryOption() {
                 var result = false,
@@ -414,7 +408,7 @@ module.exports = function (grunt) {
                 } else {
                     result = !!temp;
                 }
-                return result;
+                return result && getWebWorkerLibDeclaration() !== null;
             }
             if (typeOf(library) === "undefined") {
                 opt = getOptions();
@@ -423,7 +417,7 @@ module.exports = function (grunt) {
                 } else {
                     library = !!opt.library;
                 }
-                library = library || (hasDomLibraryOption() && hasScriptHostLibraryOption() && hasWebWorkerLibraryOption());
+                library = (library || (hasDomLibraryOption() && hasScriptHostLibraryOption() && hasWebWorkerLibraryOption())) && getLibDeclaration() !== null;
             }
             return library;
         }
@@ -436,7 +430,7 @@ module.exports = function (grunt) {
                 } else {
                     coreLibrary = !!opt.coreLibrary;
                 }
-                coreLibrary = coreLibrary && !(hasLibraryOption() || hasDomLibraryOption() || hasScriptHostLibraryOption() || hasWebWorkerLibraryOption());
+                coreLibrary = coreLibrary && !(hasLibraryOption() || hasDomLibraryOption() || hasScriptHostLibraryOption() || hasWebWorkerLibraryOption()) && getCoreLibDeclaration() !== null;
             }
             return coreLibrary;
         }
@@ -449,7 +443,7 @@ module.exports = function (grunt) {
                 } else {
                     domLibrary = !!opt.domLibrary;
                 }
-                domLibrary = domLibrary && !hasLibraryOption();
+                domLibrary = domLibrary && !hasLibraryOption() && getDomLibDeclaration() !== null;
             }
             return domLibrary;
         }
@@ -462,7 +456,7 @@ module.exports = function (grunt) {
                 } else {
                     scriptHostLibrary = !!opt.scriptHostLibrary;
                 }
-                scriptHostLibrary = scriptHostLibrary && !hasLibraryOption();
+                scriptHostLibrary = scriptHostLibrary && !hasLibraryOption() && getScriptHostLibDeclaration() !== null;
             }
             return scriptHostLibrary;
         }
@@ -475,9 +469,98 @@ module.exports = function (grunt) {
                 } else {
                     webWorkerLibrary = !!opt.webWorkerLibrary;
                 }
-                webWorkerLibrary = webWorkerLibrary && !hasLibraryOption();
+                webWorkerLibrary = webWorkerLibrary && !hasLibraryOption() && getWebWorkerLibDeclaration() !== null;
             }
             return webWorkerLibrary;
+        }
+
+        function fetchFileLocation(filename, callback) {
+            deferred([
+                function (next) {
+                    fs.exists(filename, function (exists) {
+                        if (!exists) {
+                            callback(null, null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fs.stat(filename, function (error, stats) {
+                        if (error) {
+                            callback(error, null);
+                        } else if (!stats.isFile()) {
+                            callback(null, null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function () {
+                    fs.realpath(filename, function (error, resolve) {
+                        if (error) {
+                            callback(error, null);
+                        } else {
+                            callback(null, resolve);
+                        }
+                    });
+                }
+            ]);
+        }
+        function fetchCoreLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.core.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setCoreLibDeclaration(value) {
+            coreLibDeclaration = value;
+        }
+        function getCoreLibDeclaration() {
+            return coreLibDeclaration;
+        }
+        function fetchLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setLibDeclaration(value) {
+            libDeclaration = value;
+        }
+        function getLibDeclaration() {
+            return libDeclaration;
+        }
+        function fetchDomLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.dom.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setDomLibDeclaration(value) {
+            domLibDeclaration = value;
+        }
+        function getDomLibDeclaration() {
+            return domLibDeclaration;
+        }
+        function fetchScriptHostLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.scriptHost.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setScriptHostLibDeclaration(value) {
+            scriptHostLibDeclaration = value;
+        }
+        function getScriptHostLibDeclaration() {
+            return scriptHostLibDeclaration;
+        }
+        function fetchWebWorkerLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.webworker.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setWebWorkerLibDeclaration(value) {
+            webWorkerLibDeclaration = value;
+        }
+        function getWebWorkerLibDeclaration() {
+            return webWorkerLibDeclaration;
         }
         function getReferencesOption() {
             var opt;
@@ -485,19 +568,19 @@ module.exports = function (grunt) {
                 opt = getOptions();
                 references = [];
                 if (hasCoreLibraryOption()) {
-                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.core.d.ts"));
+                    references.push(getCoreLibDeclaration());
                 }
                 if (hasLibraryOption()) {
-                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.d.ts"));
+                    references.push(getLibDeclaration());
                 }
                 if (hasDomLibraryOption()) {
-                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.dom.d.ts"));
+                    references.push(getDomLibDeclaration());
                 }
                 if (hasScriptHostLibraryOption()) {
-                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.scriptHost.d.ts"));
+                    references.push(getScriptHostLibDeclaration());
                 }
                 if (hasWebWorkerLibraryOption()) {
-                    references.push(path.join("node_modules/grunt-tsc/bin", getCompilerVersionOption(), "lib.webworker.d.ts"));
+                    references.push(getWebWorkerLibDeclaration());
                 }
                 if (typeOf(opt.references) !== "undefined") {
                     try {
@@ -690,11 +773,6 @@ module.exports = function (grunt) {
         function setRealCompilerVersion(value) {
             realCompilerVersion = value || "unknown";
         }
-        function fetchDeclarationsPaths(callback) {
-
-        }
-        function setDeclarationsPaths(paths) {}
-        function getDeclarationsPaths() {}
         function getCompilerVersionOption() {
             var opt,
                 temp;
@@ -721,8 +799,47 @@ module.exports = function (grunt) {
             return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
         }
         function complete() {
-            displayCompleteReport();
-            done(true);
+            deferred([
+                // remove temporary files
+                function (next) {
+                    var actions = [];
+                    filesForClean.forEach(function (filepath) {
+                        actions.push(function (next) {
+                            var exists = false;
+                            deferred([
+                                function (next) {
+                                    fs.exists(filepath, function (result) {
+                                        exists = result;
+                                        next();
+                                    });
+                                },
+                                function (next) {
+                                    if (exists) {
+                                        fs.unlink(filepath, function () {
+                                            grunt.log.debug("unlink", filepath);
+                                            next();
+                                        });
+                                    } else {
+                                        next();
+                                    }
+                                },
+                                function () {
+                                    next();
+                                }
+                            ]);
+                        });
+                    });
+                    actions.push(function () {
+                        next();
+                    });
+                    deferred(actions);
+                },
+                // display complete report
+                function () {
+                    displayCompleteReport();
+                    done(true);
+                }
+            ]);
         }
         function iterate(item) {
             var expand,
@@ -730,9 +847,14 @@ module.exports = function (grunt) {
                 workingDirectory,
                 sources;
             function hasExpand() {
-                if (typeof expand === "undefined") {
-                    // todo: fix this, may be use item.expand.
-                    expand = !!item.orig.expand;
+                if (typeOf(expand) === "undefined") {
+                    if (typeOf(item.expand) !== "undefined") {
+                        expand = !!item.expand;
+                    } else if (["off", "no", "false", "0", ""].indexOf(String(item.orig.expand).toLowerCase()) !== -1) {
+                        expand = false;
+                    } else {
+                        expand = !!item.orig.expand;
+                    }
                 }
                 return expand;
             }
@@ -823,9 +945,7 @@ module.exports = function (grunt) {
                                 if (error) {
                                     displayError(error);
                                     done(false);
-                                    return;
-                                }
-                                if (files.length) {
+                                } else if (files.length) {
                                     iterate(files.shift());
                                 } else {
                                     complete();
@@ -934,7 +1054,7 @@ module.exports = function (grunt) {
                             callback(error);
                         } else {
                             if (firstRun) {
-                                grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + getSource().green + " (" + String(getTime()).yellow + ")");
+                                grunt.log.writeln(">>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + getSource().green + " (" + String(getTime()).yellow + ")");
                             }
                             displayStdout();
                             firstRun = false;
@@ -1061,8 +1181,8 @@ module.exports = function (grunt) {
                         grunt.fail.warn("Something went wrong.");
                         done(false);
                     } else {
-                        countDestinations++;
-                        grunt.log.writeln(">>>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
+                        countDestinations += 1;
+                        grunt.log.writeln(">>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         getSources().forEach(function (source) {
                             grunt.log.writeln(compilePropertyNameWithPadding("input") + path.join(getWorkingDirectory(), source).green);
                         });
@@ -1108,11 +1228,11 @@ module.exports = function (grunt) {
                             function () {
                                 grunt.log.writeln(compilePropertyNameWithPadding("output") + getDestination().cyan + " (" + getFileSize(outputSize).yellow + ")");
                                 if (hasSourceMapOption()) {
-                                    countMaps++;
+                                    countMaps += 1;
                                     grunt.log.writeln(compilePropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + getFileSize(sourcemapSize).yellow + ")");
                                 }
                                 if (hasDeclarationOption()) {
-                                    countDeclarations++;
+                                    countDeclarations += 1;
                                     grunt.log.writeln(compilePropertyNameWithPadding("declaration") + getDeclaration().cyan + " (" + getFileSize(declarationSize).yellow + ")");
                                 }
                                 if (files.length) {
@@ -1137,6 +1257,7 @@ module.exports = function (grunt) {
                     fetchCompilerOption(function (error, compiler) {
                         if (error) {
                             displayError(error);
+                            done(false);
                         } else {
                             setCompilerOption(compiler);
                             next();
@@ -1147,6 +1268,7 @@ module.exports = function (grunt) {
                     fetchNodePathOption(function (error, nodePath) {
                         if (error) {
                             displayError(error);
+                            done(false);
                         } else {
                             setNodePathOption(nodePath);
                             next();
@@ -1159,6 +1281,61 @@ module.exports = function (grunt) {
                             displayErrorContent(errorContent);
                         } else {
                             setRealCompilerVersion(version);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchWebWorkerLibDeclaration(function (error, filename) {
+                        if (error) {
+                            displayError(error);
+                            done(false);
+                        } else {
+                            setWebWorkerLibDeclaration(filename);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchScriptHostLibDeclaration(function (error, filename) {
+                        if (error) {
+                            displayError(error);
+                            done(false);
+                        } else {
+                            setScriptHostLibDeclaration(filename);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchDomLibDeclaration(function (error, filename) {
+                        if (error) {
+                            displayError(error);
+                            done(false);
+                        } else {
+                            setDomLibDeclaration(filename);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchLibDeclaration(function (error, filename) {
+                        if (error) {
+                            displayError(error);
+                            done(false);
+                        } else {
+                            setLibDeclaration(filename);
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fetchCoreLibDeclaration(function (error, filename) {
+                        if (error) {
+                            displayError(error);
+                            done(false);
+                        } else {
+                            setCoreLibDeclaration(filename);
                             next();
                         }
                     });

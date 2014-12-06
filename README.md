@@ -193,6 +193,8 @@ Enable web worker library references (include core references).
 
 ### options.compilerVersion
 
+### options.compiler
+
 ### options.fileMode
 
 ### options.dirMode

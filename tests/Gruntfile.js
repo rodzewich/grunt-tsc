@@ -9,6 +9,11 @@ module.exports = function (grunt) {
     grunt.initConfig({
         tsc: {
             options: {
+                library            : true,
+                coreLibrary        : true,
+                domLibrary         : true,
+                scriptHostLibrary  : true,
+                webWorkerLibrary   : true,
                 target             : "es3",
                 module             : "amd",
                 declaration        : true,
@@ -20,6 +25,7 @@ module.exports = function (grunt) {
                 mapRoot            : "/public/maps",
                 encoding           : "utf8",
                 compilerVersion    : "1.1",
+                compiler           : "/usr/local/lib/node_modules/typescript/bin/tsc.js",
                 references         : [
                     "refs/*",
                     "refs/**/*"
