@@ -4,7 +4,6 @@
 var spawn    = require("child_process").spawn,
     path     = require("path"),
     fs       = require("fs"),
-    os       = require("os"),
     rows     = process.stdout.rows,
     columns  = process.stdout.columns,
     cwd      = process.cwd(),
@@ -21,7 +20,7 @@ process.stdout.on("resize", function () {
 
 module.exports = function (grunt) {
     "use strict";
-    grunt.registerMultiTask("tsc", "Compile *.ts files", function () {
+    grunt.registerMultiTask("tsc", "Compile typescript files", function () {
         var self   = this,
             files  = self.files,
             length = files.length,
