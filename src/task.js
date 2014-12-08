@@ -599,19 +599,19 @@ module.exports = function (grunt) {
             return references;
         }
         function getTargetOption() {
-            var opt,
-                temp;
+            var opt, temp, ver;
             if (typeOf(target) !== "string") {
-                opt = getOptions();
+                opt  = getOptions();
                 temp = String(opt.target || "").toUpperCase();
+                ver  = parseFloat(getRealCompilerVersion().replace(/^(\d+\.\d+)(?:\.\d+)*$/, "$1"));
                 if (typeOf(opt.target) === "undefined" || temp === "DEFAULT") {
                     target = "ES3";
                 } else if (temp === "LATEST") {
-                    target = "ES6";
-                } else if (["ES3", "ES5", "ES6"].indexOf(temp) !== -1) {
+                    target = ver < 1.3 ? "ES5" : "ES6";
+                } else if ((["ES3", "ES5", "ES6"].indexOf(temp) !== -1 && ver >= 1.3) || (["ES3", "ES5"].indexOf(temp) !== -1 && ver < 1.3)) {
                     target = temp;
                 } else {
-                    throw new Error("Incorrect \"target\" option, must be \"default\", \"es3\", \"es5\", \"es6\" or \"latest\".");
+                    throw new Error("Incorrect \"target\" option, must be \"default\", \"es3\", \"es5\"" + (ver < 1.3 ? ", \"es6\"" : "") + " or \"latest\".");
                 }
             }
             return target;
