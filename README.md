@@ -39,10 +39,9 @@ grunt.initConfig({
             implicitAny:        true,
             preserveConstEnums: false,
             sourceRoot:         "/public/sources",
-            mapRoot:            "/public/maps",
-            encoding:           "utf8"
+            mapRoot:            "/public/maps"
         },
-        task1: {
+        task: {
             // task options
             options: {},
             files: [{
@@ -134,14 +133,6 @@ Specifies the location where debugger should locate typescript files instead of 
 Specifies the location where debugger should locate map files instead of generated locations.
 
 
-### options.encoding
-
-* **type** `<string>`
-* **default** `"utf8"`
-
-Source file encoding.
-
-
 ### options.references
 
 * **type** `<string|string[]>`
@@ -215,8 +206,7 @@ grunt.initConfig({
                 implicitAny:        true,
                 preserveConstEnums: false,
                 sourceRoot:         "/public/sources",
-                mapRoot:            "/public/maps",
-                encoding:           "utf8"
+                mapRoot:            "/public/maps"
             },
             files: [
                 // Compile many to many

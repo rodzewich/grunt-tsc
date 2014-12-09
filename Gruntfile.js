@@ -35,6 +35,10 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.registerTask("test", "Test project.", function () {
+        // todo: test project
+    });
+
     grunt.registerTask("update", "Update dependencies.", function () {
         var done            = this.async(),
             project         = "https://github.com/Microsoft/TypeScript.git",
@@ -145,7 +149,6 @@ module.exports = function (grunt) {
                 }
             });
         }
-
         deferred([
             // create "bin" directory
             function (next) {
@@ -487,6 +490,6 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask("compile", "Compile project.", ["uglify:compile"]);
-    grunt.registerTask("default", "Build project.", ["update", "compile"]);
+    grunt.registerTask("default", "Build project.", ["update", "test", "compile"]);
 
 };

@@ -17,6 +17,8 @@ process.stdout.on("resize", function () {
 });
 
 // todo: adjust use options.compilerVersion
+// todo: do not use options.encoding
+// todo: bug: appears garbage after compile with dependencies
 
 module.exports = function (grunt) {
     "use strict";
@@ -31,7 +33,6 @@ module.exports = function (grunt) {
             countDestinations = 0,
             countMaps = 0,
             options,
-            encoding,
             declaration,
             sourcemap,
             target,
@@ -78,6 +79,42 @@ module.exports = function (grunt) {
             }
             iterate();
         }
+        function getOptions() {
+            if (typeOf(options) === "undefined") {
+                options = self.options() || {};
+            }
+            return options;
+        }
+        function getFileModeOption() {
+            var opt,
+                temp;
+            if (typeOf(fileMode) === "undefined") {
+                opt = getOptions();
+                temp = String(opt.fileMode || "");
+                if (typeOf(opt.fileMode) === "undefined") {
+                    temp = "644";
+                } else if (!/^[0-7]{3,3}$/.test(temp)) {
+                    throw new Error("bla bla bla");
+                }
+                fileMode = parseInt(temp, 8);
+            }
+            return fileMode;
+        }
+        function getDirModeOption() {
+            var opt,
+                temp;
+            if (typeOf(dirMode) === "undefined") {
+                opt = getOptions();
+                temp = String(opt.dirMode || "");
+                if (typeOf(opt.dirMode) === "undefined") {
+                    temp = "755";
+                } else if (!/^[0-7]{3,3}$/.test(temp)) {
+                    throw new Error("bla bla bla");
+                }
+                dirMode = parseInt(temp, 8);
+            }
+            return dirMode;
+        }
         function mkdir(dir, callback) {
             deferred([
                 function (iterate) {
@@ -116,7 +153,7 @@ module.exports = function (grunt) {
                     });
                 },
                 function (next) {
-                    fs.readFile(path1, {encoding: getEncodingOption()}, function (error, data) {
+                    fs.readFile(path1, function (error, data) {
                         if (error) {
                             callback(error, null);
                         } else {
@@ -126,7 +163,7 @@ module.exports = function (grunt) {
                     });
                 },
                 function (next) {
-                    fs.writeFile(path2, content, {encoding: getEncodingOption()}, function (error) {
+                    fs.writeFile(path2, content, function (error) {
                         if (error) {
                             callback(error, null);
                         } else {
@@ -200,42 +237,6 @@ module.exports = function (grunt) {
         }
         function displayError(error) {
             grunt.log.writeln(">>".red + " " + String(error.name).red + " " + error.message);
-        }
-        function getOptions() {
-            if (typeOf(options) === "undefined") {
-                options = self.options() || {};
-            }
-            return options;
-        }
-        function getFileModeOption() {
-            var opt,
-                temp;
-            if (typeOf(fileMode) === "undefined") {
-                opt = getOptions();
-                temp = String(opt.fileMode || "");
-                if (typeOf(opt.fileMode) === "undefined") {
-                    temp = "644";
-                } else if (!/^[0-7]{3,3}$/.test(temp)) {
-                    throw new Error("bla bla bla");
-                }
-                fileMode = parseInt(temp, 8);
-            }
-            return fileMode;
-        }
-        function getDirModeOption() {
-            var opt,
-                temp;
-            if (typeOf(dirMode) === "undefined") {
-                opt = getOptions();
-                temp = String(opt.dirMode || "");
-                if (typeOf(opt.dirMode) === "undefined") {
-                    temp = "755";
-                } else if (!/^[0-7]{3,3}$/.test(temp)) {
-                    throw new Error("bla bla bla");
-                }
-                dirMode = parseInt(temp, 8);
-            }
-            return dirMode;
         }
         function fetchCompilerOption(callback) {
             var opt = getOptions(),
@@ -715,14 +716,6 @@ module.exports = function (grunt) {
                 mapRoot = String(opt.mapRoot || "") || null;
             }
             return mapRoot;
-        }
-        function getEncodingOption() {
-            var opt;
-            if (typeOf(encoding) === "undefined") {
-                opt = getOptions();
-                encoding = String(opt.encoding || "utf8") || "utf8";
-            }
-            return encoding;
         }
         function getFileSize(value) {
             var suffix = ["B", "K", "M", "G", "T"],
@@ -1351,7 +1344,6 @@ module.exports = function (grunt) {
                         preserveConstEnums: hasPreserveConstEnumsOption().toString(),
                         sourceRoot:         getSourceRootOption(),
                         mapRoot:            getMapRootOption(),
-                        encoding:           getEncodingOption(),
                         library:            hasLibraryOption().toString(),
                         coreLibrary:        hasCoreLibraryOption().toString(),
                         domLibrary:         hasDomLibraryOption().toString(),
