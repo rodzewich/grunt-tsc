@@ -379,6 +379,94 @@ module.exports = function (grunt) {
         function setNodePathOption(value) {
             nodePath = value || execPath;
         }
+        function fetchCoreLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.core.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setCoreLibDeclaration(value) {
+            coreLibDeclaration = value;
+        }
+        function getCoreLibDeclaration() {
+            return coreLibDeclaration;
+        }
+        function fetchFileLocation(filename, callback) {
+            deferred([
+                function (next) {
+                    fs.exists(filename, function (exists) {
+                        if (!exists) {
+                            callback(null, null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function (next) {
+                    fs.stat(filename, function (error, stats) {
+                        if (error) {
+                            callback(error, null);
+                        } else if (!stats.isFile()) {
+                            callback(null, null);
+                        } else {
+                            next();
+                        }
+                    });
+                },
+                function () {
+                    fs.realpath(filename, function (error, resolve) {
+                        if (error) {
+                            callback(error, null);
+                        } else {
+                            callback(null, resolve);
+                        }
+                    });
+                }
+            ]);
+        }
+        function fetchLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setLibDeclaration(value) {
+            libDeclaration = value;
+        }
+        function getLibDeclaration() {
+            return libDeclaration;
+        }
+        function fetchDomLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.dom.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setDomLibDeclaration(value) {
+            domLibDeclaration = value;
+        }
+        function getDomLibDeclaration() {
+            return domLibDeclaration;
+        }
+        function fetchScriptHostLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.scriptHost.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setScriptHostLibDeclaration(value) {
+            scriptHostLibDeclaration = value;
+        }
+        function getScriptHostLibDeclaration() {
+            return scriptHostLibDeclaration;
+        }
+        function fetchWebWorkerLibDeclaration(callback) {
+            var dirname = path.dirname(getCompilerOption()),
+                filename = path.join(dirname, "lib.webworker.d.ts");
+            fetchFileLocation(filename, callback);
+        }
+        function setWebWorkerLibDeclaration(value) {
+            webWorkerLibDeclaration = value;
+        }
+        function getWebWorkerLibDeclaration() {
+            return webWorkerLibDeclaration;
+        }
         function hasLibraryOption() {
             var opt;
             function hasDomLibraryOption() {
@@ -473,95 +561,6 @@ module.exports = function (grunt) {
                 webWorkerLibrary = webWorkerLibrary && !hasLibraryOption() && getWebWorkerLibDeclaration() !== null;
             }
             return webWorkerLibrary;
-        }
-
-        function fetchFileLocation(filename, callback) {
-            deferred([
-                function (next) {
-                    fs.exists(filename, function (exists) {
-                        if (!exists) {
-                            callback(null, null);
-                        } else {
-                            next();
-                        }
-                    });
-                },
-                function (next) {
-                    fs.stat(filename, function (error, stats) {
-                        if (error) {
-                            callback(error, null);
-                        } else if (!stats.isFile()) {
-                            callback(null, null);
-                        } else {
-                            next();
-                        }
-                    });
-                },
-                function () {
-                    fs.realpath(filename, function (error, resolve) {
-                        if (error) {
-                            callback(error, null);
-                        } else {
-                            callback(null, resolve);
-                        }
-                    });
-                }
-            ]);
-        }
-        function fetchCoreLibDeclaration(callback) {
-            var dirname = path.dirname(getCompilerOption()),
-                filename = path.join(dirname, "lib.core.d.ts");
-            fetchFileLocation(filename, callback);
-        }
-        function setCoreLibDeclaration(value) {
-            coreLibDeclaration = value;
-        }
-        function getCoreLibDeclaration() {
-            return coreLibDeclaration;
-        }
-        function fetchLibDeclaration(callback) {
-            var dirname = path.dirname(getCompilerOption()),
-                filename = path.join(dirname, "lib.d.ts");
-            fetchFileLocation(filename, callback);
-        }
-        function setLibDeclaration(value) {
-            libDeclaration = value;
-        }
-        function getLibDeclaration() {
-            return libDeclaration;
-        }
-        function fetchDomLibDeclaration(callback) {
-            var dirname = path.dirname(getCompilerOption()),
-                filename = path.join(dirname, "lib.dom.d.ts");
-            fetchFileLocation(filename, callback);
-        }
-        function setDomLibDeclaration(value) {
-            domLibDeclaration = value;
-        }
-        function getDomLibDeclaration() {
-            return domLibDeclaration;
-        }
-        function fetchScriptHostLibDeclaration(callback) {
-            var dirname = path.dirname(getCompilerOption()),
-                filename = path.join(dirname, "lib.scriptHost.d.ts");
-            fetchFileLocation(filename, callback);
-        }
-        function setScriptHostLibDeclaration(value) {
-            scriptHostLibDeclaration = value;
-        }
-        function getScriptHostLibDeclaration() {
-            return scriptHostLibDeclaration;
-        }
-        function fetchWebWorkerLibDeclaration(callback) {
-            var dirname = path.dirname(getCompilerOption()),
-                filename = path.join(dirname, "lib.webworker.d.ts");
-            fetchFileLocation(filename, callback);
-        }
-        function setWebWorkerLibDeclaration(value) {
-            webWorkerLibDeclaration = value;
-        }
-        function getWebWorkerLibDeclaration() {
-            return webWorkerLibDeclaration;
         }
         function getReferencesOption() {
             var opt;
@@ -1034,7 +1033,7 @@ module.exports = function (grunt) {
                         actions = [];
                     function handler(next, error, stats, path) {
                         function displayStdout() {
-                            var prefix = "output",
+                            var prefix = "javascript",
                                 temp = String(path).toLowerCase();
                             if (temp.substr(-5) === ".d.ts") {
                                 prefix = "declaration";
@@ -1177,13 +1176,14 @@ module.exports = function (grunt) {
                         countDestinations += 1;
                         grunt.log.writeln(">>".green + " compile (" + String(length - files.length).yellow + " of " + String(length).yellow + ") " + String(getSources().length).green + " file(s) (" + time(Number(new Date()) - time1).yellow + ")");
                         getSources().forEach(function (source) {
-                            grunt.log.writeln(compilePropertyNameWithPadding("input") + path.join(getWorkingDirectory(), source).green);
+                            grunt.log.writeln(compilePropertyNameWithPadding("typescript") + path.join(getWorkingDirectory(), source).green);
                         });
                         deferred([
                             function (next) {
                                 fs.stat(getDestination(), function (error, stats) {
                                     if (error) {
-                                        // todo: display error
+                                        displayError(error);
+                                        done(false);
                                     } else {
                                         outputSize = stats.mode;
                                         next();
@@ -1194,7 +1194,8 @@ module.exports = function (grunt) {
                                 if (hasSourceMapOption()) {
                                     fs.stat(getSourceMap(), function (error, stats) {
                                         if (error) {
-                                            // todo: display error
+                                            displayError(error);
+                                            done(false);
                                         } else {
                                             sourcemapSize = stats.mode;
                                             next();
@@ -1208,7 +1209,8 @@ module.exports = function (grunt) {
                                 if (hasDeclarationOption()) {
                                     fs.stat(getDeclaration(), function (error, stats) {
                                         if (error) {
-                                            // todo: display error
+                                            displayError(error);
+                                            done(false);
                                         } else {
                                             declarationSize = stats.mode;
                                             next();
@@ -1219,7 +1221,7 @@ module.exports = function (grunt) {
                                 }
                             },
                             function () {
-                                grunt.log.writeln(compilePropertyNameWithPadding("output") + getDestination().cyan + " (" + getFileSize(outputSize).yellow + ")");
+                                grunt.log.writeln(compilePropertyNameWithPadding("javascript") + getDestination().cyan + " (" + getFileSize(outputSize).yellow + ")");
                                 if (hasSourceMapOption()) {
                                     countMaps += 1;
                                     grunt.log.writeln(compilePropertyNameWithPadding("sourcemap") + getSourceMap().cyan + " (" + getFileSize(sourcemapSize).yellow + ")");
