@@ -26,11 +26,13 @@ module.exports = function (grunt) {
                 banner: grunt.file.read("src/banner.txt")
             },
             compile: {
-                files: [{
-                    expand : false,
-                    dest   : "tasks/tsc.js",
-                    src    : "src/*.js"
-                }]
+                files: [
+                    {
+                        expand : false,
+                        dest   : "tasks/tsc.js",
+                        src    : "src/*.js"
+                    }
+                ]
             }
         }
     });
