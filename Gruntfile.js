@@ -367,7 +367,7 @@ module.exports = function (grunt) {
                             versions[version.replace(/^(\d+\.\d+)(?:\.\d+)?$/, "$1")] = version;
                         });
                         versions.latest = "master";
-                        versions.default = temp[0];
+                        versions.default = temp[temp.length - 2];
                         next();
                     }
                 });

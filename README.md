@@ -142,6 +142,14 @@ Specifies the location where debugger should locate map files instead of generat
 Additional *.d.ts references.
 
 
+### options.system
+
+* **type** `<string|string[]>`
+* **default** `[]`
+
+Additional *.d.ts references.
+
+
 ### options.library
 
 * **type** `<boolean>`
@@ -149,48 +157,11 @@ Additional *.d.ts references.
 
 Enable general library references (include all references).
 
+### options.node
 
-### options.coreLibrary
-
-* **type** `<boolean>`
-* **default** `false`
-
-Enable core library references only.
-
-
-### options.domLibrary
-
-* **type** `<boolean>`
-* **default** `false`
-
-Enable dom library references (include core references).
-
-
-### options.scriptHostLibrary
-
-* **type** `<boolean>`
-* **default** `false`
-
-Enable windows scripts library references (include core references).
-
-
-### options.webWorkerLibrary
-
-* **type** `<boolean>`
-* **default** `false`
-
-Enable web worker library references (include core references).
-
-### options.nodePath
-
-### options.compilerVersion
+### options.version
 
 ### options.compiler
-
-### options.fileMode
-
-### options.dirMode
-
 
 ## Examples
 

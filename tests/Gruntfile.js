@@ -10,11 +10,7 @@ module.exports = function (grunt) {
         tsc: {
             options: {
                 library            : true,
-                coreLibrary        : true,
-                domLibrary         : true,
-                scriptHostLibrary  : true,
-                webWorkerLibrary   : true,
-                target             : "es3",
+                target             : "es5",
                 module             : "amd",
                 declaration        : true,
                 comments           : true,
@@ -24,8 +20,8 @@ module.exports = function (grunt) {
                 sourceRoot         : "/public/sources",
                 mapRoot            : "/public/maps",
                 encoding           : "utf8",
-                compilerVersion    : "1.1",
-                compiler           : "/usr/local/lib/node_modules/typescript/bin/tsc.js",
+                version            : "1.4",
+                //compiler           : "/usr/local/lib/node_modules/typescript/bin/tsc.js",
                 references         : [
                     "refs/*",
                     "refs/**/*"
@@ -57,8 +53,7 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
-            },
-            task2: {}
+            }
         }
     });
 
