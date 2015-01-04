@@ -16,13 +16,11 @@ process.stdout.on('resize', function () {
 module.exports = function (grunt) {
     "use strict";
 
-    // Actually load this plugin's task(s).
-    grunt.loadTasks('tasks');
-
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -61,7 +59,8 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("test", "Project test.", ["tsc", "nodeunit"/*, "clean:tests"*/]);
+    // Actually load this plugin's task(s).
+    grunt.loadTasks('src');
 
     grunt.registerTask("update", "Update dependencies.", function () {
         var done            = this.async(),
@@ -513,9 +512,8 @@ module.exports = function (grunt) {
         ]);
     });
 
-    // By compile, lint and compile via uglify.
+    grunt.registerTask("test", "Project test.", ["tsc", "nodeunit", "clean:tests"]);
     grunt.registerTask("compile", "Project compile.", ["jshint:all", "uglify:compile"]);
-
-    grunt.registerTask("default", "Project build.", ["update", "test", "compile"]);
+    grunt.registerTask("default", "Project build.", ["update", "compile", "test"]);
 
 };

@@ -1,7 +1,7 @@
 {
   "name": "grunt-tsc",
   "description": "Compile typescript files via grunt tasks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/rodzewich/grunt-tsc",
   "author": {
     "name": "Oleg Rodzewich",
@@ -28,10 +28,11 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jshint": "^0.9.2",
     "grunt-contrib-nodeunit": "^0.3.3",
-    "grunt-contrib-uglify": "~0.6.0",
-    "grunt": "~0.4.5"
+    "grunt-contrib-uglify": "^0.7.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.5"

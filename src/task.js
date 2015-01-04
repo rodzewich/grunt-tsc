@@ -7,13 +7,21 @@ var spawn    = require("child_process").spawn,
     columns  = process.stdout.columns,
     cwd      = process.cwd(),
     execPath = process.execPath,
-    versions = require(path.resolve(__dirname, "../bin/versions.js"));
+    compilerVersions;
 
 process.stdout.on("resize", function () {
     "use strict";
     rows    = process.stdout.rows;
     columns = process.stdout.columns;
 });
+
+function getVersions() {
+    "use strict";
+    if (!compilerVersions) {
+        compilerVersions = require(path.resolve(__dirname, "../bin/versions.js"));
+    }
+    return compilerVersions;
+}
 
 function typeOf(value) {
     "use strict";
@@ -72,6 +80,7 @@ module.exports = function (grunt) {
             length = files.length,
             done   = this.async(),
             time1  = Number(new Date()),
+            versions = getVersions(),
             filesForClean     = [],
             countDeclarations = 0,
             countDestinations = 0,
