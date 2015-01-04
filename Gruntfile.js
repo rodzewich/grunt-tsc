@@ -1,4 +1,3 @@
-/*jslint */
 /*global module, require, process, setTimeout */
 
 var fs      = require("fs"),
@@ -17,10 +16,24 @@ process.stdout.on('resize', function () {
 module.exports = function (grunt) {
     "use strict";
 
+    // Actually load this plugin's task(s).
+    grunt.loadTasks('tasks');
+
+    // These plugins provide necessary tasks.
     grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
+        jshint: {
+            all: [
+                'Gruntfile.js',
+                'src/*.js'
+            ],
+            options: {
+                jshintrc: '.jshintrc'
+            }
+        },
         uglify: {
             options: {
                 banner: grunt.file.read("src/banner.txt")
@@ -491,7 +504,9 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask("compile", "Compile project.", ["uglify:compile"]);
-    grunt.registerTask("default", "Build project.", ["update", "test", "compile"]);
+    // By compile, lint and compile via uglify.
+    grunt.registerTask("compile", "Project compile.", ["jshint:all", "uglify:compile"]);
+
+    grunt.registerTask("default", "Project build.", ["update", "test", "compile"]);
 
 };

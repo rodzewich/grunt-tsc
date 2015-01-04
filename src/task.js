@@ -1,4 +1,3 @@
-/*jslint */
 /*global module, require, process, __dirname, setTimeout */
 
 var spawn    = require("child_process").spawn,
@@ -697,68 +696,6 @@ module.exports = function (grunt) {
                     declarationResult,
                     declarationDestination,
                     source;
-                try {
-                    command = getNodeOption();
-                    args.push(getCompilerOption());
-                    args.push("--target", getTargetOption());
-                    args.push("--module", getModuleOption());
-                    if (!hasCommentsOption()) {
-                        args.push("--removeComments");
-                    }
-                    if (hasDeclarationOption()) {
-                        args.push("--declaration");
-                    }
-                    if (!hasImplicitAnyOption()) {
-                        args.push("--noImplicitAny");
-                    }
-                    if (hasPreserveConstEnumsOption()) {
-                        args.push("--preserveConstEnums");
-                    }
-                    if (hasSourceMapOption()) {
-                        args.push("--sourcemap");
-                        if (getSourceRootOption() !== null) {
-                            args.push("--sourceRoot", getSourceRootOption());
-                        }
-                        if (getMapRootOption() !== null) {
-                            args.push("--mapRoot", getMapRootOption());
-                        }
-                    }
-                    getReferencesOption().forEach(function (filename) {
-                        args.push(path.relative(getSourceDirectory(), filename));
-                    });
-                    args.push(getSourceFile());
-                    grunt.log.debug("command:", command);
-                    grunt.log.debug("args:", args.join(" "));
-                    grunt.log.debug("cwd:", getSourceDirectory());
-                    compilerProcess = spawn(command, args, {cwd: getSourceDirectory()});
-                    compilerProcess.stderr.on("data", function (data) {
-                        errors.push(data.toString());
-                    });
-                    compilerProcess.stdout.on("data", function (data) {
-                        errors.push(data.toString());
-                    });
-                    compilerProcess.on("close", function (code) {
-                        if (code !== 0) {
-                            displayErrorContent(errors.join("\n"));
-                            grunt.fail.warn("Something went wrong.");
-                            done(false);
-                        } else {
-                            moveResult(function (error) {
-                                if (error) {
-                                    displayError(error);
-                                    done(false);
-                                } else if (files.length) {
-                                    iterate(files.shift());
-                                } else {
-                                    complete();
-                                }
-                            });
-                        }
-                    });
-                } catch (error) {
-                    displayError(error);
-                    done(false);
-                }
                 function getTime() {
                     var temp = String((Number(new Date() - time)) / 1000 + 0.0001).split(".");
                     return temp[0] + (temp.length > 1 ? "." + temp[1].substr(0, 3) : ".000") + "s";
@@ -904,6 +841,68 @@ module.exports = function (grunt) {
                         callback(null);
                     });
                     deferred(actions);
+                }
+                try {
+                    command = getNodeOption();
+                    args.push(getCompilerOption());
+                    args.push("--target", getTargetOption());
+                    args.push("--module", getModuleOption());
+                    if (!hasCommentsOption()) {
+                        args.push("--removeComments");
+                    }
+                    if (hasDeclarationOption()) {
+                        args.push("--declaration");
+                    }
+                    if (!hasImplicitAnyOption()) {
+                        args.push("--noImplicitAny");
+                    }
+                    if (hasPreserveConstEnumsOption()) {
+                        args.push("--preserveConstEnums");
+                    }
+                    if (hasSourceMapOption()) {
+                        args.push("--sourcemap");
+                        if (getSourceRootOption() !== null) {
+                            args.push("--sourceRoot", getSourceRootOption());
+                        }
+                        if (getMapRootOption() !== null) {
+                            args.push("--mapRoot", getMapRootOption());
+                        }
+                    }
+                    getReferencesOption().forEach(function (filename) {
+                        args.push(path.relative(getSourceDirectory(), filename));
+                    });
+                    args.push(getSourceFile());
+                    grunt.log.debug("command:", command);
+                    grunt.log.debug("args:", args.join(" "));
+                    grunt.log.debug("cwd:", getSourceDirectory());
+                    compilerProcess = spawn(command, args, {cwd: getSourceDirectory()});
+                    compilerProcess.stderr.on("data", function (data) {
+                        errors.push(data.toString());
+                    });
+                    compilerProcess.stdout.on("data", function (data) {
+                        errors.push(data.toString());
+                    });
+                    compilerProcess.on("close", function (code) {
+                        if (code !== 0) {
+                            displayErrorContent(errors.join("\n"));
+                            grunt.fail.warn("Something went wrong.");
+                            done(false);
+                        } else {
+                            moveResult(function (error) {
+                                if (error) {
+                                    displayError(error);
+                                    done(false);
+                                } else if (files.length) {
+                                    iterate(files.shift());
+                                } else {
+                                    complete();
+                                }
+                            });
+                        }
+                    });
+                } catch (error) {
+                    displayError(error);
+                    done(false);
                 }
             }
             function compileManyToOne() {
