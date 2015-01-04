@@ -22,6 +22,7 @@ module.exports = function (grunt) {
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -47,12 +48,20 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        // Build test data.
+        tsc: grunt.file.readJSON("tests/fixtures.json"),
+        // Unit tests.
+        nodeunit: {
+            tests: ['tests/*_test.js']
+        },
+        // Clean temp files.
+        clean: {
+            tests: ['tests/dest']
         }
     });
 
-    grunt.registerTask("test", "Test project.", function () {
-        // todo: test project
-    });
+    grunt.registerTask("test", "Project test.", ["tsc", "nodeunit"/*, "clean:tests"*/]);
 
     grunt.registerTask("update", "Update dependencies.", function () {
         var done            = this.async(),

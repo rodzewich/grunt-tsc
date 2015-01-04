@@ -1,0 +1,1604 @@
+{
+  "options_default": {
+    "options": {},
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_default",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_default/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0": {
+    "options": {
+      "version": "1.0"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1": {
+    "options": {
+      "version": "1.1"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3": {
+    "options": {
+      "version": "1.3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4": {
+    "options": {
+      "version": "1.4"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest": {
+    "options": {
+      "version": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default": {
+    "options": {
+      "version": "default"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_sourcemap": {
+    "options": {
+      "version": "1.0",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_sourcemap",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_sourcemap/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_sourcemap": {
+    "options": {
+      "version": "1.1",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_sourcemap",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_sourcemap/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_sourcemap": {
+    "options": {
+      "version": "1.3",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_sourcemap",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_sourcemap/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_sourcemap": {
+    "options": {
+      "version": "1.4",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_sourcemap",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_sourcemap/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_sourcemap": {
+    "options": {
+      "version": "latest",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_sourcemap",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_sourcemap/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_sourcemap": {
+    "options": {
+      "version": "default",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_sourcemap",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_sourcemap/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_sourcemap_declaration": {
+    "options": {
+      "version": "1.0",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources",
+      "declaration": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_sourcemap_declaration",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_sourcemap_declaration/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_sourcemap_declaration": {
+    "options": {
+      "version": "1.1",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources",
+      "declaration": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_sourcemap_declaration",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_sourcemap_declaration/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_sourcemap_declaration": {
+    "options": {
+      "version": "1.3",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources",
+      "declaration": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_sourcemap_declaration",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_sourcemap_declaration/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_sourcemap_declaration": {
+    "options": {
+      "version": "1.4",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources",
+      "declaration": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_sourcemap_declaration",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_sourcemap_declaration/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_sourcemap_declaration": {
+    "options": {
+      "version": "latest",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources",
+      "declaration": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_sourcemap_declaration",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_sourcemap_declaration/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_sourcemap_declaration": {
+    "options": {
+      "version": "default",
+      "sourcemap": true,
+      "mapRoot": "/public/maps",
+      "sourceRoot": "/public/sources",
+      "declaration": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_sourcemap_declaration",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_sourcemap_declaration/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_comments_off": {
+    "options": {
+      "version": "1.0",
+      "comments": false
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_comments_off",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_comments_off/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_comments_off": {
+    "options": {
+      "version": "1.1",
+      "comments": false
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_comments_off",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_comments_off/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_comments_off": {
+    "options": {
+      "version": "1.3",
+      "comments": false
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_comments_off",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_comments_off/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_comments_off": {
+    "options": {
+      "version": "1.4",
+      "comments": false
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_comments_off",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_comments_off/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_comments_off": {
+    "options": {
+      "version": "latest",
+      "comments": false
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_comments_off",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_comments_off/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_comments_off": {
+    "options": {
+      "version": "default",
+      "comments": false
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_comments_off",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_comments_off/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_comments_on": {
+    "options": {
+      "version": "1.0",
+      "comments": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_comments_on",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_comments_on/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_comments_on": {
+    "options": {
+      "version": "1.1",
+      "comments": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_comments_on",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_comments_on/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_comments_on": {
+    "options": {
+      "version": "1.3",
+      "comments": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_comments_on",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_comments_on/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_comments_on": {
+    "options": {
+      "version": "1.4",
+      "comments": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_comments_on",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_comments_on/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_comments_on": {
+    "options": {
+      "version": "latest",
+      "comments": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_comments_on",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_comments_on/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_comments_on": {
+    "options": {
+      "version": "default",
+      "comments": true
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_comments_on",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_comments_on/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_es3": {
+    "options": {
+      "version": "1.0",
+      "target": "es3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_es3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_es3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_es3": {
+    "options": {
+      "version": "1.1",
+      "target": "es3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_es3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_es3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_es3": {
+    "options": {
+      "version": "1.3",
+      "target": "es3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_es3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_es3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_es3": {
+    "options": {
+      "version": "1.4",
+      "target": "es3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_es3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_es3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_es3": {
+    "options": {
+      "version": "latest",
+      "target": "es3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_es3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_es3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_es3": {
+    "options": {
+      "version": "default",
+      "target": "es3"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_es3",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_es3/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_es6": {
+    "options": {
+      "version": "1.0",
+      "target": "es5"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_es5",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_es5/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_es5": {
+    "options": {
+      "version": "1.1",
+      "target": "es5"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_es5",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_es5/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_es5": {
+    "options": {
+      "version": "1.3",
+      "target": "es5"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_es5",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_es5/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_es5": {
+    "options": {
+      "version": "1.4",
+      "target": "es5"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_es5",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_es5/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_es5": {
+    "options": {
+      "version": "latest",
+      "target": "es5"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_es5",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_es5/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_es5": {
+    "options": {
+      "version": "default",
+      "target": "es5"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_es5",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_es5/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_es6": {
+    "options": {
+      "version": "1.4",
+      "target": "es6"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_es6",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_es6/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_es6": {
+    "options": {
+      "version": "latest",
+      "target": "es6"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_es6",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_es6/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.0_target_latest": {
+    "options": {
+      "version": "1.0",
+      "target": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.0_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.0_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.1_target_latest": {
+    "options": {
+      "version": "1.1",
+      "target": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.1_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.1_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.3_target_latest": {
+    "options": {
+      "version": "1.3",
+      "target": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.3_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.3_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_v1.4_target_latest": {
+    "options": {
+      "version": "1.4",
+      "target": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_v1.4_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_v1.4_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_latest_target_latest": {
+    "options": {
+      "version": "latest",
+      "target": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_latest_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_latest_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  },
+  "options_ver_default_target_latest": {
+    "options": {
+      "version": "default",
+      "target": "latest"
+    },
+    "files": [
+      {
+        "ext": ".js",
+        "expand": true,
+        "dest": "tests/dest/options_ver_default_latest",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      },
+      {
+        "expand": false,
+        "dest": "tests/dest/options_ver_default_latest/core.js",
+        "cwd": "tests/sources",
+        "src": [
+          "*.ts",
+          "**/*.ts",
+          "!*.d.ts",
+          "!**/*.d.ts"
+        ]
+      }
+    ]
+  }
+}
