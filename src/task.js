@@ -74,7 +74,7 @@ function mkdir(dir, callback) {
 
 module.exports = function (grunt) {
     "use strict";
-    grunt.registerMultiTask("tsc", "Compile typescript files", function () {
+    grunt.registerMultiTask("tsc", "Compile TypeScript files", function () {
         var self   = this,
             files  = self.files,
             length = files.length,
