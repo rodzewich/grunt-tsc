@@ -62,7 +62,7 @@ module.exports = function (grunt) {
     // Actually load this plugin's task(s).
     grunt.loadTasks('src');
 
-    grunt.registerTask("update", "Update dependencies.", function () {
+    grunt.registerTask("download", "Download libraries.", function () {
         var done            = this.async(),
             project         = "https://github.com/Microsoft/TypeScript.git",
             versions        = {},
@@ -512,8 +512,8 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask("test", "Project test.", ["tsc", "nodeunit", "clean:tests"]);
-    grunt.registerTask("compile", "Project compile.", ["jshint:all", "uglify:compile"]);
-    grunt.registerTask("default", "Project build.", ["update", "compile", "test"]);
+    grunt.registerTask("test", "Test project.", ["tsc", "nodeunit", "clean:tests"]);
+    grunt.registerTask("compile", "Compile project.", ["jshint:all", "uglify:compile"]);
+    grunt.registerTask("default", "Build project.", ["download", "compile", "test"]);
 
 };
