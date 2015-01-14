@@ -229,7 +229,7 @@ module.exports = function (grunt) {
                 }
             },
             function (next) {
-                fs.mkdir("bin", parseInt("777", 8), function (error) {
+                fs.mkdir("bin", function (error) {
                     if (error) {
                         displayError(error);
                         done(false);
@@ -295,7 +295,7 @@ module.exports = function (grunt) {
                 }
             },
             function (next) {
-                fs.mkdir("temp", parseInt("777", 8), function (error) {
+                fs.mkdir("temp", function (error) {
                     if (error) {
                         displayError(error);
                         done(false);
@@ -394,7 +394,7 @@ module.exports = function (grunt) {
                 });
             },
             function (next) {
-                fs.writeFile("bin/versions.js", "module.exports=" + JSON.stringify(Object.keys(versions)) + ";", {encoding: "utf8", mode: parseInt("666", 8)}, function (error) {
+                fs.writeFile("bin/versions.js", "/* Allow TypeScript versions */\nmodule.exports = [" + Object.keys(versions).map(function (version) { return JSON.stringify(version); }).join(", ") + "];", {encoding: "utf8"}, function (error) {
                     if (error) {
                         displayError(error);
                         done(false);
