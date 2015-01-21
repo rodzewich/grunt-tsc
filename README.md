@@ -165,7 +165,7 @@ Enable general library references (include all references).
 
 ## Examples
 
-```javascript
+``` javascript
 grunt.initConfig({
     tsc: {
         test1: {
