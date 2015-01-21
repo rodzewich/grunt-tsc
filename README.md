@@ -9,7 +9,7 @@ Compile typescript files via [grunt](http://gruntjs.com/) tasks.
 
 You'll need to install grunt-tsc first:
 
-```shell
+``` shell
 npm install grunt-tsc --save-dev
 ```
 
