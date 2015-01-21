@@ -1,4 +1,4 @@
-# grunt-tsc [![NPM version](https://badge.fury.io/js/grunt-tsc.png)](http://badge.fury.io/js/grunt-jsdoc) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+# grunt-tsc [![NPM version](https://badge.fury.io/js/grunt-tsc.png)](http://badge.fury.io/js/grunt-tsc) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 [![Npm Downloads](https://nodei.co/npm/grunt-tsc.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.org/package/grunt-tsc)
 [![Npm Downloads](https://nodei.co/npm-dl/grunt-tsc.png?height=3&months=3)](https://www.npmjs.org/package/grunt-tsc)
