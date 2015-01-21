@@ -13,13 +13,13 @@ You'll need to install grunt-tsc first:
 npm install grunt-tsc --save-dev
 ```
 
-or add the following line to `devDependencies` in your `package.json`
+Or add the following line to devDependencies in your package.json:
 
 ``` javascript
 "grunt-tsc": "",
 ```
 
-Then modify your `Gruntfile.js` file by adding the following line:
+Then modify your Gruntfile.js file by adding the following line:
 
 ``` javascript
 grunt.loadNpmTasks('grunt-tsc');
