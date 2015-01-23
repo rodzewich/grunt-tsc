@@ -155,7 +155,7 @@ Enable general library references (include all references).
 
 ### options.compiler
 
-## Examples
+## Example
 
 ``` javascript
 grunt.initConfig({
