@@ -167,7 +167,11 @@ Path to tsc compiler (allow paths to *.js files). Example: "/usr/local/lib/node_
 ``` javascript
 grunt.initConfig({
     tsc: {
-        test1: {
+        // global options
+        options: {
+        },
+        task_name: {
+            // task options
             options: {
                 target:             "default",
                 module:             "commonjs",
