@@ -27,7 +27,7 @@ grunt.initConfig({
         options: {
             // global options
         },
-        task: {
+        task_name: {
             options: {
                 // task options
             },
@@ -145,9 +145,22 @@ Enable general library references (include all references).
 
 ### options.node
 
+* **type** &lt;string&gt;
+* **default** null
+
 ### options.version
 
+* **type** &lt;string&gt;
+* **default** "latest"
+
+Compiler version, allow values: "1.0", "1.1", "1.3", "1.4", "default" and "latest".
+
 ### options.compiler
+
+* **type** &lt;string&gt;
+* **default** null
+
+Path to tsc compiler (allow paths to *.js files). Example: "/usr/local/lib/node_modules/typescript/bin/tsc.js" for default system installation.
 
 ## Example
 
