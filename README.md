@@ -7,13 +7,13 @@ Compile typescript files via [grunt](http://gruntjs.com/) tasks.
 
 ## Documentation
 
-You'll need to install grunt-tsc first:
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a Gruntfile as well as install and use [Grunt](http://gruntjs.com/) plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ``` shell
 npm install grunt-tsc --save-dev
 ```
 
-Then modify your Gruntfile.js file by adding the following line:
+Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of javascript:
 
 ``` javascript
 grunt.loadNpmTasks("grunt-tsc");
