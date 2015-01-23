@@ -133,7 +133,7 @@ Additional *.d.ts references.
 * **type** &lt;string|string[]&gt;
 * **default** []
 
-Additional *.d.ts references.
+Additional *.d.ts references. Find references in current compiler folder (maybe custom compiler folder too).
 
 
 ### options.library
