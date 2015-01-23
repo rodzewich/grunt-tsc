@@ -64,96 +64,96 @@ grunt.initConfig({
 
 ### options.target
 
-* **type** `<string>`
-* **default** `"default"`
+* **type** &lt;string&gt;
+* **default** "default"
 
 Specify ECMAScript target version: "default", "es3", "es5", "es6" or "latest".
 
 
 ### options.module
 
-* **type** `<string>`
-* **default** `"commonjs"`
+* **type** &lt;string&gt;
+* **default** "commonjs"
 
 Specify module code generation: "commonjs" or "amd".
 
 
 ### options.declaration
 
-* **type** `<boolean>`
-* **default** `false`
+* **type** &lt;boolean&gt;
+* **default** false
 
 Generates corresponding *.d.ts file.
 
 
 ### options.comments
 
-* **type** `<boolean>`
-* **default** `true`
+* **type** &lt;boolean&gt;
+* **default** true
 
 Emit comments to output.
 
 
 ### options.sourcemap
 
-* **type** `<boolean>`
-* **default** `false`
+* **type** &lt;boolean&gt;
+* **default** false
 
 Generates corresponding *.map file.
 
 
 ### options.implicitAny
 
-* **type** `<boolean>`
-* **default** `false`
+* **type** &lt;boolean&gt;
+* **default** false
 
 Warn on expressions and declarations with an implied 'any' type.
 
 
 ### options.preserveConstEnums
 
-* **type** `<boolean>`
-* **default** `false`
+* **type** &lt;boolean&gt;
+* **default** false
 
 Do not erase const enum declarations in generated code.
 
 
 ### options.sourceRoot
 
-* **type** `<string>`
-* **default** `null`
+* **type** &lt;string&gt;
+* **default** null
 
 Specifies the location where debugger should locate typescript files instead of source locations.
 
 
 ### options.mapRoot
 
-* **type** `<string>`
-* **default** `null`
+* **type** &lt;string&gt;
+* **default** null
 
 Specifies the location where debugger should locate map files instead of generated locations.
 
 
 ### options.references
 
-* **type** `<string|string[]>`
-* **default** `[]`
+* **type** &lt;string|string[]&gt;
+* **default** []
 
 Additional *.d.ts references.
 
 
 ### options.system
 
-* **type** `<string|string[]>`
-* **default** `[]`
+* **type** &lt;string|string[]&gt;
+* **default** []
 
 Additional *.d.ts references.
 
 
 ### options.library
 
-* **type** `<boolean>`
-* **default** `false`
+* **type** &lt;boolean&gt;
+* **default** false
 
 Enable general library references (include all references).
 
