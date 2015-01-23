@@ -143,11 +143,6 @@ Additional *.d.ts references.
 
 Enable general library references (include all references).
 
-### options.node
-
-* **type** &lt;string&gt;
-* **default** null
-
 ### options.version
 
 * **type** &lt;string&gt;
@@ -161,6 +156,11 @@ Compiler version, allow values: "1.0", "1.1", "1.3", "1.4", "default" and "lates
 * **default** null
 
 Path to tsc compiler (allow paths to *.js files). Example: "/usr/local/lib/node_modules/typescript/bin/tsc.js" for default system installation.
+
+### options.node
+
+* **type** &lt;string&gt;
+* **default** null
 
 ## Example
 
