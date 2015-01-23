@@ -30,21 +30,13 @@ Then add some configuration for the plugin like so:
 ``` javascript
 grunt.initConfig({
     tsc: {
-        // global options
         options: {
-            target:             "default",
-            module:             "commonjs",
-            declaration:        true,
-            comments:           true,
-            sourcemap:          true,
-            implicitAny:        true,
-            preserveConstEnums: false,
-            sourceRoot:         "/public/sources",
-            mapRoot:            "/public/maps"
+            // global options
         },
         task: {
-            // task options
-            options: {},
+            options: {
+                // task options
+            },
             files: [{
                 expand : true,
                 dest   : "dest",
