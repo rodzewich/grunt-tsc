@@ -143,12 +143,14 @@ Additional *.d.ts references. Find references in current compiler folder (maybe 
 
 Enable general library references (include all references).
 
+
 ### options.version
 
 * **type** &lt;string&gt;
 * **default** "latest"
 
 Compiler version, allow values: "1.0", "1.1", "1.3", "1.4", "default" and "latest".
+
 
 ### options.compiler
 
@@ -157,10 +159,12 @@ Compiler version, allow values: "1.0", "1.1", "1.3", "1.4", "default" and "lates
 
 Path to tsc compiler (allow paths to *.js files). Example: "/usr/local/lib/node_modules/typescript/bin/tsc.js" for default system installation.
 
+
 ### options.node
 
 * **type** &lt;string&gt;
 * **default** null
+
 
 ## Example
 
