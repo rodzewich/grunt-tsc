@@ -16,7 +16,7 @@ npm install grunt-tsc --save-dev
 Then modify your Gruntfile.js file by adding the following line:
 
 ``` javascript
-grunt.loadNpmTasks('grunt-tsc');
+grunt.loadNpmTasks("grunt-tsc");
 ```
 
 Then add some configuration for the plugin like so:
@@ -93,7 +93,7 @@ Generates corresponding *.map file.
 * **type** &lt;boolean&gt;
 * **default** false
 
-Warn on expressions and declarations with an implied 'any' type.
+Warn on expressions and declarations with an implied "any" type.
 
 
 ### options.preserveConstEnums
