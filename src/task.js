@@ -968,13 +968,13 @@ module.exports = function (grunt) {
                             args.push("--mapRoot", getMapRootOption());
                         }
                     }
+                    args.push("--out", getDestination());
                     getReferencesOption().forEach(function (filename) {
                         args.push(filename);
                     });
                     getSources().forEach(function (source) {
                         args.push(path.join(getWorkingDirectory(), source));
                     });
-                    args.push("--out", getDestination());
                     grunt.log.debug("command:", command);
                     grunt.log.debug("args:", args.join(" "));
                     process = spawn(command, args);
