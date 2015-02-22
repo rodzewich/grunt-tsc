@@ -71,7 +71,8 @@ module.exports = function (grunt) {
             tempIsDirectory = false,
             binExists       = false,
             binIsFile       = false,
-            binIsDirectory  = false;
+            binIsDirectory  = false,
+            additionalVersion;
         function typeOf(value) {
             var type  = String(Object.prototype.toString.call(value) || '').slice(8, -1) || 'Object',
                 types = ['Arguments', 'Array', 'Boolean', 'Date', 'Error', 'Function', 'Null', 'Number', 'Object', 'String', 'Undefined'];
@@ -394,16 +395,6 @@ module.exports = function (grunt) {
                 });
             },
             function (next) {
-                fs.writeFile("bin/versions.js", "/* Allow TypeScript versions */\nmodule.exports = [" + Object.keys(versions).map(function (version) { return JSON.stringify(version); }).join(", ") + "];", {encoding: "utf8"}, function (error) {
-                    if (error) {
-                        displayError(error);
-                        done(false);
-                    } else {
-                        next();
-                    }
-                });
-            },
-            function (next) {
                 var actions = [];
                 Object.keys(versions).forEach(function (version) {
                     var branch = versions[version],
@@ -483,6 +474,67 @@ module.exports = function (grunt) {
                     next();
                 });
                 deferred(actions);
+            },
+            function (next) {
+                var content = "",
+                    errors  = [],
+                    args    = ["bin/latest/tsc.js"],
+                    command;
+                args.push("--version");
+                command = spawn(process.execPath, args);
+                command.stderr.on("data", function (data) {
+                    errors.push(String(data || ""));
+                });
+                command.stdout.on("data", function (data) {
+                    content += data.toString();
+                    errors.push(String(data || ""));
+                });
+                command.on("close", function (code) {
+                    if (code !== 0) {
+                        displayErrorContent(errors.join("\n"));
+                    } else {
+                        if (/^.*version\s+(\S+).*$/im.test(content)) {
+                            additionalVersion = content.replace(/^.*version\s+(\S+).*$/im, "$1").split("\r").join("").split("\n").join("").split(".").slice(0, 2).join(".");
+                        }
+                        next();
+                    }
+                });
+            },
+            function (next) {
+                var content = "",
+                    errors  = [],
+                    command;
+                if (typeOf(versions[additionalVersion]) === "undefined") {
+                    command = spawn("cp", ["-R", "bin/latest", path.join("bin", "v" + additionalVersion)]);
+                    command.stderr.on("data", function (data) {
+                        errors.push(String(data || ""));
+                    });
+                    command.stdout.on("data", function (data) {
+                        content += data.toString();
+                        errors.push(String(data || ""));
+                    });
+                    command.on("close", function (code) {
+                        if (code !== 0) {
+                            displayErrorContent(errors.join("\n"));
+                        } else {
+                            versions[additionalVersion] = "master";
+                            next();
+                        }
+                    });
+                } else {
+                    next();
+                }
+            },
+            function (next) {
+                var versionKeys = Object.keys(versions).sort();
+                fs.writeFile("bin/versions.js", "/* Allow TypeScript versions */\nmodule.exports = [" + versionKeys.map(function (version) { return JSON.stringify(version); }).join(", ") + "];", {encoding: "utf8"}, function (error) {
+                    if (error) {
+                        displayError(error);
+                        done(false);
+                    } else {
+                        next();
+                    }
+                });
             },
             // clean
             function (next) {

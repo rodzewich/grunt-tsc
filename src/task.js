@@ -432,16 +432,18 @@ module.exports = function (grunt) {
         }
 
         function getTargetOption() {
-            var opt, temp, ver;
+            var opt, temp, ver, isValid14Target, isValid13Target;
             if (typeOf(target) !== "string") {
                 opt  = getOptions();
                 temp = String(opt.target || "").toUpperCase();
                 ver  = parseFloat(getRealVersion());
+                isValid13Target = ["ES3", "ES5"].indexOf(temp) !== -1 && ver < 1.4;
+                isValid14Target = ["ES3", "ES5", "ES6"].indexOf(temp) !== -1 && ver >= 1.4;
                 if (typeOf(opt.target) === "undefined" || temp === "DEFAULT") {
                     target = "ES3";
                 } else if (temp === "LATEST") {
                     target = ver < 1.4 ? "ES5" : "ES6";
-                } else if ((["ES3", "ES5", "ES6"].indexOf(temp) !== -1 && ver >= 1.4) || (["ES3", "ES5"].indexOf(temp) !== -1 && ver < 1.4)) {
+                } else if (isValid13Target || isValid14Target) {
                     target = temp;
                 } else {
                     throw new Error("Incorrect \"target\" option, must be \"default\", \"es3\", \"es5\"" + (ver < 1.4 ? ", \"es6\"" : "") + " or \"latest\".");
@@ -564,9 +566,9 @@ module.exports = function (grunt) {
                 } else {
                     if (/^.*version\s+(\S+).*$/im.test(content)) {
                         ver = content.replace(/^.*version\s+(\S+).*$/im, "$1").split("\r").join("").split("\n").join("").split(".").slice(0, 2).join(".");
-                        callback(null, versions.indexOf(ver) !== -1 ? ver : "latest");
+                        callback(null, ver);
                     } else {
-                        callback(null, "latest");
+                        callback(null, "1.0");
                     }
                 }
             });
