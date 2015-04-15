@@ -26,6 +26,7 @@ var test1;
     })();
     test1.Test1 = Test1;
 })(test1 || (test1 = {}));
+/// <reference path="../test1.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -46,6 +47,7 @@ var test2;
     })(test1.Test1);
     test2.Test2 = Test2;
 })(test2 || (test2 = {}));
+/// <reference path="test2.ts" />
 var test3;
 (function (test3) {
     var Test3 = (function (_super) {
