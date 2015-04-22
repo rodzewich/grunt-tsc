@@ -452,6 +452,10 @@ module.exports = function (grunt) {
             return target;
         }
 
+        function getTargetNumber() {
+            return parseInt(getTargetOption().replace(/\D+/, ""), 10);
+        }
+
         function getModuleOption() {
             var opt,
                 temp;
@@ -857,7 +861,9 @@ module.exports = function (grunt) {
                     command = getNodeOption();
                     args.push(getCompilerOption());
                     args.push("--target", getTargetOption());
-                    args.push("--module", getModuleOption());
+                    if (getTargetOption() < 6) {
+                        args.push("--module", getModuleOption());
+                    }
                     if (!hasCommentsOption()) {
                         args.push("--removeComments");
                     }
@@ -948,7 +954,9 @@ module.exports = function (grunt) {
                     command = getNodeOption();
                     args.push(getCompilerOption());
                     args.push("--target", getTargetOption());
-                    args.push("--module", getModuleOption());
+                    if (getTargetOption() < 6) {
+                        args.push("--module", getModuleOption());
+                    }
                     if (!hasCommentsOption()) {
                         args.push("--removeComments");
                     }

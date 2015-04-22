@@ -1,6 +1,10 @@
 module test1 {
 
-    export class Test1 {
+    export interface MyTestInterface1 {
+        getProp1(): string;
+    }
+
+    export class Test1 implements MyTestInterface1 {
 
         private prop1: string = '123';
         private prop2: string = '123';

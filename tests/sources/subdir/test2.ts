@@ -2,7 +2,11 @@
 
 module test2 {
 
-    export class Test2 extends test1.Test1 {
+    export interface MyTestInterface2 extends test1.MyTestInterface1 {
+        getProp2(): string;
+    }
+
+    export class Test2 extends test1.Test1 implements MyTestInterface2 {
         constructor() {
             super();
             console.log('extends');

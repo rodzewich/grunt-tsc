@@ -1,5 +1,8 @@
 declare module test1 {
-    class Test1 {
+    interface MyTestInterface1 {
+        getProp1(): string;
+    }
+    class Test1 implements MyTestInterface1 {
         private prop1;
         private prop2;
         constructor();

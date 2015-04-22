@@ -1,5 +1,8 @@
 declare module test1 {
-    class Test1 {
+    interface MyTestInterface1 {
+        getProp1(): string;
+    }
+    class Test1 implements MyTestInterface1 {
         private prop1;
         private prop2;
         constructor();
@@ -11,12 +14,18 @@ declare module test1 {
     }
 }
 declare module test2 {
-    class Test2 extends test1.Test1 {
+    interface MyTestInterface2 extends test1.MyTestInterface1 {
+        getProp2(): string;
+    }
+    class Test2 extends test1.Test1 implements MyTestInterface2 {
         constructor();
     }
 }
 declare module test3 {
-    class Test3 extends test2.Test2 {
+    interface MyTestInterface3 extends test1.MyTestInterface1 {
+        getProp2(): string;
+    }
+    class Test3 extends test2.Test2 implements MyTestInterface3 {
         constructor();
     }
 }
