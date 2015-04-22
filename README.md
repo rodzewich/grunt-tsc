@@ -147,7 +147,7 @@ Enable general library references (include all references).
 ### options.version
 
 * **type** &lt;string&gt;
-* **default** "latest"
+* **default** "default"
 
 Compiler version, allow values: "1.0", "1.1", "1.3", "1.4", "1.5", "default" and "latest".
 
